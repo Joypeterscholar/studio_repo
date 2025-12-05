@@ -3,9 +3,11 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import React, { useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function VerifyEmailPage() {
-  const [code, setCode] = useState(new Array(4).fill(''));
+  const [code, setCode] = useState(['8', '7', '3', '7']);
+  const [error, setError] = useState('You entered the wrong code. Try again.');
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleInputChange = (element: HTMLInputElement, index: number) => {
@@ -30,10 +32,19 @@ export default function VerifyEmailPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-sm text-center">
-        <h1 className="text-3xl font-bold text-primary" style={{fontFamily: 'Alegreya, serif'}}>Verify email address</h1>
-        <p className="mt-2 text-muted-foreground">
-          We sent a 4-digit code to your mail.
-        </p>
+        <h1 className="text-3xl font-bold text-primary" style={{fontFamily: 'Alegreya, serif'}}>
+            {error ? 'Incorrect code' : 'Verify email address'}
+        </h1>
+        
+        {error ? (
+            <p className="mt-2 text-destructive">
+                {error}
+            </p>
+        ) : (
+            <p className="mt-2 text-muted-foreground">
+                We sent a 4-digit code to your mail.
+            </p>
+        )}
 
         <div className="mt-8 flex justify-center gap-2 sm:gap-4">
           {code.map((data, index) => {
@@ -47,7 +58,10 @@ export default function VerifyEmailPage() {
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 onFocus={(e) => e.target.select()}
                 ref={(el) => (inputsRef.current[index] = el)}
-                className="h-20 w-16 sm:h-24 sm:w-20 text-center text-3xl font-bold border-primary/50 focus:border-primary focus:ring-primary"
+                className={cn(
+                    "h-20 w-16 sm:h-24 sm:w-20 text-center text-3xl font-bold border-primary/50 focus:border-primary focus:ring-primary",
+                    error && "border-destructive text-destructive focus:border-destructive focus:ring-destructive"
+                )}
               />
             );
           })}
