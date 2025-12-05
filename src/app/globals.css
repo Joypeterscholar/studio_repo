@@ -13,7 +13,7 @@
     --popover: 281 50% 98%;
     --popover-foreground: 281 10% 20%;
 
-    --primary: 281 50% 21%;
+    --primary: 309 56% 22%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 281 20% 90%;
@@ -30,28 +30,28 @@
 
     --border: 281 20% 85%;
     --input: 281 20% 85%;
-    --ring: 281 50% 21%;
+    --ring: 309 56% 22%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 281 50% 21%;
+    --background: 309 56% 12%;
     --foreground: 0 0% 100%;
 
-    --card: 281 50% 25%;
+    --card: 309 56% 16%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 281 50% 25%;
+    --popover: 309 56% 16%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 0 0% 100%;
-    --primary-foreground: 281 50% 21%;
+    --primary-foreground: 309 56% 12%;
     
-    --secondary: 281 50% 30%;
+    --secondary: 309 56% 20%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 281 50% 30%;
+    --muted: 309 56% 20%;
     --muted-foreground: 281 10% 75%;
 
     --accent: 328 76% 63%;
@@ -60,8 +60,8 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 281 50% 35%;
-    --input: 281 50% 35%;
+    --border: 309 56% 25%;
+    --input: 309 56% 25%;
     --ring: 328 76% 63%;
   }
 }
@@ -72,6 +72,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .linqup-text {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    fill: currentColor;
   }
 }
 
