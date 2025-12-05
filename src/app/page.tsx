@@ -14,21 +14,25 @@ const onboardingSteps = [
     title: 'Find Your Kind of Connection',
     description:
       "Whether you're looking for love, friendship, or meaningful connections, we've created a space that fits your vibe",
+    buttonText: 'Find Your Match!',
   },
   {
     image: 'onboarding-2',
-    title: 'Discover People, Not Profiles',
-    description: 'Our smart algorithm helps you find people you’ll actually click with.',
+    title: 'Chat, Flirt, or Just Chill',
+    description: 'Meet new people, spark real conversations, and build connections that go beyond swipes and small talk.',
+    buttonText: 'Chat',
   },
   {
     image: 'onboarding-3',
     title: 'Make the First Move',
     description: 'Don’t be shy! Send a message and start a conversation.',
+    buttonText: 'Make a Move',
   },
   {
     image: 'onboarding-4',
     title: 'Safe & Secure',
     description: 'Your privacy is our priority. We keep your data safe.',
+    buttonText: 'Get Started',
   },
 ];
 
@@ -86,7 +90,7 @@ export default function OnboardingPage() {
 
         <div className="w-full flex flex-col items-center gap-6 mt-auto">
            <Button onClick={handleNext} className="w-full max-w-xs" size="lg">
-            {currentStep === onboardingSteps.length - 1 ? 'Get Started' : 'Find Your Match!'}
+            {step.buttonText}
           </Button>
           <div className="flex items-center justify-between w-full max-w-xs">
             <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">SKIP</Button>
