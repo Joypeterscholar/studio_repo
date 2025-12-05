@@ -28,13 +28,18 @@ import { loggedInUser } from "@/lib/data";
 import Logo from "./Logo";
 
 const navItems = [
-  { href: "/", label: "Discover", icon: Home },
+  { href: "/discover", label: "Discover", icon: Home },
   { href: "/matches", label: "Matches", icon: Heart },
   { href: "/messages", label: "Messages", icon: MessageSquare },
 ];
 
 export default function Header() {
   const pathname = usePathname();
+
+  // Do not render header on the splash screen
+  if (pathname === '/') {
+    return null;
+  }
 
   const renderNavLinks = (isMobile = false) =>
     navItems.map((item) => (
@@ -58,7 +63,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="mr-6 hidden md:flex">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/discover" className="flex items-center gap-2">
             <Logo className="h-6 w-6 text-primary" />
             <span className="font-headline text-xl font-semibold">MatchMingle</span>
           </Link>
@@ -74,7 +79,7 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="left">
               <div className="py-6">
-                <Link href="/" className="mb-8 flex items-center gap-2 px-4">
+                <Link href="/discover" className="mb-8 flex items-center gap-2 px-4">
                   <Logo className="h-6 w-6 text-primary" />
                   <span className="font-headline text-xl font-semibold">MatchMingle</span>
                 </Link>
