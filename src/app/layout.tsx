@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'LINGUP',
+  title: 'LINQUP',
   description: 'Find your perfect match.',
 };
 

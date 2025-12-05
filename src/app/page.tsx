@@ -38,7 +38,7 @@ export default function SplashScreen() {
       </div>
       <div className="z-10 flex flex-col items-center justify-center h-full">
         <div className="text-center">
-          <Logo className="h-20 w-auto" isLingup={true} />
+          <Logo className="h-20 w-auto" isLinqUp={true} />
         </div>
         <div className="absolute bottom-20 flex space-x-2">
           <div className="h-3 w-3 rounded-full bg-white/50 animate-pulse [animation-delay:-0.3s]"></div>

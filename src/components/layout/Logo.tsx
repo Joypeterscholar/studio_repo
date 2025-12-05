@@ -2,12 +2,12 @@ import { cn } from "@/lib/utils";
 
 export default function Logo({
   className,
-  isLingup = false,
+  isLinqUp = false,
 }: {
   className?: string;
-  isLingup?: boolean;
+  isLinqUp?: boolean;
 }) {
-  if (isLingup) {
+  if (isLinqUp) {
     return (
       <svg
         viewBox="0 0 240 50"
@@ -16,7 +16,7 @@ export default function Logo({
       >
         <style>
           {`
-            .lingup-text {
+            .linqup-text {
               font-family: 'Alegreya Sans SC', sans-serif;
               font-weight: 900;
               font-size: 40px;
@@ -27,11 +27,11 @@ export default function Logo({
         <text
           x="0"
           y="35"
-          className="lingup-text"
+          className="linqup-text"
         >
-          LIN
+          LINQ
         </text>
-        <g transform="translate(90, 12.5)">
+        <g transform="translate(100, 12.5)">
           <path
             d="M25 12.5C25 5.596 19.404 0 12.5 0C5.596 0 0 5.596 0 12.5C0 19.404 5.596 25 12.5 25C19.404 25 25 19.404 25 12.5Z"
             fill="#D946EF"
@@ -52,9 +52,9 @@ export default function Logo({
           />
         </g>
         <text
-          x="125"
+          x="135"
           y="35"
-          className="lingup-text"
+          className="linqup-text"
         >
           UP
         </text>
