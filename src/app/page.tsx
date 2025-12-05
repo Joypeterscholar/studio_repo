@@ -43,7 +43,7 @@ const onboardingSteps = [
 ];
 
 export default function OnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(3);
   const router = useRouter();
 
   const handleNext = () => {
