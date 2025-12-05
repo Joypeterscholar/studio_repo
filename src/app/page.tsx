@@ -24,7 +24,7 @@ const onboardingSteps = [
     title: 'Make the First Move',
     description: 'Don’t be shy! Send a message and start a conversation.',
   },
-    {
+  {
     image: 'onboarding-4',
     title: 'Safe & Secure',
     description: 'Your privacy is our priority. We keep your data safe.',
@@ -47,7 +47,7 @@ export default function OnboardingPage() {
   const handleSkip = () => {
     // router.push('/discover');
   };
-  
+
   const step = onboardingSteps[currentStep];
   const image = placeholderImages.find(p => p.id === step.image);
 
@@ -58,18 +58,18 @@ export default function OnboardingPage() {
 
       <div className="flex-1 flex flex-col items-center justify-between p-8 text-center -mt-32 z-10">
         <div className="w-full max-w-sm">
-            {image && (
+          {image && (
             <div className="relative aspect-[4/3] w-full">
-                <Image
+              <Image
                 src={image.imageUrl}
                 alt={step.title}
                 data-ai-hint={image.imageHint}
                 fill
                 className="object-contain"
                 priority
-                />
+              />
             </div>
-            )}
+          )}
         </div>
         
         <div className="w-full">
@@ -82,26 +82,26 @@ export default function OnboardingPage() {
         </div>
 
         <div className="w-full flex flex-col items-center gap-6">
-            <Button onClick={handleNext} className="w-full max-w-xs" size="lg">
-                Find Your Match!
-            </Button>
-            <div className="flex items-center justify-between w-full max-w-xs">
-                <Button variant="ghost" onClick={handleSkip}>SKIP</Button>
-                <div className="flex gap-2">
-                {onboardingSteps.map((_, index) => (
-                    <div
-                    key={index}
-                    className={cn(
-                        'h-2 w-2 rounded-full transition-all',
-                        currentStep === index ? 'w-4 bg-primary' : 'bg-muted'
-                    )}
-                    />
-                ))}
-                </div>
-                <Button variant="ghost" onClick={handleNext}>
-                {currentStep === onboardingSteps.length - 1 ? 'DONE' : 'NEXT'}
-                </Button>
+          <Button onClick={handleNext} className="w-full max-w-xs" size="lg">
+            Find Your Match!
+          </Button>
+          <div className="flex items-center justify-between w-full max-w-xs">
+            <Button variant="ghost" onClick={handleSkip}>SKIP</Button>
+            <div className="flex gap-2">
+              {onboardingSteps.map((_, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'h-2 w-2 rounded-full transition-all',
+                    currentStep === index ? 'w-4 bg-primary' : 'bg-muted'
+                  )}
+                />
+              ))}
             </div>
+            <Button variant="ghost" onClick={handleNext}>
+              {currentStep === onboardingSteps.length - 1 ? 'DONE' : 'NEXT'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
