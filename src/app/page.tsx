@@ -7,12 +7,12 @@ export default function HomePage() {
     const router = useRouter();
 
     useEffect(() => {
-        router.replace('/verify-email-success');
+        router.replace('/reset-password');
     }, [router]);
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-            <p>Redirecting to email verification success page...</p>
+            <p>Redirecting to reset password page...</p>
         </div>
     );
 }
