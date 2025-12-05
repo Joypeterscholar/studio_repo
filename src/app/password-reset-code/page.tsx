@@ -8,7 +8,8 @@ import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function PasswordResetCodePage() {
-  const [code, setCode] = useState(['', '', '', '']);
+  const [code, setCode] = useState(['8', '7', '3', '7']);
+  const [error, setError] = useState('You entered the wrong code. Try again.');
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleInputChange = (element: HTMLInputElement, index: number) => {
@@ -44,9 +45,16 @@ export default function PasswordResetCodePage() {
             Password reset code
         </h1>
         
-        <p className="mt-4 text-muted-foreground">
-            We sent a 4-digit reset code to<br /> your a*********ye@gmail.com
-        </p>
+        {error ? (
+          <p className="mt-4 text-destructive">
+            {error}
+          </p>
+        ) : (
+          <p className="mt-4 text-muted-foreground">
+              We sent a 4-digit reset code to<br /> your a*********ye@gmail.com
+          </p>
+        )}
+
 
         <div className="mt-8 flex justify-center gap-2 sm:gap-4">
           {code.map((data, index) => {
@@ -61,7 +69,8 @@ export default function PasswordResetCodePage() {
                 onFocus={(e) => e.target.select()}
                 ref={(el) => (inputsRef.current[index] = el)}
                 className={cn(
-                    "h-20 w-16 sm:h-20 sm:w-16 text-center text-3xl font-bold border-primary/50 focus:border-primary focus:ring-primary rounded-2xl",
+                    "h-20 w-16 sm:h-20 sm:w-16 text-center text-3xl font-bold rounded-2xl",
+                    error ? "border-destructive text-destructive focus:border-destructive focus:ring-destructive" : "border-primary/50 focus:border-primary focus:ring-primary"
                 )}
               />
             );
@@ -69,9 +78,9 @@ export default function PasswordResetCodePage() {
         </div>
 
         <p className="mt-8 text-muted-foreground">
-            Wrong email address?{' '}
+            Didn't receive the code?{' '}
             <Button variant="link" className="p-0 font-bold text-primary">
-                Change email
+                Resend Code.
             </Button>
         </p>
 
