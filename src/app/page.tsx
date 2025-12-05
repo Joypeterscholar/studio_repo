@@ -49,7 +49,9 @@ export default function OnboardingPage() {
   };
 
   const step = onboardingSteps[currentStep];
-  const image = placeholderImages.find(p => p.id === step.image);
+  // Find the image, or use the first image in the list as a fallback.
+  const image = placeholderImages.find(p => p.id === step.image) || placeholderImages[0];
+
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
