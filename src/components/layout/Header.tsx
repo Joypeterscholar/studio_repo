@@ -59,8 +59,7 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-6 hidden md:flex">
           <Link href="/discover" className="flex items-center gap-2">
-            <Logo className="h-6 w-6 text-primary" />
-            <span className="font-bold">App</span>
+            <Logo isLinqUp={true} className="h-8" />
           </Link>
         </div>
 
@@ -75,8 +74,7 @@ export default function Header() {
             <SheetContent side="left">
               <div className="py-6">
                 <Link href="/discover" className="mb-8 flex items-center gap-2 px-4">
-                  <Logo className="h-6 w-6 text-primary" />
-                  <span className="font-bold">App</span>
+                  <Logo isLinqUp={true} className="h-8" />
                 </Link>
                 <nav className="flex flex-col gap-2">
                   {renderNavLinks(true)}
@@ -94,7 +92,7 @@ export default function Header() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                <Avatar className="h-10 w-10 border-2 border-primary">
+                <Avatar className="h-10 w-10 border-2 border-accent">
                   <AvatarImage src={loggedInUser.image.imageUrl} alt={loggedInUser.name} />
                   <AvatarFallback>{loggedInUser.name.charAt(0)}</AvatarFallback>
                 </Avatar>

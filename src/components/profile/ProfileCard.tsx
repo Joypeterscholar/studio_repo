@@ -11,7 +11,7 @@ interface ProfileCardProps {
 export default function ProfileCard({ user }: ProfileCardProps) {
   return (
     <Link href={`/users/${user.id}`}>
-      <Card className="overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl h-full flex flex-col">
+      <Card className="overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl h-full flex flex-col bg-card">
         <CardContent className="p-0 flex flex-col flex-grow">
           <div className="aspect-w-1 aspect-h-1 w-full relative">
             <Image
@@ -34,7 +34,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {user.interests.slice(0, 2).map((interest) => (
-                <Badge key={interest} variant="secondary" className="bg-primary/20 text-primary-foreground">
+                <Badge key={interest} variant="secondary">
                   {interest}
                 </Badge>
               ))}

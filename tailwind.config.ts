@@ -95,10 +95,19 @@ export default {
             height: '0',
           },
         },
+        'loading-dots': {
+          '0%, 100%': {
+            transform: 'translateX(-150%)',
+          },
+          '50%': {
+            transform: 'translateX(150%)',
+          }
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'loading-dots': 'loading-dots 1.5s cubic-bezier(0.6, 0.01, 0.4, 1) infinite',
       },
     },
   },
