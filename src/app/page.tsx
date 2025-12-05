@@ -56,10 +56,10 @@ export default function OnboardingPage() {
       <div className="h-1/3 bg-primary" style={{ borderBottomLeftRadius: '50px', borderBottomRightRadius: '50px' }}>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-between p-8 text-center -mt-32 z-10">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex flex-col items-center justify-between p-8 text-center -mt-48 z-10">
+        <div className="w-full max-w-sm h-64 relative">
           {image && (
-            <div className="relative aspect-[4/3] w-full">
+            <div className="relative aspect-[4/3] w-full h-full">
               <Image
                 src={image.imageUrl}
                 alt={step.title}
@@ -72,7 +72,7 @@ export default function OnboardingPage() {
           )}
         </div>
         
-        <div className="w-full">
+        <div className="w-full mt-8">
           <h1 className="text-3xl font-bold font-headline text-primary">
             {step.title}
           </h1>
@@ -81,12 +81,12 @@ export default function OnboardingPage() {
           </p>
         </div>
 
-        <div className="w-full flex flex-col items-center gap-6">
-          <Button onClick={handleNext} className="w-full max-w-xs" size="lg">
-            Find Your Match!
+        <div className="w-full flex flex-col items-center gap-6 mt-auto">
+           <Button onClick={handleNext} className="w-full max-w-xs" size="lg">
+            {currentStep === onboardingSteps.length - 1 ? 'Get Started' : 'Find Your Match!'}
           </Button>
           <div className="flex items-center justify-between w-full max-w-xs">
-            <Button variant="ghost" onClick={handleSkip}>SKIP</Button>
+            <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">SKIP</Button>
             <div className="flex gap-2">
               {onboardingSteps.map((_, index) => (
                 <div
@@ -98,7 +98,7 @@ export default function OnboardingPage() {
                 />
               ))}
             </div>
-            <Button variant="ghost" onClick={handleNext}>
+            <Button variant="ghost" onClick={handleNext} className="text-muted-foreground">
               {currentStep === onboardingSteps.length - 1 ? 'DONE' : 'NEXT'}
             </Button>
           </div>
