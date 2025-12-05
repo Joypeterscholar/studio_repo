@@ -4,54 +4,22 @@
 
 @layer base {
   :root {
-    --background: 281 50% 98%;
-    --foreground: 281 10% 20%;
-
-    --card: 281 50% 98%;
-    --card-foreground: 281 10% 20%;
-
-    --popover: 281 50% 98%;
-    --popover-foreground: 281 10% 20%;
-
-    --primary: 309 56% 22%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 281 20% 90%;
-    --secondary-foreground: 281 10% 20%;
-
-    --muted: 281 20% 90%;
-    --muted-foreground: 281 10% 45%;
-
-    --accent: 328 76% 63%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 281 20% 85%;
-    --input: 281 20% 85%;
-    --ring: 309 56% 22%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 309 56% 12%;
+    --background: 55 56% 12%;
     --foreground: 0 0% 100%;
 
-    --card: 309 56% 16%;
+    --card: 55 56% 16%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 309 56% 16%;
+    --popover: 55 56% 16%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 0 0% 100%;
-    --primary-foreground: 309 56% 12%;
+    --primary-foreground: 55 56% 12%;
     
-    --secondary: 309 56% 20%;
+    --secondary: 55 56% 20%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 309 56% 20%;
+    --muted: 55 56% 20%;
     --muted-foreground: 281 10% 75%;
 
     --accent: 328 76% 63%;
@@ -60,8 +28,40 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 309 56% 25%;
-    --input: 309 56% 25%;
+    --border: 55 56% 25%;
+    --input: 55 56% 25%;
+    --ring: 328 76% 63%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 300 56% 12%;
+    --foreground: 0 0% 100%;
+
+    --card: 300 56% 16%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 300 56% 16%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 300 56% 12%;
+    
+    --secondary: 300 56% 20%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 300 56% 20%;
+    --muted-foreground: 281 10% 75%;
+
+    --accent: 328 76% 63%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 300 56% 25%;
+    --input: 300 56% 25%;
     --ring: 328 76% 63%;
   }
 }
@@ -72,12 +72,6 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-  .linqup-text {
-    font-family: 'Alegreya Sans SC', sans-serif;
-    font-weight: 900;
-    font-size: 40px;
-    fill: currentColor;
   }
 }
 
@@ -109,4 +103,11 @@
   50% {
     transform: translateX(150%);
   }
+}
+
+.linqup-text {
+  font-family: 'Alegreya Sans SC', sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  fill: currentColor;
 }

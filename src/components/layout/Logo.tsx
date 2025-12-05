@@ -14,7 +14,21 @@ export default function Logo({ className, isLinqUp = false }: LogoProps) {
             xmlns="http://www.w3.org/2000/svg"
             className={cn("text-white", className)}
         >
-        <text x="0" y="35" className="linqup-text">
+        <style>
+          {`
+            .linqup-text {
+              font-family: 'Alegreya Sans SC', sans-serif;
+              font-weight: 900;
+              font-size: 40px;
+              fill: currentColor;
+            }
+          `}
+        </style>
+        <text
+          x="0"
+          y="35"
+          className="linqup-text"
+        >
           LIN
         </text>
         <g transform="translate(105, 0)">
@@ -27,7 +41,11 @@ export default function Logo({ className, isLinqUp = false }: LogoProps) {
                 fill="#E55C9C"
             />
         </g>
-        <text x="165" y="35" className="linqup-text">
+        <text
+          x="165"
+          y="35"
+          className="linqup-text"
+        >
           UP
         </text>
       </svg>
