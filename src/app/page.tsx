@@ -7,12 +7,12 @@ export default function HomePage() {
     const router = useRouter();
 
     useEffect(() => {
-        router.replace('/signup');
+        router.replace('/verify-email');
     }, [router]);
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-            <p>Redirecting to sign up page...</p>
+            <p>Redirecting to verify email page...</p>
         </div>
     );
 }
