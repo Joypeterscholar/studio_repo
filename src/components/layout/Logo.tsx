@@ -14,43 +14,47 @@ export default function Logo({
         xmlns="http://www.w3.org/2000/svg"
         className={cn("text-white", className)}
       >
+        <style>
+          {`
+            .lingup-text {
+              font-family: 'Alegreya Sans SC', sans-serif;
+              font-weight: 900;
+              font-size: 40px;
+              fill: currentColor;
+            }
+          `}
+        </style>
         <text
           x="0"
           y="35"
-          fontFamily="Arial, sans-serif"
-          fontSize="36"
-          fontWeight="bold"
-          fill="currentColor"
+          className="lingup-text"
         >
           LIN
         </text>
-        <g transform="translate(100, 15)">
+        <g transform="translate(90, 12.5)">
           <path
-            d="M20 10C20 4.477 15.523 0 10 0C4.477 0 0 4.477 0 10C0 15.523 4.477 20 10 20C15.523 20 20 15.523 20 10Z"
+            d="M25 12.5C25 5.596 19.404 0 12.5 0C5.596 0 0 5.596 0 12.5C0 19.404 5.596 25 12.5 25C19.404 25 25 19.404 25 12.5Z"
             fill="#D946EF"
           />
           <path
-            d="M13.5 6.5L16 10L13.5 13.5"
+            d="M16.875 8.125L20 12.5L16.875 16.875"
             stroke="white"
-            strokeWidth="1.5"
+            strokeWidth="1.875"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M6.5 13.5L4 10L6.5 6.5"
+            d="M8.125 16.875L5 12.5L8.125 8.125"
             stroke="white"
-            strokeWidth="1.5"
+            strokeWidth="1.875"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </g>
         <text
-          x="130"
+          x="125"
           y="35"
-          fontFamily="Arial, sans-serif"
-          fontSize="36"
-          fontWeight="bold"
-          fill="currentColor"
+          className="lingup-text"
         >
           UP
         </text>

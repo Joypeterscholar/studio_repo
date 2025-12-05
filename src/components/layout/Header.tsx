@@ -64,8 +64,8 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-6 hidden md:flex">
           <Link href="/discover" className="flex items-center gap-2">
-            <Logo className="h-6 w-6 text-primary" />
-            <span className="font-headline text-xl font-semibold">MatchMingle</span>
+            <Logo className="h-6 w-6 text-primary" isLingup={true} />
+            <span className="font-headline text-xl font-semibold">LINGUP</span>
           </Link>
         </div>
 
@@ -80,8 +80,8 @@ export default function Header() {
             <SheetContent side="left">
               <div className="py-6">
                 <Link href="/discover" className="mb-8 flex items-center gap-2 px-4">
-                  <Logo className="h-6 w-6 text-primary" />
-                  <span className="font-headline text-xl font-semibold">MatchMingle</span>
+                  <Logo className="h-6 w-6 text-primary" isLingup={true} />
+                  <span className="font-headline text-xl font-semibold">LINGUP</span>
                 </Link>
                 <nav className="flex flex-col gap-2">
                   {renderNavLinks(true)}
