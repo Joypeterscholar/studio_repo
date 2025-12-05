@@ -23,6 +23,12 @@
       "description": "Illustration of a person holding a shield in front of a phone",
       "imageUrl": "https://storage.googleapis.com/aifire.dev/misc/linqup/onboarding-4.png",
       "imageHint": "privacy security"
+    },
+    {
+      "id": "onboarding-5",
+      "description": "Illustration of two people on a couch with money floating around them.",
+      "imageUrl": "https://storage.googleapis.com/aifire.dev/misc/linqup/onboarding-5.png",
+      "imageHint": "friends rewards"
     }
   ]
 }

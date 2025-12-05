@@ -29,6 +29,12 @@ const onboardingSteps = [
     buttonText: 'Make a Move',
   },
   {
+    image: 'onboarding-5',
+    title: 'Share the Love & Earn',
+    description: 'Invite your friends and earn rewards for every successful referral. The more you share, the more you earn!',
+    buttonText: 'Refer a Friend',
+  },
+  {
     image: 'onboarding-4',
     title: 'Safe & Secure',
     description: 'Your privacy is our priority. We keep your data safe.',
