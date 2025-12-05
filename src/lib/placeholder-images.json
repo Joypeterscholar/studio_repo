@@ -29,6 +29,12 @@
       "description": "Illustration of two people on a couch with money floating around them.",
       "imageUrl": "https://storage.googleapis.com/aifire.dev/misc/linqup/onboarding-5.png",
       "imageHint": "friends rewards"
+    },
+    {
+      "id": "verify-email-success",
+      "description": "Illustration of a happy speech bubble with thumbs up",
+      "imageUrl": "https://storage.googleapis.com/aifire.dev/misc/linqup/verify-success.png",
+      "imageHint": "success happy"
     }
   ]
 }
