@@ -22,8 +22,8 @@
     --muted: 300 5% 90%;
     --muted-foreground: 300 5% 45%;
 
-    --accent: 328 76% 63%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 328 76% 95%;
+    --accent-foreground: 300 54% 25%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -54,7 +54,7 @@
     --muted: 300 5% 25%;
     --muted-foreground: 300 5% 65%;
 
-    --accent: 328 76% 63%;
+    --accent: 328 76% 20%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -72,36 +72,6 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-@keyframes bounce-dot {
-  0%, 80%, 100% { 
-    transform: scale(0);
-  } 40% { 
-    transform: scale(1.0);
-  }
-}
-
-.bounce-1 {
-  animation: bounce-dot 1.4s infinite ease-in-out both;
-}
-
-.bounce-2 {
-  animation: bounce-dot 1.4s infinite ease-in-out 0.16s both;
-}
-
-.bounce-3 {
-  animation: bounce-dot 1.4s infinite ease-in-out 0.32s both;
-}
-
-
-@keyframes loading-dots {
-  0%, 100% {
-    transform: translateX(-150%);
-  }
-  50% {
-    transform: translateX(150%);
   }
 }
 

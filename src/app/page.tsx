@@ -39,12 +39,13 @@ export default function OnboardingPage() {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      router.push('/discover');
+      // For the final step, you might want to navigate to the main app
+      // router.push('/discover');
     }
   };
 
   const handleSkip = () => {
-    router.push('/discover');
+    // router.push('/discover');
   };
   
   const step = onboardingSteps[currentStep];
