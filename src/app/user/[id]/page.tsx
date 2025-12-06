@@ -122,11 +122,10 @@ export default function UserProfilePage() {
   const userImage = findImage(user.image.id);
 
   const menuItems = [
-    { label: 'Remove from Matches' },
-    { label: `${user.name}'s Posts` },
+    { label: 'Add to Matches' },
     { label: 'Send Message' },
     { label: 'Mute User' },
-    { label: 'Block User', isDestructive: true, href: '/block-user' },
+    { label: 'Unblock User', isDestructive: true, href: '/block-user' },
   ];
 
   return (
