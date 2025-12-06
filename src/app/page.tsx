@@ -24,6 +24,7 @@ export default function SplashScreen() {
             style={{
               width: `${(i + 1) * 20}rem`,
               height: `${(i + 1) * 20}rem`,
+              animation: `fade-in-and-scale 2s ease-in-out ${i * 0.4}s infinite alternate`
             }}
           />
         ))}
@@ -36,6 +37,18 @@ export default function SplashScreen() {
             <div className="h-4 w-4 rounded-full bg-white/50"></div>
         </div>
       </div>
+       <style jsx>{`
+        @keyframes fade-in-and-scale {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
