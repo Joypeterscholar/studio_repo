@@ -34,6 +34,7 @@ import {
   DialogContent,
   DialogTrigger,
   DialogClose,
+  DialogHeader,
 } from '@/components/ui/dialog';
 
 const findImage = (id: string) => {
@@ -120,7 +121,7 @@ export default function UserProfilePage() {
   const userImage = findImage(user.image.id);
 
   const menuItems = [
-    { label: 'Add to Matches' },
+    { label: 'Remove from Matches' },
     { label: `${user.name}'s Posts` },
     { label: 'Send Message' },
     { label: 'Mute User' },
@@ -159,20 +160,21 @@ export default function UserProfilePage() {
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md w-[90vw] m-auto bg-white rounded-2xl p-0">
-              <div className="flex justify-end p-2">
-                <DialogClose asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <X className="w-5 h-5" />
-                  </Button>
-                </DialogClose>
-              </div>
+              <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                <span></span>
+                 <DialogClose asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full h-auto w-auto p-0">
+                      <X className="w-5 h-5 text-muted-foreground" />
+                    </Button>
+                  </DialogClose>
+              </DialogHeader>
               <div className="flex flex-col text-base">
                 {menuItems.map((item) => (
                   <button
                     key={item.label}
                     className={cn(
-                      'text-left p-4 border-t',
-                      item.isDestructive ? 'text-red-500' : 'text-primary'
+                      'text-left p-4 border-b text-primary',
+                      item.isDestructive && 'text-red-500'
                     )}
                   >
                     {item.label}
