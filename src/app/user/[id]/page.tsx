@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   ChevronLeft,
   SlidersHorizontal,
@@ -125,7 +126,7 @@ export default function UserProfilePage() {
     { label: `${user.name}'s Posts` },
     { label: 'Send Message' },
     { label: 'Mute User' },
-    { label: 'Block User', isDestructive: true },
+    { label: 'Block User', isDestructive: true, href: '/block-user' },
   ];
 
   return (
@@ -169,17 +170,23 @@ export default function UserProfilePage() {
                   </DialogClose>
               </DialogHeader>
               <div className="flex flex-col text-base">
-                {menuItems.map((item) => (
-                  <button
-                    key={item.label}
-                    className={cn(
-                      'text-left p-4 border-b text-primary',
-                      item.isDestructive && 'text-red-500'
-                    )}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+                {menuItems.map((item) => {
+                  const content = (
+                    <button
+                      key={item.label}
+                      className={cn(
+                        'text-left p-4 border-b text-primary',
+                        item.isDestructive && 'text-red-500'
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                  if (item.href) {
+                    return <Link href={item.href} key={item.label}>{content}</Link>
+                  }
+                  return content;
+                })}
               </div>
             </DialogContent>
           </Dialog>
@@ -303,12 +310,14 @@ export default function UserProfilePage() {
             </div>
           </div>
 
-          <Button
-            variant="destructive"
-            className="w-full h-12 rounded-full text-lg"
-          >
-            Block User
-          </Button>
+          <Link href="/block-user">
+            <Button
+              variant="destructive"
+              className="w-full h-12 rounded-full text-lg"
+            >
+              Block User
+            </Button>
+          </Link>
         </div>
       </div>
 
