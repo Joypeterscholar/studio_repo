@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 
 export default function DeleteAccountPage() {
-  const deleteIcon = placeholderImages.find((p) => p.id === 'delete-cross-icon');
+  const deleteIcon = placeholderImages.find((p) => p.id === 'delete-icon-2');
   
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
