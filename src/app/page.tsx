@@ -1,19 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Logo from '@/components/layout/Logo';
 
 export default function SplashScreen() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace('/onboarding');
-    }, 7000); // 7-second delay before redirecting
-    return () => clearTimeout(timer); // Cleanup the timer
-  }, [router]);
-
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden">
       <div className="absolute inset-0 z-0">
