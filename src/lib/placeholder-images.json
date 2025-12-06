@@ -119,6 +119,24 @@
       "description": "A couple laughing together",
       "imageUrl": "https://images.unsplash.com/photo-1533243232239-a03525a7eb4a?w=800&h=1000&fit=crop",
       "imageHint": "couple laughing"
+    },
+    {
+      "id": "profile-main",
+      "description": "Man in grey t-shirt looking at his phone",
+      "imageUrl": "https://images.unsplash.com/photo-1470434767159-ac7bf1b43351?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFuJTIwcGhvbmV8ZW58MHx8fHwxNzY0OTYwNzgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man phone"
+    },
+    {
+      "id": "profile-side-1",
+      "description": "Man in a suit smiling",
+      "imageUrl": "https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFuJTIwc3VpdHxlbnwwfHx8fDE3NjQ5NDEzOTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man suit"
+    },
+    {
+      "id": "profile-side-2",
+      "description": "Man studying at a desk",
+      "imageUrl": "https://images.unsplash.com/photo-1579389082947-e54d8e911928?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtYW4lMjBzdHVkeWluZ3xlbnwwfHx8fDE3NjUwMDk1NjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man studying"
     }
   ]
 }

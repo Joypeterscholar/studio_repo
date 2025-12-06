@@ -171,6 +171,11 @@ export default function HomePage() {
                 );
               })}
             </TabsContent>
+            <TabsContent value="search-partners">
+              <div className="flex items-center justify-center h-48">
+                <p>Partner search coming soon!</p>
+              </div>
+            </TabsContent>
           </Tabs>
         </main>
       </div>
