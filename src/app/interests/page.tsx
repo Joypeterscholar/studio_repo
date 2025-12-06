@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import {
   Bell,
-  Football,
   Leaf,
   Surf,
   Camera,
@@ -24,7 +23,7 @@ import Logo from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
 
 const interests = [
-  { name: 'Football', icon: <Football className="w-4 h-4" /> },
+  { name: 'Football', icon: <Users className="w-4 h-4" /> },
   { name: 'Nature', icon: <Leaf className="w-4 h-4" /> },
   { name: 'Surfing', icon: <Surf className="w-4 h-4" /> },
   { name: 'Photography', icon: <Camera className="w-4 h-4" /> },
