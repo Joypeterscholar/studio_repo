@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 
 const findImage = (id: string) => {
@@ -85,19 +86,20 @@ export default function ProfilePage() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-white rounded-2xl p-0">
-                <DialogHeader className="p-4 flex flex-row items-center justify-end border-b">
-                  <DialogTrigger asChild>
+                <DialogHeader className="p-4 flex flex-row items-center justify-between border-b">
+                   <h2 className="text-lg font-semibold text-primary">Menu</h2>
+                   <DialogClose asChild>
                     <button>
                       <X className="w-6 h-6" />
                     </button>
-                  </DialogTrigger>
+                  </DialogClose>
                 </DialogHeader>
                 <div className="flex flex-col text-lg">
                   {menuItems.map((item) => {
                     const content = (
                       <button
                         key={item.label}
-                        className={`text-left p-4 border-b ${
+                        className={`text-left p-4 border-b w-full text-primary ${
                           item.isDestructive ? 'text-red-500' : ''
                         }`}
                       >
