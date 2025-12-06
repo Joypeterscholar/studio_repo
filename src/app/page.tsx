@@ -1,8 +1,19 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Logo from '@/components/layout/Logo';
 
 export default function SplashScreen() {
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     router.push('/onboarding');
+  //   }, 7000);
+  //   return () => clearTimeout(timer);
+  // }, [router]);
+
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -19,10 +30,10 @@ export default function SplashScreen() {
       </div>
       <div className="relative z-10 flex flex-col items-center gap-16">
         <Logo isLinqUp className="w-64" />
-        <div className="flex gap-4 text-6xl font-bold text-white/50">
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
+        <div className="flex items-center justify-center space-x-2">
+            <div className="h-4 w-4 rounded-full bg-white/50"></div>
+            <div className="h-4 w-4 rounded-full bg-white animate-loading-dots"></div>
+            <div className="h-4 w-4 rounded-full bg-white/50"></div>
         </div>
       </div>
     </div>

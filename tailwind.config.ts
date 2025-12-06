@@ -97,17 +97,17 @@ export default {
         },
         'loading-dots': {
           '0%, 100%': {
-            transform: 'translateX(-150%)',
+            transform: 'translateY(0)',
           },
           '50%': {
-            transform: 'translateX(150%)',
+            transform: 'translateY(-10px)',
           }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'loading-dots': 'loading-dots 1.5s cubic-bezier(0.6, 0.01, 0.4, 1) infinite',
+        'loading-dots': 'loading-dots 1s ease-in-out infinite',
       },
     },
   },
