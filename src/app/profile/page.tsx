@@ -38,7 +38,7 @@ const menuItems = [
   { label: 'Matches' },
   { label: 'My Posts' },
   { label: 'My Wallet' },
-  { label: 'Settings', href: '/settings' },
+  { label: 'Settings', href: '/profile' },
   { label: 'Notifications' },
   { label: 'Blocked Users' },
   { label: 'Delete Account', isDestructive: true },
