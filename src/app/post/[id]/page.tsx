@@ -16,6 +16,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 
@@ -81,6 +82,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] bg-white rounded-2xl p-0">
                 <DialogHeader className="p-4 flex flex-row items-center justify-between border-b">
+                    <DialogTitle className="sr-only">Post Options</DialogTitle>
                     <span></span>
                 </DialogHeader>
                 <div className="flex flex-col text-sm">

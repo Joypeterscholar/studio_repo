@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 
@@ -63,6 +64,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </button>
             </DialogTrigger>
              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-xl border-none bottom-24 translate-y-0 left-1/2 -translate-x-1/2">
+                <DialogTitle className="sr-only">Create New</DialogTitle>
                 <div className="flex flex-col text-base text-primary font-medium">
                     <button className="text-left p-4 border-b">Status</button>
                     <Link href="/create-post" className="text-left p-4">Post</Link>

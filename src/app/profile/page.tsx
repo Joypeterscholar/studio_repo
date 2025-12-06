@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
@@ -87,7 +88,7 @@ export default function ProfilePage() {
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-white rounded-2xl p-0">
                 <DialogHeader className="p-4 flex flex-row items-center justify-between border-b">
-                   <h2 className="text-lg font-semibold text-primary">Menu</h2>
+                   <DialogTitle className="text-lg font-semibold text-primary">Menu</DialogTitle>
                    <DialogClose asChild>
                     <button>
                       <X className="w-6 h-6" />

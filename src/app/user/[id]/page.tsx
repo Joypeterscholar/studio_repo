@@ -36,6 +36,7 @@ import {
   DialogTrigger,
   DialogClose,
   DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 
 const findImage = (id: string) => {
@@ -161,6 +162,7 @@ export default function UserProfilePage() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-md w-[90vw] m-auto bg-white rounded-2xl p-0">
               <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                <DialogTitle className="sr-only">User Actions</DialogTitle>
                 <span></span>
                  <DialogClose asChild>
                     <Button variant="ghost" size="icon" className="rounded-full h-auto w-auto p-0">
