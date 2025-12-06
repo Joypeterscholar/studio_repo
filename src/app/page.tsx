@@ -19,14 +19,10 @@ export default function SplashScreen() {
       </div>
       <div className="relative z-10 flex flex-col items-center gap-16">
         <Logo isLinqUp className="w-64" />
-        <div className="relative flex h-8 w-24 items-center justify-center overflow-hidden">
-            <div className="absolute flex gap-4 text-4xl font-bold text-white/50">
-                <span className="-ml-1">.</span>
-                <span>.</span>
-                <span>.</span>
-                <span>.</span>
-            </div>
-            <div className="absolute h-2 w-2 animate-loading-dots rounded-full bg-white" />
+        <div className="flex gap-4 text-6xl font-bold text-white/50">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
         </div>
       </div>
     </div>
