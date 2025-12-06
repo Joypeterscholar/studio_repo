@@ -36,7 +36,7 @@ const VerifiedIcon = () => (
 
 const menuItems = [
   { label: 'Matches' },
-  { label: 'My Posts' },
+  { label: 'My Posts', href: '/recent-posts' },
   { label: 'My Wallet' },
   { label: 'Settings', href: '/settings' },
   { label: 'Notifications' },

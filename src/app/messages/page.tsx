@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, Heart } from 'lucide-react';
+import { ChevronLeft, Heart, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
@@ -72,11 +72,12 @@ export default function MessagesPage() {
             {conversations.map((convo) => {
                 const image = findImage(convo.user?.image.id || '');
                 const isUnread = !convo.lastMessage.isRead && convo.lastMessage.senderId !== '0';
-                const messageDate = new Date(convo.lastMessage.timestamp);
-                const timeString = `${messageDate.getHours().toString().padStart(2, '0')}:${messageDate.getMinutes().toString().padStart(2, '0')}`;
+                
+                // Static time for hydration consistency
+                const timeString = '10:00';
 
                 return (
-                    <Link href={`/user/${convo.userId}`} key={convo.id} className="flex items-center space-x-4 py-3">
+                    <Link href={`/messages/${convo.userId}`} key={convo.id} className="flex items-center space-x-4 py-3">
                         <Image
                             src={image.imageUrl}
                             alt={image.description}
