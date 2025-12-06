@@ -8,10 +8,10 @@ export default function SplashScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    // const timer = setTimeout(() => {
-    //   router.replace('/onboarding');
-    // }, 3000); // 3-second delay before redirecting
-    // return () => clearTimeout(timer); // Cleanup the timer
+    const timer = setTimeout(() => {
+      router.replace('/onboarding');
+    }, 7000); // 7-second delay before redirecting
+    return () => clearTimeout(timer); // Cleanup the timer
   }, [router]);
 
   return (
