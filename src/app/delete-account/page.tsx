@@ -12,7 +12,7 @@ export default function DeleteAccountPage() {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
       <header className="p-4">
-        <Link href="/settings" passHref>
+        <Link href="/profile" passHref>
           <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10">
             <ChevronLeft className="h-6 w-6" />
           </Button>
