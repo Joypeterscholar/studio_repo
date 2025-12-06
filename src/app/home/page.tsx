@@ -119,53 +119,55 @@ export default function HomePage() {
                 const bgImage = findImage(item.backgroundImageId);
                 const authorImage = findImage(item.authorImageId);
                 return (
-                  <div key={item.id} className="relative h-[50vh] rounded-3xl overflow-hidden shadow-lg">
-                    <Image
-                      src={bgImage.imageUrl}
-                      alt={bgImage.description}
-                      fill
-                      className="object-cover"
-                      data-ai-hint={bgImage.imageHint}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                    
-                    <div className="absolute top-4 left-4">
-                        <div className="flex items-center gap-2 rounded-full bg-black/30 text-white text-sm px-3 py-1.5 backdrop-blur-sm">
-                            <span>{item.categoryIcon}</span>
-                            <span>{item.category}</span>
-                        </div>
-                    </div>
+                  <Link href={`/post/${item.id}`} key={item.id} className="block">
+                    <div className="relative h-[50vh] rounded-3xl overflow-hidden shadow-lg">
+                      <Image
+                        src={bgImage.imageUrl}
+                        alt={bgImage.description}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={bgImage.imageHint}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      
+                      <div className="absolute top-4 left-4">
+                          <div className="flex items-center gap-2 rounded-full bg-black/30 text-white text-sm px-3 py-1.5 backdrop-blur-sm">
+                              <span>{item.categoryIcon}</span>
+                              <span>{item.category}</span>
+                          </div>
+                      </div>
 
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
-                      <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
-                        <ThumbsUp />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
-                        <MessageCircle />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
-                        <Send />
-                      </Button>
-                    </div>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                          <ThumbsUp />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                          <MessageCircle />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                          <Send />
+                        </Button>
+                      </div>
 
-                    <div className="absolute bottom-6 left-6 right-6 text-white">
-                      {item.question && <p className="text-xl font-bold leading-tight mb-4">{item.question}</p>}
-                      <div className="flex items-center gap-3">
-                        <Image
-                            src={authorImage.imageUrl}
-                            alt={authorImage.description}
-                            width={40}
-                            height={40}
-                            className="rounded-full object-cover border-2 border-white/80"
-                            data-ai-hint={authorImage.imageHint}
-                        />
-                        <div>
-                            <p className="font-semibold text-sm">{item.authorName}</p>
-                            <p className="text-xs opacity-80 tracking-widest">{item.authorLocation}</p>
+                      <div className="absolute bottom-6 left-6 right-6 text-white">
+                        {item.question && <p className="text-xl font-bold leading-tight mb-4">{item.question}</p>}
+                        <div className="flex items-center gap-3">
+                          <Image
+                              src={authorImage.imageUrl}
+                              alt={authorImage.description}
+                              width={40}
+                              height={40}
+                              className="rounded-full object-cover border-2 border-white/80"
+                              data-ai-hint={authorImage.imageHint}
+                          />
+                          <div>
+                              <p className="font-semibold text-sm">{item.authorName}</p>
+                              <p className="text-xs opacity-80 tracking-widest">{item.authorLocation}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </TabsContent>
