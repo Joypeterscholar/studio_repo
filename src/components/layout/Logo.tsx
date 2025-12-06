@@ -13,14 +13,6 @@ export default function Logo({ className, isLinqUp = false }: LogoProps) {
         xmlns="http://www.w3.org/2000/svg"
         className={cn("text-primary", className)}
       >
-        <defs>
-            <style>
-            {`
-                @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@900&display=swap');
-            `}
-            </style>
-        </defs>
-        
         <text x="0" y="55" className="linqup-text">LINQUP</text>
       </svg>
     );
