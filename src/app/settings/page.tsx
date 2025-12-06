@@ -145,9 +145,11 @@ export default function SettingsPage() {
             </div>
         </div>
 
-        <Button variant="destructive" className="w-full bg-red-100 text-red-600 hover:bg-red-200">
-            Delete Account
-        </Button>
+        <Link href="/delete-account" passHref>
+          <Button variant="destructive" className="w-full bg-red-100 text-red-600 hover:bg-red-200">
+              Delete Account
+          </Button>
+        </Link>
       </main>
     </div>
   );

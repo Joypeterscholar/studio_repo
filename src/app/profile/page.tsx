@@ -41,7 +41,7 @@ const menuItems = [
   { label: 'Settings', href: '/settings' },
   { label: 'Notifications' },
   { label: 'Blocked Users' },
-  { label: 'Delete Account', isDestructive: true },
+  { label: 'Delete Account', isDestructive: true, href: '/delete-account' },
 ];
 
 export default function ProfilePage() {
