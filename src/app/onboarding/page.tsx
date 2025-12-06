@@ -7,9 +7,9 @@ export default function Onboarding() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the root splash screen page
-    router.replace('/');
+    // Redirect to the home page
+    router.replace('/home');
   }, [router]);
 
-  return null;
+  return null; // This page is only for redirection
 }

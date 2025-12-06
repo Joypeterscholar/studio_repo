@@ -43,52 +43,82 @@
       "imageHint": "food drink"
     },
     {
+      "id": "user-self",
+      "description": "Portrait of a smiling man with glasses",
+      "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&h=500&fit=crop",
+      "imageHint": "man portrait"
+    },
+    {
       "id": "user-1",
       "description": "Woman in purple jacket",
-      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NDkwODIwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=500&fit=crop",
       "imageHint": "woman portrait"
     },
     {
       "id": "user-2",
       "description": "Woman smiling",
-      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzY0OTM4Mjc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop",
       "imageHint": "woman smiling"
     },
     {
       "id": "user-3",
       "description": "Woman with hair blowing",
-      "imageUrl": "https://images.unsplash.com/photo-1546961329-78bef0414d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NDkwODIwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1546961329-78bef0414d7c?w=500&h=500&fit=crop",
       "imageHint": "woman portrait"
     },
     {
       "id": "user-4",
       "description": "Man with artistic lighting",
-      "imageUrl": "https://images.unsplash.com/photo-1594672830234-ba4cfe1202dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFuJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzY0OTc2OTkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1594672830234-ba4cfe1202dc?w=500&h=500&fit=crop",
       "imageHint": "man portrait"
     },
     {
       "id": "user-5",
       "description": "Woman with head tilted",
-      "imageUrl": "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NDkwODIwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?w=500&h=500&fit=crop",
       "imageHint": "woman portrait"
     },
     {
       "id": "user-6",
       "description": "Woman in orange sweater",
-      "imageUrl": "https://images.unsplash.com/photo-1711645169736-53327e726205?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzY0OTM4Mjc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&h=500&fit=crop",
       "imageHint": "woman smiling"
     },
     {
       "id": "user-7",
       "description": "Woman with yellow background",
-      "imageUrl": "https://images.unsplash.com/photo-1610655507808-a59293f4e332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2NDkwODIwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1610655507808-a59293f4e332?w=500&h=500&fit=crop",
       "imageHint": "woman portrait"
     },
     {
       "id": "user-8",
       "description": "Woman in floral dress",
-      "imageUrl": "https://images.unsplash.com/photo-1711645169736-53327e726205?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzY0OTM4Mjc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&h=500&fit=crop",
       "imageHint": "woman smiling"
+    },
+    {
+      "id": "user-male-1",
+      "description": "Man in a suit with red lighting",
+      "imageUrl": "https://images.unsplash.com/photo-1560250133-41b451405a62?w=500&h=500&fit=crop",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "user-male-2",
+      "description": "Man smiling in a white t-shirt",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop",
+      "imageHint": "man smiling"
+    },
+    {
+      "id": "feed-prague",
+      "description": "Evening view of Prague with a bridge over the river",
+      "imageUrl": "https://images.unsplash.com/photo-1528460033256-a79461652459?w=800&h=1000&fit=crop",
+      "imageHint": "Prague cityscape"
+    },
+    {
+      "id": "feed-couple",
+      "description": "A couple laughing together",
+      "imageUrl": "https://images.unsplash.com/photo-1533243232239-a03525a7eb4a?w=800&h=1000&fit=crop",
+      "imageHint": "couple laughing"
     }
   ]
 }
