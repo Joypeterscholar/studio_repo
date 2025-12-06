@@ -72,8 +72,11 @@ export default function MessagesPage() {
             {conversations.map((convo) => {
                 const image = findImage(convo.user?.image.id || '');
                 const isUnread = !convo.lastMessage.isRead && convo.lastMessage.senderId !== '0';
+                const messageDate = new Date(convo.lastMessage.timestamp);
+                const timeString = `${messageDate.getHours().toString().padStart(2, '0')}:${messageDate.getMinutes().toString().padStart(2, '0')}`;
+
                 return (
-                    <Link href={`/messages/${convo.userId}`} key={convo.id} className="flex items-center space-x-4 py-3">
+                    <Link href={`/user/${convo.userId}`} key={convo.id} className="flex items-center space-x-4 py-3">
                         <Image
                             src={image.imageUrl}
                             alt={image.description}
@@ -87,7 +90,7 @@ export default function MessagesPage() {
                             <p className="text-muted-foreground truncate text-sm">{convo.lastMessage.text}</p>
                         </div>
                         <div className="flex flex-col items-end space-y-1">
-                            <span className="text-xs text-muted-foreground">{new Date(convo.lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            <span className="text-xs text-muted-foreground">{timeString}</span>
                             {isUnread && <div className="w-3 h-3 bg-pink-500 rounded-full"></div>}
                         </div>
                     </Link>

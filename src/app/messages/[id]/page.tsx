@@ -96,6 +96,8 @@ export default function ConversationPage() {
             const isSender = message.senderId === loggedInUser.id;
             const user = isSender ? loggedInUser : otherUser;
             const userImage = findImage(user.image.id);
+            const messageDate = new Date(message.timestamp);
+            const timeString = `${messageDate.getHours().toString().padStart(2, '0')}:${messageDate.getMinutes().toString().padStart(2, '0')}`;
 
             return (
               <div
@@ -122,7 +124,7 @@ export default function ConversationPage() {
                 >
                   <p>{message.text}</p>
                   <div className="mt-1 flex items-center justify-end gap-1 text-xs text-muted-foreground">
-                    <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                    <span>{timeString}</span>
                     {isSender && <DoubleCheck className="text-blue-500" />}
                   </div>
                 </div>
