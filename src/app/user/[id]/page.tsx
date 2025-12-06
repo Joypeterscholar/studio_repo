@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import {
   ChevronLeft,
   SlidersHorizontal,
@@ -14,10 +13,19 @@ import {
   Pen,
   Heart,
   MessageSquare,
+  Globe,
+  PartyPopper,
+  Gem,
+  Camera,
+  Waves,
+  Leaf,
+  Users,
+  Flame,
+  BrainCircuit,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { getUserById, type User } from '@/lib/data';
+import { getUserById } from '@/lib/data';
 import { useParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
@@ -49,6 +57,27 @@ const SpiritualIcon = () => (
     </svg>
 );
 
+const userInterests = [
+  { name: 'Interest', icon: <Flame className="w-4 h-4" /> },
+  { name: 'Music', icon: <Music className="w-4 h-4" /> },
+  { name: 'PDA', icon: '💋' },
+  { name: 'Open to Adventure', icon: <Globe className="w-4 h-4" /> },
+  { name: 'Group Hangouts', icon: <PartyPopper className="w-4 h-4" /> },
+  { name: 'Writing', icon: <Pen className="w-4 h-4" /> },
+  { name: 'Fashion', icon: <Gem className="w-4 h-4" /> },
+  { name: 'Sex', icon: '🔥🍑' },
+];
+
+const accountInfo = [
+    { label: 'Date Joined', value: 'March, 2024' },
+    { label: 'Matched with', value: '3 Men' },
+    { label: 'Changed username', value: '2 Times' },
+    { label: 'Religion', value: 'Christianity' },
+    { label: 'Interested in', value: 'Men' },
+    { label: 'Uninterested in', value: 'Women, Lesbians' },
+    { label: 'Hobbies', value: 'Reading, Eating' },
+    { label: 'Education', value: 'Masters, Biochemistry' },
+];
 
 export default function UserProfilePage() {
   const router = useRouter();
@@ -153,6 +182,36 @@ export default function UserProfilePage() {
               <h2 className="font-bold text-primary text-lg mb-1">Occupation</h2>
               <p className="text-muted-foreground text-sm">Odontologist</p>
             </div>
+            <div className="bg-white p-4 rounded-xl shadow-sm border">
+                <h2 className="font-bold text-primary text-lg mb-3">My Interests</h2>
+                 <div className="flex flex-wrap gap-3">
+                  {userInterests.map(interest => (
+                    <Button
+                      key={interest.name}
+                      variant="outline"
+                      className="rounded-full bg-accent/20 border-accent/30 text-accent-foreground flex items-center gap-2 transition-all duration-200 text-sm h-9"
+                    >
+                      {typeof interest.icon === 'string' ? <span className="text-base">{interest.icon}</span> : interest.icon}
+                      <span className="font-medium text-primary">{interest.name}</span>
+                    </Button>
+                  ))}
+                </div>
+            </div>
+            <div className="bg-white p-4 rounded-xl shadow-sm border">
+                <h2 className="font-bold text-primary text-lg mb-4">Account Information</h2>
+                <div className="space-y-4">
+                    {accountInfo.map(info => (
+                        <div key={info.label} className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">{info.label}</span>
+                            <span className="font-semibold text-primary">{info.value}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <Button variant="destructive" className="w-full h-12 rounded-full text-lg">
+                Block User
+            </Button>
         </div>
       </div>
 
