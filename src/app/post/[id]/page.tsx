@@ -4,14 +4,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ChevronLeft,
-  SlidersHorizontal,
   ThumbsUp,
   MessageCircle,
   Send,
   Heart,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -67,9 +73,24 @@ export default function PostPage({ params }: { params: { id: string } }) {
             <ChevronLeft className="h-6 w-6" />
           </Button>
         </Link>
-        <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10 text-primary">
-          <FilterIcon />
-        </Button>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10 text-primary">
+                  <FilterIcon />
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-white rounded-2xl p-0">
+                <DialogHeader className="p-4 flex flex-row items-center justify-between border-b">
+                    <span></span>
+                </DialogHeader>
+                <div className="flex flex-col text-sm">
+                    <button className="text-left p-4 border-b">View Profile</button>
+                    <button className="text-left p-4 border-b">Follow Miranda</button>
+                    <button className="text-left p-4 border-b text-red-500">Not Interested in this Post</button>
+                    <button className="text-left p-4">Block Miranda</button>
+                </div>
+            </DialogContent>
+        </Dialog>
       </header>
 
       <main className="pt-20 px-4 md:px-6 pb-8">
