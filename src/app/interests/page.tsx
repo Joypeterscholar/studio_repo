@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
   Bell,
   Leaf,
-  Surf,
+  Waves,
   Camera,
   Music,
   Pen,
@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 const interests = [
   { name: 'Football', icon: <Users className="w-4 h-4" /> },
   { name: 'Nature', icon: <Leaf className="w-4 h-4" /> },
-  { name: 'Surfing', icon: <Surf className="w-4 h-4" /> },
+  { name: 'Surfing', icon: <Waves className="w-4 h-4" /> },
   { name: 'Photography', icon: <Camera className="w-4 h-4" /> },
   { name: 'Music', icon: <Music className="w-4 h-4" />, selected: true },
   { name: 'Writing', icon: <Pen className="w-4 h-4" /> },
