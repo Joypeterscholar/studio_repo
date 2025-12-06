@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Pencil, MapPin, Wallet, ArrowUp, Settings2 } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -48,9 +49,11 @@ export default function ProfilePage() {
                 </button>
               </div>
             </div>
-            <Button variant="outline" size="icon" className="rounded-full border-2 w-12 h-12">
-              <Settings2 className="w-6 h-6 text-primary" />
-            </Button>
+            <Link href="/settings">
+              <Button variant="outline" size="icon" className="rounded-full border-2 w-12 h-12">
+                <Settings2 className="w-6 h-6 text-primary" />
+              </Button>
+            </Link>
           </div>
         </header>
 
