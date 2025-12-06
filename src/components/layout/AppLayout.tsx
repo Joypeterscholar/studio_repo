@@ -17,6 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const centralItemIndex = navItems.findIndex(item => item.isCentral);
+  const CentralItem = centralItemIndex !== -1 ? navItems[centralItemIndex] : null;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -50,19 +51,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               );
             })}
           </div>
-          {centralItemIndex !== -1 && (
+          {CentralItem && (
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Link
-                  href={navItems[centralItemIndex].href}
+                  href={CentralItem.href}
                   className={cn(
                     "flex items-center justify-center w-16 h-16 rounded-full bg-white transition-transform duration-300 ease-in-out",
-                    pathname === navItems[centralItemIndex].href ? 'bg-accent text-accent-foreground' : 'text-gray-500'
+                    pathname === CentralItem.href ? 'bg-accent text-accent-foreground' : 'text-gray-500'
                   )}
                   style={{
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
                   }}
                 >
-                  <navItems[centralItemIndex].icon className="w-8 h-8" />
+                  <CentralItem.icon className="w-8 h-8" />
                 </Link>
             </div>
           )}
