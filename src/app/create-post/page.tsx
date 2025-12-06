@@ -1,16 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
   ChevronLeft,
+  ChevronDown,
   Paperclip,
   Camera,
   Send,
   Smile,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { placeholderImages } from '@/lib/placeholder-images';
 
 const FilterIcon = () => (
   <svg
@@ -65,9 +76,25 @@ const FilterIcon = () => (
   </svg>
 );
 
+const addedImages = [
+  { id: 'profile-side-1', hint: 'man suit' },
+  { id: 'story-background', hint: 'food drink' },
+  { id: 'profile-side-2', hint: 'man studying' },
+];
+
+const findImage = (id: string) => {
+  return placeholderImages.find((p) => p.id === id);
+};
+
+
 export default function CreatePostPage() {
   const router = useRouter();
   const [postContent, setPostContent] = useState('');
+  const [images, setImages] = useState(addedImages);
+
+  const removeImage = (id: string) => {
+    setImages(images.filter(img => img.id !== id));
+  }
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
@@ -89,13 +116,50 @@ export default function CreatePostPage() {
         </Button>
       </header>
 
-      <main className="flex-grow px-4">
-        <Textarea
-          placeholder="What's on your mind?"
-          value={postContent}
-          onChange={(e) => setPostContent(e.target.value)}
-          className="h-full w-full border-none bg-transparent text-lg focus-visible:ring-0 focus-visible:ring-offset-0 resize-none p-0"
+      <main className="flex-grow px-4 space-y-6">
+        <div>
+            <label className="text-lg font-semibold text-primary">Post Title</label>
+             <Select>
+                <SelectTrigger className="w-full mt-2">
+                    <SelectValue placeholder="Select Post Category" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="travel">Travel</SelectItem>
+                    <SelectItem value="food">Food</SelectItem>
+                    <SelectItem value="tech">Tech</SelectItem>
+                </SelectContent>
+            </Select>
+        </div>
+
+        <div>
+            <label className="text-lg font-semibold text-primary">Add Images</label>
+            <div className="grid grid-cols-3 gap-2 mt-2">
+                {images.map(imgInfo => {
+                    const image = findImage(imgInfo.id);
+                    if (!image) return null;
+                    return (
+                        <div key={image.id} className="relative aspect-square">
+                            <Image
+                                src={image.imageUrl}
+                                alt={image.description}
+                                fill
+                                className="rounded-lg object-cover"
+                                data-ai-hint={image.imageHint}
+                            />
+                            <Button size="icon" variant="ghost" onClick={() => removeImage(image.id)} className="absolute top-1 right-1 h-6 w-6 bg-black/50 hover:bg-black/70 text-white rounded-full">
+                                <X className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+
+        <Input 
+            placeholder="What's on your mind?"
+            className="rounded-full h-12 px-4 bg-muted border-none"
         />
+
       </main>
 
       <footer
