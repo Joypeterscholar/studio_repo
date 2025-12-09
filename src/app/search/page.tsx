@@ -19,12 +19,22 @@ export default function SearchPage() {
         </div>
         <div className="w-10"></div>
       </header>
-      <main className="p-4">
+      <main className="p-4 space-y-6">
         <div className="relative">
           <Input
             placeholder="Search by Gender, age, location, interests"
             className="h-12 px-4 rounded-lg border-2 border-border focus-visible:ring-primary"
           />
+        </div>
+        <div>
+            <h3 className="text-sm text-muted-foreground font-medium mb-2">Interests</h3>
+            <div className="bg-muted p-3 rounded-lg">
+                <p className="text-foreground">Female</p>
+            </div>
+        </div>
+        <div>
+            <h3 className="text-sm text-muted-foreground font-medium mb-2">Experience</h3>
+            {/* Experience suggestions can be added here */}
         </div>
       </main>
     </div>
