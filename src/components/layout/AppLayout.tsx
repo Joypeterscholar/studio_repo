@@ -36,6 +36,9 @@ const devNavItems = [
     {href: '/connections', label: 'Connections'},
     {href: '/notifications', label: 'Notifications'},
     {href: '/video-call/1', label: 'Video Call'},
+    {href: '/block-user', label: 'Block User'},
+    {href: '/delete-account', label: 'Delete Account'},
+    {href: '/recent-posts', label: 'Recent Posts'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
