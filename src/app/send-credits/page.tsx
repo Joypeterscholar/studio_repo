@@ -13,9 +13,10 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
-import { getConversationsWithUserDetails } from '@/lib/data';
+import { getConversationsWithUserDetails, type User } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const creditAmounts = ['10LQ', '20LQ', '50LQ', '100LQ', '200LQ', 'Custom'];
 const conversations = getConversationsWithUserDetails();
@@ -27,7 +28,20 @@ const findImage = (id: string) => {
 
 export default function SendCreditsPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [selectedAmount, setSelectedAmount] = useState('10LQ');
+  const [selectedRecipient, setSelectedRecipient] = useState<User | null>(null);
+
+  const handleSendCredits = () => {
+    if (selectedRecipient && selectedAmount) {
+      toast({
+        title: "Credits Sent!",
+        description: `You have successfully sent ${selectedAmount} to ${selectedRecipient.name}.`,
+      });
+      // Optionally close the dialog and navigate away
+      // router.push('/wallet');
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-muted/50">
@@ -67,7 +81,7 @@ export default function SendCreditsPage() {
                         Select Recipient
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md w-[90vw] bottom-0 translate-y-0 rounded-t-3xl rounded-b-none p-6 shadow-2xl">
+                <DialogContent className="sm:max-w-md w-[90vw] bottom-0 translate-y-0 rounded-t-3xl rounded-b-none p-6 shadow-2xl flex flex-col">
                     <DialogHeader className="flex flex-row items-center justify-between text-left mb-4">
                         <DialogTitle className="text-xl font-bold text-primary">Select a match to send credits</DialogTitle>
                         <DialogClose asChild>
@@ -76,11 +90,21 @@ export default function SendCreditsPage() {
                             </Button>
                         </DialogClose>
                     </DialogHeader>
-                    <div className="space-y-2 max-h-[50vh] overflow-y-auto">
+                    <div className="space-y-2 flex-grow overflow-y-auto">
                         {conversations.map((convo) => {
-                            const image = findImage(convo.user?.image.id || '');
+                            if (!convo.user) return null;
+                            const image = findImage(convo.user.image.id || '');
+                            const isSelected = selectedRecipient?.id === convo.user.id;
+                            
                             return (
-                                <div key={convo.id} className="flex items-center space-x-4 py-2 border-b last:border-b-0">
+                                <button 
+                                    key={convo.id} 
+                                    className={cn(
+                                        "flex items-center space-x-4 p-2 rounded-lg text-left w-full border-2",
+                                        isSelected ? "border-primary bg-primary/5" : "border-transparent"
+                                    )}
+                                    onClick={() => setSelectedRecipient(convo.user as User)}
+                                >
                                     <Image
                                         src={image.imageUrl}
                                         alt={image.description}
@@ -90,12 +114,24 @@ export default function SendCreditsPage() {
                                         data-ai-hint={image.imageHint}
                                     />
                                     <div className="flex-grow">
-                                        <h3 className="font-bold text-primary">{convo.user?.name}</h3>
+                                        <h3 className="font-bold text-primary">{convo.user.name}</h3>
                                         <p className="text-muted-foreground truncate text-sm">{convo.lastMessage.text}</p>
                                     </div>
-                                </div>
+                                </button>
                             )
                         })}
+                    </div>
+                     <div className="mt-4">
+                        <DialogClose asChild>
+                            <Button 
+                                size="lg" 
+                                className="w-full rounded-full" 
+                                onClick={handleSendCredits}
+                                disabled={!selectedRecipient}
+                            >
+                                Send Credit
+                            </Button>
+                        </DialogClose>
                     </div>
                 </DialogContent>
             </Dialog>
