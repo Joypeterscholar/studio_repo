@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
   ChevronLeft,
-  ChevronDown,
   Paperclip,
   Camera,
   Send,
@@ -14,67 +13,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { placeholderImages } from '@/lib/placeholder-images';
-
-const FilterIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M7 21C6.46957 21 5.96086 20.7893 5.58579 20.4142C5.21071 20.0391 5 19.5304 5 19V12C5 11.4696 5.21071 10.9609 5.58579 10.5858C5.96086 10.2107 6.46957 10 7 10"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12 21V16C12 15.4696 12.2107 14.9609 12.5858 14.5858C12.9609 14.2107 13.4696 14 14 14"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7 7C7 6.46957 7.21071 5.96086 7.58579 5.58579C7.96086 5.21071 8.46957 5 9 5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12 3V8C12 8.53043 11.7893 9.03914 11.4142 9.41421C11.0391 9.78929 10.5304 10 10 10"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M17 21C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V10C19 9.46957 18.7893 8.96086 18.4142 8.58579C18.0391 8.21071 17.5304 8 17 8"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M17 5C17 4.46957 16.7893 3.96086 16.4142 3.58579C16.0391 3.21071 15.5304 3 15 3"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const addedImages = [
   { id: 'profile-side-1', hint: 'man suit' },
@@ -89,7 +29,6 @@ const findImage = (id: string) => {
 
 export default function CreatePostPage() {
   const router = useRouter();
-  const [postContent, setPostContent] = useState('');
   const [images, setImages] = useState(addedImages);
 
   const removeImage = (id: string) => {
@@ -107,28 +46,35 @@ export default function CreatePostPage() {
         >
           <ChevronLeft className="h-6 w-6 text-primary" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full border w-10 h-10 text-primary"
-        >
-          <FilterIcon />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              className="text-primary rounded-full"
+            >
+              <X className="h-6 w-6" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="top-40 w-[90vw] max-w-sm rounded-2xl bg-white p-0 shadow-lg">
+            <div className="flex flex-col text-base">
+              <button className="text-left p-4 border-b">Publish Post</button>
+              <button className="text-left p-4 border-b">Save as Draft</button>
+              <button className="text-left p-4">My Posts</button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </header>
 
       <main className="flex-grow px-4 space-y-6">
         <div>
-            <label className="text-lg font-semibold text-primary">Post Title</label>
-             <Select>
-                <SelectTrigger className="w-full mt-2">
-                    <SelectValue placeholder="Select Post Category" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="travel">Travel</SelectItem>
-                    <SelectItem value="food">Food</SelectItem>
-                    <SelectItem value="tech">Tech</SelectItem>
-                </SelectContent>
-            </Select>
+            <Input 
+                placeholder="Post Title"
+                className="text-2xl font-bold border-none shadow-none p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
+                defaultValue="Food in Italy"
+            />
+             <Button variant="outline" className="rounded-full mt-2 border-primary text-primary">
+                Photography
+             </Button>
         </div>
 
         <div>
