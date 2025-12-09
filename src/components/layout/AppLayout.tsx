@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 
 const navItems = [
@@ -66,8 +67,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-xl border-none bottom-24 translate-y-0 left-1/2 -translate-x-1/2">
                 <DialogTitle className="sr-only">Create New</DialogTitle>
                 <div className="flex flex-col text-base text-primary font-medium">
-                    <button className="text-left p-4 border-b">Status</button>
-                    <Link href="/create-post" className="text-left p-4">Post</Link>
+                    <DialogClose asChild>
+                        <button className="text-left p-4 border-b">Status</button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                        <Link href="/create-post" className="text-left p-4">Post</Link>
+                    </DialogClose>
                 </div>
             </DialogContent>
           </Dialog>
