@@ -33,9 +33,9 @@ export default function VerifyEmailSuccessPage() {
       </div>
 
       <div className="w-full max-w-sm pb-4">
-        <Link href="/" passHref>
+        <Link href="/interests" passHref>
             <Button className="w-full" size="lg">
-                Go to homepage
+                Continue
             </Button>
         </Link>
       </div>

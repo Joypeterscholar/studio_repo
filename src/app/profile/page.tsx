@@ -81,7 +81,6 @@ export default function ProfilePage() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-full border-2 w-12 h-12"
                 >
                   <Settings2 className="w-6 h-6 text-primary" />
                 </Button>
@@ -130,7 +129,7 @@ export default function ProfilePage() {
               />
               <Button
                 variant="secondary"
-                className="absolute top-4 left-4 rounded-full shadow-md"
+                className="absolute top-4 left-4 shadow-md"
               >
                 My Photos <Pencil className="w-4 h-4 ml-2" />
               </Button>

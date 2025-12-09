@@ -16,7 +16,7 @@ export default function NewPasswordPage() {
     <div className="flex min-h-screen flex-col bg-background p-4 sm:p-6 md:p-8">
       <div className="flex items-center">
         <Link href="/password-reset-code">
-          <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full">
+          <Button variant="ghost" size="icon">
             <ChevronLeft className="h-6 w-6" />
           </Button>
         </Link>
@@ -44,7 +44,7 @@ export default function NewPasswordPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="************"
-                className="pr-10"
+                className="pr-10 h-12 rounded-full"
               />
               <Button
                 type="button"
@@ -69,7 +69,7 @@ export default function NewPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="JohnShabalaya%%$$!$"
-                className="pr-10"
+                className="pr-10 h-12 rounded-full"
               />
               <Button
                 type="button"
@@ -83,7 +83,7 @@ export default function NewPasswordPage() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full rounded-full" size="lg">
+          <Button type="submit" className="w-full" size="lg">
             Reset Password
           </Button>
         </form>
