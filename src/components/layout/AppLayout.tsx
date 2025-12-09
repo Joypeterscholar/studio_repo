@@ -66,10 +66,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     isActive && 'text-accent'
                   )}
                 >
-                  <item.icon className={cn('w-7 h-7')} />
-                  {isActive && (
-                    <div className="absolute -bottom-1.5 w-6 h-1 bg-accent rounded-full"></div>
-                  )}
+                  <item.icon className={cn('w-7 h-7', isActive && 'fill-current text-accent')} />
                 </Link>
               );
             })}
