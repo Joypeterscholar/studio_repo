@@ -174,18 +174,38 @@ export default function SettingsPage() {
               </DialogContent>
             </Dialog>
 
-            <div className="flex items-center justify-between p-4 border-t">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Languages className="w-5 h-5 text-primary" />
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="flex items-center justify-between p-4 border-t cursor-pointer">
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Languages className="w-5 h-5 text-primary" />
+                        </div>
+                        <span className="font-semibold text-primary">Language</span>
                     </div>
-                    <span className="font-semibold text-primary">Language</span>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                        <span>English</span>
+                        <ChevronRight className="w-5 h-5" />
+                    </div>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                    <span>English</span>
-                    <ChevronRight className="w-5 h-5" />
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0 sm:bottom-auto sm:translate-y-[-50%]">
+                <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                  <DialogTitle className="text-xl font-bold text-primary">Select Language</DialogTitle>
+                  <DialogClose asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                      <X className="w-5 h-5 text-muted-foreground" />
+                    </Button>
+                  </DialogClose>
+                </DialogHeader>
+                <div className="p-4">
+                  <button className="flex items-center justify-between w-full rounded-lg border p-3 text-left">
+                    <span className="text-primary font-medium">English</span>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                  </button>
                 </div>
-            </div>
+              </DialogContent>
+            </Dialog>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
