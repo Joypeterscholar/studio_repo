@@ -27,9 +27,10 @@ const devNavItems = [
     {href: '/discover-from', label: 'Discover From'},
     {href: '/wallet', label: 'Wallet'},
     {href: '/buy-credits-v1', label: 'Buy Credits (V1)'},
-    {href: '/buy-credits', label: 'Buy Credits (V2)'},
+    {href: '/buy-credits-v2', label: 'Buy Credits (V2)'},
     {href: '/send-credits-v1', label: 'Send Credits (V1)'},
     {href: '/send-credits', label: 'Send Credits (V2)'},
+    {href: '/settings', label: 'Settings'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
