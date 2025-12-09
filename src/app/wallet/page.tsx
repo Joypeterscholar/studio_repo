@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft, Send, WalletCards } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
+import Link from 'next/link';
 
 const earnings = [
   { description: 'Deposit', amount: '50LQ' },
@@ -36,10 +37,12 @@ export default function WalletPage() {
                         <Send className="w-5 h-5 mr-2 -ml-2 rotate-[-45deg] translate-y-px" />
                         Send Credits
                     </Button>
-                    <Button size="lg" className="w-full rounded-full">
-                        <WalletCards className="w-5 h-5 mr-2" />
-                        Buy Credits
-                    </Button>
+                    <Link href="/buy-credits" passHref>
+                        <Button size="lg" className="w-full rounded-full">
+                            <WalletCards className="w-5 h-5 mr-2" />
+                            Buy Credits
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
