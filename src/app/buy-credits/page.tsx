@@ -8,11 +8,22 @@ import {
   AlertCircle,
   ShieldCheck,
   Plus,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const creditAmounts = ['10LQ', '20LQ', '50LQ', '100LQ', '200LQ', 'Custom'];
 const paymentCards = [
@@ -31,6 +42,14 @@ const paymentCards = [
     isPrimary: false,
   },
 ];
+
+const NigeriaFlagIcon = () => (
+    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="24" height="18" fill="white"/>
+      <rect width="8" height="18" fill="#008751"/>
+      <rect x="16" width="8" height="18" fill="#008751"/>
+    </svg>
+  );
 
 const VisaIcon = () => (
     <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg" className="rounded-md">
@@ -98,10 +117,60 @@ export default function BuyCreditsPage() {
            <div>
                 <div className="flex justify-between items-center mb-2">
                     <h2 className="text-lg font-semibold text-primary">Payment Cards</h2>
-                    <Button variant="ghost" className="text-primary font-semibold">
-                        <Plus className="w-4 h-4 mr-1" />
-                        Add Card
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="ghost" className="text-primary font-semibold">
+                                <Plus className="w-4 h-4 mr-1" />
+                                Add Card
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md w-[90vw] bottom-0 translate-y-0 rounded-t-3xl rounded-b-none p-6">
+                            <DialogHeader className="flex flex-row items-center justify-between text-left mb-4">
+                                <DialogTitle className="text-xl font-bold text-primary">Add new card</DialogTitle>
+                                <DialogClose asChild>
+                                    <Button variant="ghost" size="icon" className="rounded-full">
+                                        <X className="w-5 h-5 text-muted-foreground"/>
+                                    </Button>
+                                </DialogClose>
+                            </DialogHeader>
+                            <form className="space-y-4">
+                                <div>
+                                    <h3 className="font-semibold text-primary mb-2">Personal Details</h3>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <Label htmlFor="fullName" className="sr-only">Full name</Label>
+                                            <Input id="fullName" placeholder="Full name" />
+                                        </div>
+                                        <div className="relative">
+                                            <Label htmlFor="country" className="sr-only">Country</Label>
+                                            <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                                               <NigeriaFlagIcon />
+                                            </div>
+                                            <Input id="country" defaultValue="Nigeria" className="pl-12"/>
+                                             <ChevronLeft className="w-5 h-5 text-muted-foreground rotate-180 absolute right-3 top-1/2 -translate-y-1/2" />
+                                        </div>
+                                        <div>
+                                            <Label htmlFor="streetAddress" className="sr-only">Street address</Label>
+                                            <Input id="streetAddress" placeholder="Street address" />
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div>
+                                    <h3 className="font-semibold text-primary mb-2">Card details</h3>
+                                    <div className="space-y-3">
+                                        <Input placeholder="Card number" />
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <Input placeholder="mm/yy" />
+                                            <Input placeholder="cvc" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <Button type="submit" size="lg" className="w-full rounded-full">
+                                    Save card information
+                                </Button>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <div className="bg-white rounded-2xl shadow-sm">
                     {paymentCards.map((card, index) => (
@@ -132,3 +201,5 @@ export default function BuyCreditsPage() {
     </AppLayout>
   );
 }
+
+    
