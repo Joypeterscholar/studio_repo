@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
@@ -20,49 +20,14 @@ const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-const posts = [
-  {
-    id: '1',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
-  {
-    id: '2',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
-  {
-    id: '3',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
-  {
-    id: '4',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
-  {
-    id: '5',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
-  {
-    id: '6',
-    title: 'Exploring Indiana in the midst of whatever',
-    preview: 'What about that new jacket i...',
-    date: '04/25',
-    authorImageId: 'user-male-1',
-  },
+const posts: any[] = [
+  // {
+  //   id: '1',
+  //   title: 'Exploring Indiana in the midst of whatever',
+  //   preview: 'What about that new jacket i...',
+  //   date: '04/25',
+  //   authorImageId: 'user-male-1',
+  // },
 ];
 
 const FilterIcon = () => (
@@ -78,6 +43,46 @@ const FilterIcon = () => (
 
 export default function RecentPostsPage() {
   const router = useRouter();
+  const crossIcon = findImage('delete-cross-icon');
+
+  if (posts.length === 0) {
+    return (
+      <div className="flex flex-col h-screen bg-background text-foreground">
+        <header className="p-4">
+            <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10">
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+        </header>
+
+        <main className="flex-grow flex flex-col items-center justify-center text-center px-4 pb-16">
+            {crossIcon && (
+                <Image
+                    src={crossIcon.imageUrl}
+                    alt={crossIcon.description}
+                    width={150}
+                    height={150}
+                    className="mb-8"
+                    data-ai-hint={crossIcon.imageHint}
+                />
+            )}
+          
+          <h1 className="text-xl font-bold text-primary mb-2">
+            You do not have any posts yet.
+          </h1>
+          <p className="text-muted-foreground max-w-xs mx-auto">
+            Click the button below to start making your posts.
+          </p>
+        </main>
+        <footer className="p-6">
+            <Link href="/create-post" passHref>
+                <Button className="w-full rounded-full" size="lg">
+                    Add a Post <Plus className="w-5 h-5 ml-2" />
+                </Button>
+            </Link>
+        </footer>
+      </div>
+    )
+  }
 
   return (
     <AppLayout>
