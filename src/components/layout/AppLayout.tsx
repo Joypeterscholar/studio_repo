@@ -34,6 +34,7 @@ const devNavItems = [
     {href: '/settings', label: 'Settings'},
     {href: '/likes', label: 'Likes'},
     {href: '/connections', label: 'Connections'},
+    {href: '/notifications', label: 'Notifications'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

@@ -41,7 +41,7 @@ const menuItems = [
   { label: 'My Posts', href: '/recent-posts' },
   { label: 'My Wallet', href: '/wallet' },
   { label: 'Settings', href: '/settings' },
-  { label: 'Notifications' },
+  { label: 'Notifications', href: '/notifications' },
   { label: 'Blocked Users' },
   { label: 'Delete Account', isDestructive: true, href: '/delete-account' },
 ];
