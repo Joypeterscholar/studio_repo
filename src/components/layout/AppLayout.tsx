@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Compass, Plus, Users, MessageSquare, Code } from 'lucide-react';
+import { Home, Compass, Plus, Users, MessageSquare, Code, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -35,6 +35,7 @@ const devNavItems = [
     {href: '/likes', label: 'Likes'},
     {href: '/connections', label: 'Connections'},
     {href: '/notifications', label: 'Notifications'},
+    {href: '/video-call/1', label: 'Video Call'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

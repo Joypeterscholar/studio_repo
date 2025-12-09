@@ -24,6 +24,7 @@ import {
   Flame,
   BrainCircuit,
   X,
+  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -334,10 +335,12 @@ export default function UserProfilePage() {
           >
             <Heart className="w-8 h-8" />
           </Button>
-          <Button className="h-16 rounded-full flex-grow text-lg font-bold shadow-lg">
-            Send Message
-            <MessageSquare className="w-6 h-6 ml-2" />
-          </Button>
+          <Link href={`/video-call/${user.id}`} className='flex-grow'>
+            <Button className="h-16 rounded-full w-full text-lg font-bold shadow-lg bg-green-500 hover:bg-green-600">
+                Video Call
+                <Video className="w-6 h-6 ml-2" />
+            </Button>
+          </Link>
         </div>
       </footer>
     </div>

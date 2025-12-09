@@ -10,6 +10,7 @@ import {
   Mic,
   Smile,
   Check,
+  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -83,7 +84,11 @@ export default function ConversationPage() {
           </Button>
         </Link>
         <h1 className="text-xl font-bold">{otherUser.name}</h1>
-        <div className="w-10"></div>
+        <Link href={`/video-call/${otherUser.id}`} passHref>
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <Video className="h-6 w-6" />
+          </Button>
+        </Link>
       </header>
       
       <div className="text-center text-xs text-primary-foreground/70 mb-4">
