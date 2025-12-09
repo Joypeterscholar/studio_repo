@@ -18,7 +18,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { loggedInUser } from '@/lib/data';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -46,6 +49,34 @@ const comments = [
     timestamp: '3d',
     text: 'Office ipsum you must be muted. Left on needle running discussion individual. Get dunder reality cc nail when eco-system speed anyway forward. We let or jumping kimono I.',
     likes: 32,
+    replies: [
+       {
+        id: 'reply-1-1',
+        authorName: 'Ademola Olamide',
+        authorImageId: 'user-male-1',
+        timestamp: '1h',
+        text: 'You look so gorgeous I\'d eat you like a snack that you are!',
+        likes: 5,
+      }
+    ]
+  },
+   {
+    id: 'comment-2',
+    authorName: 'Bobo Chucks',
+    authorImageId: 'user-male-2',
+    timestamp: '3d',
+    text: 'Office ipsum you must be muted. Left on needle running discussion individual. Get dunder reality cc nail when eco-system speed anyway forward. We let or jumping kimono I.',
+    likes: 32,
+    replies: [
+        {
+            id: 'reply-2-1',
+            authorName: 'Miranda Cole',
+            authorImageId: 'user-7',
+            timestamp: '1h',
+            text: 'You look so gorgeous I\'d eat you like a snack that you are!',
+            likes: 5,
+        }
+    ]
   },
 ];
 
@@ -60,11 +91,51 @@ const FilterIcon = () => (
     </svg>
 )
 
+const Comment = ({ comment }: { comment: any }) => {
+  const authorImage = findImage(comment.authorImageId);
+  return (
+    <div className="flex gap-4">
+      <Image
+        src={authorImage.imageUrl}
+        alt={comment.authorName}
+        width={comment.replies ? 48 : 32}
+        height={comment.replies ? 48 : 32}
+        className="rounded-full object-cover self-start"
+        data-ai-hint={authorImage.imageHint}
+      />
+      <div className="flex-grow">
+        <div className="flex justify-between items-start">
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-2">
+              <span className="font-bold text-primary">{comment.authorName}</span>
+              <span className="text-muted-foreground text-sm">- {comment.timestamp}</span>
+            </div>
+            <p className="mt-1 text-foreground/80 text-sm">{comment.text}</p>
+            <button className="text-muted-foreground text-sm font-semibold mt-2 text-left">Reply</button>
+          </div>
+          <div className="flex flex-col items-center text-muted-foreground shrink-0">
+            <Heart className="w-5 h-5"/>
+            <span className="text-sm">{comment.likes}</span>
+          </div>
+        </div>
+        {comment.replies && (
+          <div className="mt-4 space-y-4">
+            {comment.replies.map((reply: any) => (
+              <Comment key={reply.id} comment={reply} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 
 export default function PostPage({ params }: { params: { id: string } }) {
   const authorImage = findImage(post.authorImageId);
   const bgImage = findImage(post.backgroundImageId);
-  const commentAuthorImage = findImage(comments[0].authorImageId);
+  const loggedInUserImage = findImage(loggedInUser.image.id);
+
 
   return (
     <div className="bg-background min-h-screen">
@@ -130,17 +201,58 @@ export default function PostPage({ params }: { params: { id: string } }) {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-sky-400/80 hover:bg-sky-400 h-12 w-12 text-white"
+              className="rounded-full bg-black/20 backdrop-blur-sm h-12 w-12 text-white hover:bg-black/40"
             >
               <ThumbsUp />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full bg-black/20 backdrop-blur-sm h-12 w-12 text-white hover:bg-black/40"
-            >
-              <MessageCircle />
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-black/20 backdrop-blur-sm h-12 w-12 text-white hover:bg-black/40"
+                >
+                  <MessageCircle />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md w-[90vw] bg-background rounded-t-3xl rounded-b-none p-6 shadow-lg border-none bottom-0 translate-y-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 flex flex-col h-[80vh]">
+                  <DialogHeader className="flex-shrink-0">
+                    <DialogTitle className="sr-only">Comments</DialogTitle>
+                    <DialogClose className="absolute top-4 right-4">
+                      <X className="w-5 h-5 text-muted-foreground" />
+                    </DialogClose>
+                  </DialogHeader>
+                  <div className="flex-grow overflow-y-auto -mx-6 px-6 space-y-6">
+                      {comments.map((comment) => (
+                          <Comment key={comment.id} comment={comment} />
+                      ))}
+                  </div>
+                  <div className="flex-shrink-0 -mx-6 px-4 pt-2 border-t">
+                    <div className="flex items-center gap-2">
+                      <Image 
+                        src={loggedInUserImage.imageUrl}
+                        alt={loggedInUser.name}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                        data-ai-hint={loggedInUserImage.imageHint}
+                      />
+                      <Input 
+                        placeholder={`Comment as ${loggedInUser.name}`}
+                        className="flex-1 border-none bg-transparent focus-visible:ring-0"
+                      />
+                       <Button
+                          type="submit"
+                          size="icon"
+                          className="h-12 w-12 flex-shrink-0 rounded-full bg-accent text-accent-foreground"
+                        >
+                          <Send className="h-6 w-6" />
+                        </Button>
+                    </div>
+                  </div>
+              </DialogContent>
+            </Dialog>
+
             <Button
               variant="ghost"
               size="icon"
@@ -156,37 +268,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
             <p key={index}>{paragraph}</p>
           ))}
         </div>
-
-        <div className="mt-12">
-            {comments.map((comment) => (
-                <div key={comment.id} className="bg-gray-800 text-white rounded-2xl p-4">
-                    <div className="flex gap-4">
-                        <Image
-                            src={commentAuthorImage.imageUrl}
-                            alt={comment.authorName}
-                            width={48}
-                            height={48}
-                            className="rounded-full object-cover w-12 h-12"
-                            data-ai-hint={commentAuthorImage.imageHint}
-                        />
-                        <div className="flex-grow">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <span className="font-bold">{comment.authorName}</span>
-                                    <span className="text-gray-400 ml-2">- {comment.timestamp}</span>
-                                </div>
-                                <div className="flex flex-col items-center text-gray-400">
-                                    <Heart className="w-5 h-5"/>
-                                    <span className="text-xs">{comment.likes}</span>
-                                </div>
-                            </div>
-                            <p className="mt-1 text-gray-300 text-sm">{comment.text}</p>
-                            <button className="text-gray-400 text-sm font-semibold mt-2">Reply</button>
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
+        
       </main>
     </div>
   );
