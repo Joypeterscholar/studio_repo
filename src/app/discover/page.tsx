@@ -142,11 +142,13 @@ export default function DiscoverPage() {
             </DialogContent>
           </Dialog>
 
-          <div className="flex items-center gap-1 text-primary">
-            <MapPin className="w-5 h-5" />
-            <span className="font-bold">Lagos</span>
-            <ChevronDown className="w-4 h-4" />
-          </div>
+          <Link href="/discover-from">
+            <div className="flex items-center gap-1 text-primary">
+              <MapPin className="w-5 h-5" />
+              <span className="font-bold">Lagos</span>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+          </Link>
 
           <Dialog>
             <DialogTrigger asChild>
