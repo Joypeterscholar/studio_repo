@@ -30,6 +30,8 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const GenderIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -78,17 +80,26 @@ const countries = [
   { name: 'Australia', icon: <AustraliaFlagIcon /> },
 ];
 
+const interestOptions = ['Male', 'Female', 'Trans', 'Non-binary'];
+
 export default function SettingsPage() {
   const router = useRouter();
   const [notifications, setNotifications] = useState(true);
   const [autoplay, setAutoplay] = useState(false);
   const [distancePreferenceEnabled, setDistancePreferenceEnabled] = useState(true);
   const [agePreferenceEnabled, setAgePreferenceEnabled] = useState(true);
-  const [interestedIn, setInterestedIn] = useState('Female');
+  const [interestedIn, setInterestedIn] = useState(['Female']);
   const [searchCountry, setSearchCountry] = useState('');
 
   const filteredCountries = countries.filter(c => c.name.toLowerCase().includes(searchCountry.toLowerCase()));
 
+  const handleInterestChange = (interest: string) => {
+    setInterestedIn(prev => 
+      prev.includes(interest) 
+        ? prev.filter(item => item !== interest)
+        : [...prev, interest]
+    );
+  }
 
   return (
     <div className="bg-muted/50 text-foreground min-h-screen">
@@ -137,8 +148,7 @@ export default function SettingsPage() {
               </DialogTrigger>
               <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0 sm:bottom-auto sm:translate-y-[-50%]">
                   <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
-                      <DialogTitle className="sr-only">Select Country</DialogTitle>
-                      <span/>
+                      <DialogTitle className="text-xl font-bold text-primary">Select Country</DialogTitle>
                       <DialogClose asChild>
                         <Button variant="ghost" size="icon" className="rounded-full">
                             <X className="w-5 h-5"/>
@@ -247,26 +257,58 @@ export default function SettingsPage() {
              <p className="text-xs text-muted-foreground">By adjusting the range, you can tailor your search to suit your lifestyle and dating preferences.</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
-            <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <GenderIcon className="w-5 h-5 text-primary" />
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3 cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <GenderIcon className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="font-semibold text-primary">Interested in</span>
                 </div>
-                <span className="font-semibold text-primary">Interested in</span>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="font-semibold text-primary">{interestedIn.join(', ')}</span>
+                  <ChevronRight className="w-5 h-5" />
+                </div>
+              </div>
             </div>
-            <div className="flex gap-2">
-                {['Male', 'Female', 'Trans'].map(option => (
-                    <Button 
-                        key={option}
-                        onClick={() => setInterestedIn(option)}
-                        variant={interestedIn === option ? "default" : "outline"}
-                        className={cn("rounded-lg flex-grow", interestedIn === option ? 'bg-primary text-primary-foreground' : 'bg-white text-primary border-border')}
-                    >
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0 sm:bottom-auto sm:translate-y-[-50%]">
+            <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+              <DialogTitle className="text-xl font-bold text-primary">Interested in</DialogTitle>
+              <DialogClose asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <X className="w-5 h-5 text-muted-foreground" />
+                </Button>
+              </DialogClose>
+            </DialogHeader>
+            <div className="p-4 space-y-4">
+              <div className="flex items-center justify-between border rounded-lg p-3">
+                  <span className="font-medium text-primary">Female</span>
+                  <ChevronUp className="w-5 h-5 text-primary"/>
+              </div>
+              <div>
+                <p className="font-semibold text-primary mb-3">Status</p>
+                <div className="space-y-3">
+                  {interestOptions.map(option => (
+                    <div key={option} className="flex items-center space-x-3">
+                      <Checkbox
+                        id={option.toLowerCase()}
+                        checked={interestedIn.includes(option)}
+                        onCheckedChange={() => handleInterestChange(option)}
+                      />
+                      <Label htmlFor={option.toLowerCase()} className="font-medium text-primary text-base">
                         {option}
-                    </Button>
-                ))}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-        </div>
+          </DialogContent>
+        </Dialog>
+
 
         <Button variant="outline" className="w-full rounded-full bg-white text-primary border-primary h-12 text-base">
             Logout
@@ -275,5 +317,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
-    
