@@ -104,7 +104,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     isActive && 'text-accent'
                   )}
                 >
-                  <item.icon className={cn('w-7 h-7', isActive && 'fill-current text-accent')} />
+                  <item.icon className={cn('w-7 h-7', isActive && item.href === '/messages' && 'fill-current text-accent')} />
                 </Link>
               );
             }).filter(item => item !== null)}
