@@ -68,7 +68,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <DialogTitle className="sr-only">Create New</DialogTitle>
                 <div className="flex flex-col text-base text-primary font-medium">
                     <DialogClose asChild>
-                        <button className="text-left p-4 border-b">Status</button>
+                        <Link href="/create-status" className="text-left p-4 border-b">Status</Link>
                     </DialogClose>
                     <DialogClose asChild>
                         <Link href="/create-post" className="text-left p-4">Post</Link>
