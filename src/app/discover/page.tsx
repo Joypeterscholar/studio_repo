@@ -9,6 +9,15 @@ import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { getUserById, loggedInUser } from '@/lib/data';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogClose,
+  } from '@/components/ui/dialog';
+import Link from 'next/link';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -21,6 +30,13 @@ const profiles = [
     { userId: '4' },
     { userId: '5' },
 ];
+
+const menuItems = [
+    { label: 'Profile', href: '/profile' },
+    { label: 'Search', href: '/discover' },
+    { label: 'Settings', href: '/settings' },
+    { label: 'Messages', href: '/messages' },
+]
 
 export default function DiscoverPage() {
     const [current, setCurrent] = useState(0);
@@ -44,14 +60,43 @@ export default function DiscoverPage() {
         <AppLayout>
             <div className="flex flex-col h-full bg-background text-foreground p-4">
                 <header className="flex items-center justify-between">
-                    <Image
-                        src={loggedInUserImage.imageUrl}
-                        alt={loggedInUser.name}
-                        width={40}
-                        height={40}
-                        className="rounded-full object-cover"
-                        data-ai-hint={loggedInUserImage.imageHint}
-                    />
+                    <Dialog>
+                        <DialogTrigger asChild>
+                             <Image
+                                src={loggedInUserImage.imageUrl}
+                                alt={loggedInUser.name}
+                                width={40}
+                                height={40}
+                                className="rounded-full object-cover cursor-pointer"
+                                data-ai-hint={loggedInUserImage.imageHint}
+                            />
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md w-[90vw] m-auto bg-white rounded-2xl p-0 top-24 translate-y-0">
+                            <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                                <DialogTitle className="sr-only">Menu</DialogTitle>
+                                <span></span>
+                                <DialogClose asChild>
+                                    <Button variant="ghost" size="icon" className="rounded-full h-auto w-auto p-0">
+                                    <X className="w-5 h-5 text-muted-foreground" />
+                                    </Button>
+                                </DialogClose>
+                            </DialogHeader>
+                             <div className="flex flex-col text-base">
+                                {menuItems.map((item) => {
+                                const content = (
+                                    <button
+                                    key={item.label}
+                                    className={'text-left p-4 border-b text-primary'}
+                                    >
+                                    {item.label}
+                                    </button>
+                                );
+                                return <Link href={item.href} key={item.label}>{content}</Link>
+                                })}
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                   
                     <div className="flex items-center gap-2">
                         <Button variant="outline" size="icon" className="rounded-full w-12 h-12">
                             <Heart className="w-6 h-6 text-primary" />
