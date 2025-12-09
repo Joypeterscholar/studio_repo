@@ -33,7 +33,7 @@ const profiles = [
 
 const menuItems = [
     { label: 'Profile', href: '/profile' },
-    { label: 'Search', href: '/discover' },
+    { label: 'Search', href: '/search' },
     { label: 'Settings', href: '/settings' },
     { label: 'Messages', href: '/messages' },
 ]
