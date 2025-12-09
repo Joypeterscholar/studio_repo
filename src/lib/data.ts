@@ -131,8 +131,8 @@ export const loggedInUser: User = {
   name: 'Casey',
   age: 27,
   bio: 'Just a person who likes hiking and my dog. Trying to find someone to hang out with.',
-  interests: 'Hiking, dogs, movies',
-  image: findImage('user-9'),
+  interests: ['Hiking', 'dogs', 'movies'],
+  image: findImage('user-self'),
   location: 'Portland, OR',
   isOnline: true,
   gallery: [findImage('user-9'), findImage('user-11'), findImage('user-6')]
