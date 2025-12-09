@@ -11,6 +11,9 @@ import {
   Users,
   User,
   Cake,
+  X,
+  Search,
+  ChevronUp,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -18,6 +21,15 @@ import { useRouter } from 'next/navigation';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 const GenderIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -27,6 +39,45 @@ const GenderIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 )
 
+const NigeriaFlagIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <rect width="24" height="18" rx="2" fill="white"/>
+      <rect width="8" height="18" fill="#008751"/>
+      <rect x="16" width="8" height="18" fill="#008751"/>
+    </svg>
+);
+
+const ItalyFlagIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <rect width="24" height="18" rx="2" fill="white"/>
+      <rect width="8" height="18" fill="#009246"/>
+      <rect x="16" width="8" height="18" fill="#CE2B37"/>
+    </svg>
+);
+
+const AustraliaFlagIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <rect width="24" height="18" rx="2" fill="#00008B"/>
+        <path d="M1.5 1.5H10.5V7.5H1.5V1.5Z" fill="#fff"/>
+        <path d="M2.25 2.25V3.375H10.5V2.25H2.25ZM2.25 6.75V7.5H9.75V6.75H2.25ZM6 2.25V7.5H5.25V2.25H6Z" fill="#CF142B"/>
+        <path fillRule="evenodd" clipRule="evenodd" d="M4.125 4.5L2.25 5.68069L2.73031 3.69034L1.23031 2.43903L3.3075 2.31931L4.125 0.375L4.9425 2.31931L6.96969 2.43903L5.52031 3.69034L6 5.68069L4.125 4.5Z" fill="#CF142B"/>
+        <path d="M1.5 4.875H10.5V5.625H1.5V4.875Z" fill="#fff"/>
+        <path d="M6.375 1.5V8.25H5.625V1.5H6.375Z" fill="#fff"/>
+        <path d="M12 12L10.9393 11.0607L12 10.1213L13.0607 11.0607L12 12Z" fill="white"/>
+        <path d="M17 10L16.4697 9.53033L17 9.06066L17.5303 9.53033L17 10Z" fill="white"/>
+        <path d="M15 14L14.4697 13.5303L15 13.0607L15.5303 13.5303L15 14Z" fill="white"/>
+        <path d="M19 14L18.4697 13.5303L19 13.0607L19.5303 13.5303L19 14Z" fill="white"/>
+        <path d="M17 16L16.4697 15.5303L17 15.0607L17.5303 15.5303L17 16Z" fill="white"/>
+    </svg>
+);
+
+
+const countries = [
+  { name: 'Nigeria', icon: <NigeriaFlagIcon /> },
+  { name: 'Italy', icon: <ItalyFlagIcon /> },
+  { name: 'Australia', icon: <AustraliaFlagIcon /> },
+];
+
 export default function SettingsPage() {
   const router = useRouter();
   const [notifications, setNotifications] = useState(true);
@@ -34,6 +85,10 @@ export default function SettingsPage() {
   const [distancePreferenceEnabled, setDistancePreferenceEnabled] = useState(true);
   const [agePreferenceEnabled, setAgePreferenceEnabled] = useState(true);
   const [interestedIn, setInterestedIn] = useState('Female');
+  const [searchCountry, setSearchCountry] = useState('');
+
+  const filteredCountries = countries.filter(c => c.name.toLowerCase().includes(searchCountry.toLowerCase()));
+
 
   return (
     <div className="bg-muted/50 text-foreground min-h-screen">
@@ -65,18 +120,57 @@ export default function SettingsPage() {
                 </div>
                 <Switch checked={autoplay} onCheckedChange={setAutoplay} />
             </div>
-             <div className="flex items-center justify-between p-4 border-t">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Globe className="w-5 h-5 text-primary" />
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="flex items-center justify-between p-4 border-t cursor-pointer">
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Globe className="w-5 h-5 text-primary" />
+                        </div>
+                        <span className="font-semibold text-primary">Country</span>
                     </div>
-                    <span className="font-semibold text-primary">Country</span>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                        <span>Nigeria</span>
+                        <ChevronRight className="w-5 h-5" />
+                    </div>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                    <span>Nigeria</span>
-                    <ChevronRight className="w-5 h-5" />
-                </div>
-            </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0">
+                  <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                      <DialogTitle className="sr-only">Select Country</DialogTitle>
+                      <span/>
+                      <DialogClose asChild>
+                        <Button variant="ghost" size="icon" className="rounded-full">
+                            <X className="w-5 h-5"/>
+                        </Button>
+                      </DialogClose>
+                  </DialogHeader>
+                  <div className="p-4 space-y-4">
+                      <div className="flex items-center justify-between border rounded-lg p-3">
+                          <span>Select country</span>
+                          <ChevronUp className="w-5 h-5"/>
+                      </div>
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <Input 
+                          placeholder="Search" 
+                          className="pl-10"
+                          value={searchCountry}
+                          onChange={(e) => setSearchCountry(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2 h-[30vh] overflow-y-auto">
+                        {filteredCountries.map(country => (
+                            <button key={country.name} className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted">
+                                {country.icon}
+                                <span>{country.name}</span>
+                            </button>
+                        ))}
+                      </div>
+                  </div>
+              </DialogContent>
+            </Dialog>
+
             <div className="flex items-center justify-between p-4 border-t">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
