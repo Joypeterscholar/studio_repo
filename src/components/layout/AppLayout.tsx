@@ -33,6 +33,7 @@ const devNavItems = [
     {href: '/send-credits-v1', label: 'Send Credits (V1)'},
     {href: '/settings', label: 'Settings'},
     {href: '/likes', label: 'Likes'},
+    {href: '/connections', label: 'Connections'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
