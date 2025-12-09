@@ -26,11 +26,13 @@ const devNavItems = [
     {href: '/discover-map', label: 'Discover (Map)'},
     {href: '/discover-from', label: 'Discover From'},
     {href: '/wallet', label: 'Wallet'},
+    {href: '/buy-credits', label: 'Buy Credits'},
     {href: '/buy-credits-v1', label: 'Buy Credits (V1)'},
     {href: '/buy-credits-v2', label: 'Buy Credits (V2)'},
+    {href: '/send-credits', label: 'Send Credits'},
     {href: '/send-credits-v1', label: 'Send Credits (V1)'},
-    {href: '/send-credits', label: 'Send Credits (V2)'},
     {href: '/settings', label: 'Settings'},
+    {href: '/likes', label: 'Likes'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -55,7 +57,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-xl border-none">
                 <DialogTitle className="p-4 border-b font-semibold text-primary">Dev Menu</DialogTitle>
                 <div className="flex flex-col text-base text-primary font-medium max-h-[70vh] overflow-y-auto">
-                    {devNavItems.map(item => (
+                    {devNavItems.sort((a, b) => a.label.localeCompare(b.label)).map(item => (
                        <DialogClose asChild key={item.href}>
                            <Link href={item.href} className="text-left p-4 border-b last:border-b-0">{item.label}</Link>
                        </DialogClose>
