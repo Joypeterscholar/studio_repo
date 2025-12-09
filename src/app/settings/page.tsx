@@ -135,7 +135,7 @@ export default function SettingsPage() {
                     </div>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0">
+              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-lg border-none bottom-0 translate-y-0 sm:bottom-auto sm:translate-y-[-50%]">
                   <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
                       <DialogTitle className="sr-only">Select Country</DialogTitle>
                       <span/>
@@ -146,15 +146,18 @@ export default function SettingsPage() {
                       </DialogClose>
                   </DialogHeader>
                   <div className="p-4 space-y-4">
-                      <div className="flex items-center justify-between border rounded-lg p-3">
-                          <span>Select country</span>
-                          <ChevronUp className="w-5 h-5"/>
+                      <div className="flex items-center justify-between border-2 border-primary rounded-lg p-3 cursor-pointer">
+                          <div className="flex items-center gap-2">
+                             <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                             <span className="font-medium text-primary">Nigeria</span>
+                          </div>
+                          <ChevronUp className="w-5 h-5 text-primary"/>
                       </div>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <Input 
                           placeholder="Search" 
-                          className="pl-10"
+                          className="pl-10 bg-muted border-none focus-visible:ring-primary"
                           value={searchCountry}
                           onChange={(e) => setSearchCountry(e.target.value)}
                         />
@@ -163,7 +166,7 @@ export default function SettingsPage() {
                         {filteredCountries.map(country => (
                             <button key={country.name} className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted">
                                 {country.icon}
-                                <span>{country.name}</span>
+                                <span className="text-primary">{country.name}</span>
                             </button>
                         ))}
                       </div>
@@ -252,3 +255,5 @@ export default function SettingsPage() {
     </div>
   );
 }
+
+    
