@@ -33,10 +33,12 @@ export default function WalletPage() {
                 <p className="text-muted-foreground">Your Balance</p>
                 <p className="text-4xl font-bold text-primary my-2">217LQ</p>
                 <div className="flex flex-col gap-3 mt-4">
-                    <Button size="lg" className="w-full rounded-full bg-cyan-400 hover:bg-cyan-500 text-white">
-                        <Send className="w-5 h-5 mr-2 -ml-2 rotate-[-45deg] translate-y-px" />
-                        Send Credits
-                    </Button>
+                    <Link href="/send-credits" passHref>
+                        <Button size="lg" className="w-full rounded-full bg-cyan-400 hover:bg-cyan-500 text-white">
+                            <Send className="w-5 h-5 mr-2 -ml-2 rotate-[-45deg] translate-y-px" />
+                            Send Credits
+                        </Button>
+                    </Link>
                     <Link href="/buy-credits" passHref>
                         <Button size="lg" className="w-full rounded-full">
                             <WalletCards className="w-5 h-5 mr-2" />
