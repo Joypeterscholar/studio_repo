@@ -3,10 +3,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, SlidersHorizontal } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -79,9 +87,32 @@ export default function RecentPostsPage() {
             <ChevronLeft className="h-6 w-6" />
           </Button>
           <h1 className="text-xl font-bold text-primary">Recent Posts</h1>
-          <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10 text-primary">
-            <FilterIcon />
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10 text-primary">
+                <FilterIcon />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="top-40 w-[90vw] max-w-xs rounded-2xl bg-white p-0 shadow-lg">
+              <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
+                 <DialogTitle className="sr-only">Post Options</DialogTitle>
+                 <span></span>
+                 <DialogClose asChild>
+                  <button>
+                    <X className="w-5 h-5" />
+                  </button>
+                </DialogClose>
+              </DialogHeader>
+              <div className="flex flex-col text-base">
+                <DialogClose asChild>
+                  <Link href="/create-post" className="text-left p-4 border-b">New Post</Link>
+                </DialogClose>
+                <button className="text-left p-4 border-b">Drafts</button>
+                <button className="text-left p-4 border-b">Select all</button>
+                <button className="text-left p-4 text-red-500">Delete</button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </header>
         <main className="flex-grow overflow-y-auto px-4">
           <div className="divide-y divide-border">
