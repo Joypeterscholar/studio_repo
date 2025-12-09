@@ -38,7 +38,7 @@ const findImage = (id: string) => {
 export const users: User[] = [
   {
     id: '1',
-    name: 'Alex',
+    name: 'Clara',
     age: 28,
     bio: 'Software engineer by day, adventurer by weekend. Looking for someone to join me on spontaneous road trips and late-night coding sessions. I value honesty, a good sense of humor, and a love for tacos.',
     interests: ['Hiking', 'Coding', 'Photography', 'Indie Music', 'Tacos'],
@@ -123,6 +123,39 @@ export const users: User[] = [
     location: 'Boston, MA',
     isOnline: false,
     gallery: [findImage('user-5'), findImage('user-9'), findImage('user-11')]
+  },
+  {
+    id: '13',
+    name: 'Halima',
+    age: 19,
+    bio: 'Fashion forward student with a love for vintage finds and bold statements. My glasses are as much a part of me as my laugh. Looking for someone authentic.',
+    interests: ['Fashion', 'Art', 'Thrifting'],
+    image: findImage('discover-new-1'),
+    location: 'Lagos',
+    isOnline: true,
+    gallery: [],
+  },
+  {
+    id: '14',
+    name: 'Vanessa',
+    age: 18,
+    bio: 'Living in a dream. I express myself through dance and vibrant colors. Looking for a connection that feels like a summer day.',
+    interests: ['Dance', 'Art', 'Music'],
+    image: findImage('discover-new-2'),
+    location: 'Venice',
+    isOnline: true,
+    gallery: [],
+  },
+  {
+    id: '15',
+    name: 'James',
+    age: 20,
+    bio: 'Night owl, music lover, and city explorer. I find beauty in neon lights and the stories they tell. Let\'s find a hidden gem in the city.',
+    interests: ['Music', 'Nightlife', 'Photography'],
+    image: findImage('discover-new-3'),
+    location: 'Hanover',
+    isOnline: true,
+    gallery: [],
   },
 ];
 

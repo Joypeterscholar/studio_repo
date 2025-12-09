@@ -1,182 +1,130 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import { Heart, SlidersHorizontal, Star, X, Instagram, Twitter } from 'lucide-react';
+import { ChevronDown, MapPin, Search, ZoomIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
-import { getUserById, loggedInUser } from '@/lib/data';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogClose,
-  } from '@/components/ui/dialog';
+import { getUserById, type User } from '@/lib/data';
 import Link from 'next/link';
+
+const newUsers = [
+    { userId: '13', distance: 16 },
+    { userId: '14', distance: 4.8 },
+    { userId: '15', distance: 2.2 },
+];
+
+const mapUsers = [
+    { userId: '1', top: '20%', left: '45%' },
+    { userId: '4', top: '48%', left: '70%' },
+    { userId: '2', top: '75%', left: '35%' },
+];
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-const profiles = [
-    { userId: '1' },
-    { userId: '2' },
-    { userId: '3' },
-    { userId: '4' },
-    { userId: '5' },
-];
+const UserCard = ({ user, distance }: { user: User, distance: number }) => {
+    const userImage = findImage(user.image.id);
+    return (
+        <Link href={`/user/${user.id}`} className="flex-shrink-0 w-40 relative">
+            <Image
+                src={userImage.imageUrl}
+                alt={user.name}
+                width={160}
+                height={220}
+                className="rounded-2xl object-cover w-full h-[220px]"
+                data-ai-hint={userImage.imageHint}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-2xl" />
+            <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">NEW</div>
+            <div className="absolute bottom-2 left-2 right-2 text-white">
+                <p className="text-xs bg-black/30 backdrop-blur-sm rounded-full px-2 py-0.5 inline-block">{distance} km away</p>
+                <p className="font-bold truncate mt-1">{user.name}, {user.age}</p>
+                <p className="text-xs uppercase tracking-wider">{user.location}</p>
+            </div>
+        </Link>
+    );
+};
 
-const menuItems = [
-    { label: 'Profile', href: '/profile' },
-    { label: 'Search', href: '/search' },
-    { label: 'Settings', href: '/settings' },
-    { label: 'Messages', href: '/messages' },
-]
 
 export default function DiscoverPage() {
-    const [current, setCurrent] = useState(0);
-    const loggedInUserImage = findImage(loggedInUser.image.id);
-
-    const handleAction = () => {
-        setCurrent(current + 1);
-    };
-
-    const currentUser = getUserById(profiles[current % profiles.length].userId);
-    const nextUser = getUserById(profiles[(current + 1) % profiles.length].userId);
-    
-    if (!currentUser || !nextUser) {
-        return <AppLayout><div>Loading...</div></AppLayout>;
-    }
-
-    const currentUserImage = findImage(currentUser.image.id);
-    const nextUserImage = findImage(nextUser.image.id);
+    const mapImage = findImage('map-background');
 
     return (
         <AppLayout>
-            <div className="flex flex-col h-full bg-background text-foreground p-4">
-                <header className="flex items-center justify-between">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                             <Image
-                                src={loggedInUserImage.imageUrl}
-                                alt={loggedInUser.name}
-                                width={40}
-                                height={40}
-                                className="rounded-full object-cover cursor-pointer"
-                                data-ai-hint={loggedInUserImage.imageHint}
-                            />
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-md w-[90vw] m-auto bg-white rounded-2xl p-0 top-24 translate-y-0">
-                            <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
-                                <DialogTitle className="sr-only">Menu</DialogTitle>
-                                <span></span>
-                                <DialogClose asChild>
-                                    <Button variant="ghost" size="icon" className="rounded-full h-auto w-auto p-0">
-                                    <X className="w-5 h-5 text-muted-foreground" />
-                                    </Button>
-                                </DialogClose>
-                            </DialogHeader>
-                             <div className="flex flex-col text-base">
-                                {menuItems.map((item) => {
-                                const content = (
-                                    <button
-                                    key={item.label}
-                                    className={'text-left p-4 border-b text-primary'}
-                                    >
-                                    {item.label}
-                                    </button>
-                                );
-                                return <Link href={item.href} key={item.label}>{content}</Link>
-                                })}
-                            </div>
-                        </DialogContent>
-                    </Dialog>
-                   
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" className="rounded-full w-12 h-12">
-                            <Heart className="w-6 h-6 text-primary" />
-                        </Button>
-                        <Button variant="outline" size="icon" className="rounded-full w-12 h-12">
-                            <SlidersHorizontal className="w-6 h-6 text-primary" />
-                        </Button>
+            <div className="flex flex-col h-full bg-background text-foreground">
+                <header className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-primary">
+                        <MapPin className="w-5 h-5"/>
+                        <span className="font-bold">Lagos</span>
+                        <ChevronDown className="w-4 h-4"/>
                     </div>
+                    <Link href="/search">
+                        <Button variant="outline" size="icon" className="rounded-full w-12 h-12">
+                            <Search className="w-6 h-6" />
+                        </Button>
+                    </Link>
                 </header>
 
-                <Tabs defaultValue="search-partners" className="w-full mt-4">
-                    <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted p-1 h-12">
-                        <TabsTrigger value="make-friends" className="rounded-full text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md">
-                            Make Friends
-                        </TabsTrigger>
-                        <TabsTrigger value="search-partners" className="rounded-full text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md">
-                            Search Partners
-                        </TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="search-partners" className="flex-grow flex flex-col justify-center items-center mt-4">
-                        <div className="relative w-full h-[60vh] max-w-sm">
-                            {/* Next Card */}
-                             <div 
-                                className="absolute top-0 w-full h-full p-4 bg-gray-200 rounded-3xl"
-                                style={{ transform: 'scale(0.95)', zIndex: 1, top: '10px' }}
-                            >
-                                <Image
-                                    src={nextUserImage.imageUrl}
-                                    alt={nextUser.name}
-                                    fill
-                                    className="object-cover rounded-3xl"
-                                    data-ai-hint={nextUserImage.imageHint}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-3xl" />
-                                <div className="absolute bottom-4 left-4 text-white">
-                                    <h3 className="text-2xl font-bold">{nextUser.name}, {nextUser.age}</h3>
-                                    <p className="text-sm uppercase tracking-wider">{nextUser.location}</p>
-                                </div>
-                            </div>
+                <main className="flex-grow overflow-y-auto">
+                    <div className="px-4">
+                        <h1 className="text-3xl font-bold text-primary">Discover</h1>
+
+                        <div className="flex space-x-4 overflow-x-auto pb-4 mt-4 -mx-4 px-4">
+                            {newUsers.map(({ userId, distance }) => {
+                                const user = getUserById(userId);
+                                if (!user) return null;
+                                return <UserCard key={userId} user={user} distance={distance} />;
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="px-4 mt-6">
+                        <h2 className="text-2xl font-bold text-primary">Around me</h2>
+                        <p className="text-muted-foreground">People with "<span className="text-accent">Music</span>" interest around you</p>
+                    </div>
+
+                    <div className="px-4 mt-4 relative">
+                        <Image 
+                            src={mapImage.imageUrl}
+                            alt={mapImage.description}
+                            width={600}
+                            height={400}
+                            className="w-full h-auto rounded-3xl object-cover"
+                            data-ai-hint={mapImage.imageHint}
+                        />
+                         <div className="absolute inset-0">
+                            {mapUsers.map(({ userId, top, left }) => {
+                                const user = getUserById(userId);
+                                if (!user) return null;
+                                const userImage = findImage(user.image.id);
+                                return (
+                                    <Link href={`/user/${user.id}`} key={userId}>
+                                        <Image
+                                            src={userImage.imageUrl}
+                                            alt={user.name}
+                                            width={48}
+                                            height={48}
+                                            className="absolute rounded-full object-cover border-2 border-white"
+                                            style={{ top, left, transform: 'translate(-50%, -50%)' }}
+                                            data-ai-hint={userImage.imageHint}
+                                        />
+                                    </Link>
+                                );
+                            })}
                             
-                            {/* Current Card */}
-                            <div className="absolute top-0 w-full h-full p-4 bg-white rounded-3xl shadow-lg" style={{ zIndex: 2 }}>
-                                <Image
-                                    src={currentUserImage.imageUrl}
-                                    alt={currentUser.name}
-                                    fill
-                                    className="object-cover rounded-3xl"
-                                    data-ai-hint={currentUserImage.imageHint}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-3xl" />
-
-                                <div className="absolute top-4 left-4 bg-black/40 text-white text-sm px-3 py-1 rounded-full backdrop-blur-sm">
-                                    16.8 km away
-                                </div>
-
-                                <div className="absolute top-4 right-4 flex flex-col gap-2 text-white">
-                                    <Instagram className="w-6 h-6" />
-                                    <Twitter className="w-6 h-6" />
-                                </div>
-                                
-                                <div className="absolute bottom-4 left-4 text-white">
-                                    <h3 className="text-2xl font-bold">{currentUser.name}, {currentUser.age}</h3>
-                                    <p className="text-sm uppercase tracking-wider">{currentUser.location}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-center gap-4 mt-8 w-full max-w-sm">
-                            <Button onClick={handleAction} variant="outline" size="icon" className="w-20 h-20 rounded-full bg-white border-muted shadow-md">
-                                <X className="w-8 h-8 text-muted-foreground" />
+                            <Button className="absolute rounded-full bg-primary text-primary-foreground h-auto py-2 px-4" style={{ top: '30%', left: '50%', transform: 'translateX(-50%)' }}>
+                                <span className="text-xs mr-2">((•))</span> Connect with Clara 👋
                             </Button>
-                            <Button onClick={handleAction} size="icon" className="w-20 h-20 rounded-full bg-primary text-primary-foreground shadow-lg">
-                                <Star className="w-8 h-8 fill-current" />
-                            </Button>
-                            <Button onClick={handleAction} size="icon" className="w-20 h-20 rounded-full bg-accent text-accent-foreground shadow-lg">
-                                <Heart className="w-8 h-8 fill-current" />
+
+                             <Button variant="outline" size="icon" className="absolute rounded-full bg-white w-12 h-12" style={{ bottom: '15%', right: '5%' }}>
+                                <ZoomIn className="w-6 h-6 text-primary" />
                             </Button>
                         </div>
-                    </TabsContent>
-                </Tabs>
+                    </div>
+                </main>
             </div>
         </AppLayout>
     );
