@@ -84,122 +84,34 @@ export default function BuyCreditsPage() {
           <div className="w-10"></div>
         </header>
 
-        <main className="flex-grow px-4 py-2 pb-24">
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-            <h2 className="font-semibold text-primary mb-4">Choose amount to buy</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {creditAmounts.map(amount => (
-                <Button
-                  key={amount}
-                  variant={selectedAmount === amount ? 'default' : 'outline'}
-                  onClick={() => setSelectedAmount(amount)}
-                  className={cn(
-                    "rounded-lg text-base h-12",
-                    selectedAmount === amount ? 'bg-primary text-primary-foreground' : 'text-primary/70 border-border'
-                  )}
-                >
-                  {amount}
-                </Button>
-              ))}
-            </div>
-            <Button size="lg" className="w-full rounded-full mt-6 flex items-center">
-                <WalletCards className="w-5 h-5 mr-2" />
-                Buy Credits
+        <main className="flex-grow px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
+            <h2 className="font-semibold text-primary self-start mb-2">Choose amount to buy</h2>
+            <Button
+              variant="outline"
+              className="w-full h-14 rounded-xl border-primary/30 bg-primary/5 text-primary text-base"
+            >
+              10LQ (1LQ = ₦1,000)
             </Button>
-            <div className="mt-4 bg-muted text-muted-foreground p-3 rounded-lg text-sm flex items-start gap-3">
+            
+            <p className="text-xl font-bold text-primary my-8">
+              Pay ₦10,000 for 10LQ
+            </p>
+
+            <Button size="lg" className="w-full rounded-full h-14 text-lg">
+                <WalletCards className="w-6 h-6 mr-2" />
+                Pay ₦10,000
+            </Button>
+
+            <div className="mt-6 bg-muted text-muted-foreground p-3 rounded-lg text-sm flex items-start gap-3 w-full">
                 <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
                 <p>
                     Credit purchases is non-refundable and you agree to our <Link href="#" className="underline text-primary/80">Terms of service.</Link>
                 </p>
             </div>
           </div>
-
-           <div>
-                <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-lg font-semibold text-primary">Payment Cards</h2>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button variant="ghost" className="text-primary font-semibold">
-                                <Plus className="w-4 h-4 mr-1" />
-                                Add Card
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-md w-[90vw] bottom-0 translate-y-0 rounded-t-3xl rounded-b-none p-6">
-                            <DialogHeader className="flex flex-row items-center justify-between text-left mb-4">
-                                <DialogTitle className="text-xl font-bold text-primary">Add new card</DialogTitle>
-                                <DialogClose asChild>
-                                    <Button variant="ghost" size="icon" className="rounded-full">
-                                        <X className="w-5 h-5 text-muted-foreground"/>
-                                    </Button>
-                                </DialogClose>
-                            </DialogHeader>
-                            <form className="space-y-4">
-                                <div>
-                                    <h3 className="font-semibold text-primary mb-2">Personal Details</h3>
-                                    <div className="space-y-3">
-                                        <div>
-                                            <Label htmlFor="fullName" className="sr-only">Full name</Label>
-                                            <Input id="fullName" placeholder="Full name" />
-                                        </div>
-                                        <div className="relative">
-                                            <Label htmlFor="country" className="sr-only">Country</Label>
-                                            <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                                               <NigeriaFlagIcon />
-                                            </div>
-                                            <Input id="country" defaultValue="Nigeria" className="pl-12"/>
-                                             <ChevronLeft className="w-5 h-5 text-muted-foreground rotate-180 absolute right-3 top-1/2 -translate-y-1/2" />
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="streetAddress" className="sr-only">Street address</Label>
-                                            <Input id="streetAddress" placeholder="Street address" />
-                                        </div>
-                                    </div>
-                                </div>
-                                 <div>
-                                    <h3 className="font-semibold text-primary mb-2">Card details</h3>
-                                    <div className="space-y-3">
-                                        <Input placeholder="Card number" />
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <Input placeholder="mm/yy" />
-                                            <Input placeholder="cvc" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <Button type="submit" size="lg" className="w-full rounded-full">
-                                    Save card information
-                                </Button>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-                <div className="bg-white rounded-2xl shadow-sm">
-                    {paymentCards.map((card, index) => (
-                        <div key={card.id} className={cn("flex items-center p-4", index < paymentCards.length - 1 && "border-b")}>
-                            {card.brand === 'visa' && <VisaIcon />}
-                            {card.brand === 'mastercard' && <MastercardIcon />}
-                            <div className="flex-grow ml-4">
-                                <div className="flex items-center gap-2">
-                                  <p className="font-semibold text-primary">{card.owner}</p>
-                                  {card.isPrimary && (
-                                      <span className="bg-primary/10 text-primary text-xs font-semibold px-2 py-0.5 rounded-md">Primary</span>
-                                  )}
-                                </div>
-                                <p className="text-muted-foreground">**** {card.last4}</p>
-                            </div>
-                            <ChevronLeft className="w-6 h-6 text-muted-foreground rotate-180" />
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className="mt-6 bg-green-100 text-green-800 p-3 rounded-lg text-sm flex items-center gap-3">
-                <ShieldCheck className="w-5 h-5 flex-shrink-0" />
-                <p>We are fully compliant with the payment card industry data security standards.</p>
-            </div>
         </main>
       </div>
     </AppLayout>
   );
 }
-
-    

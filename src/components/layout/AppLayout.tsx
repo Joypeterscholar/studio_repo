@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Compass, Plus, Users, MessageSquare } from 'lucide-react';
+import { Home, Compass, Plus, Users, MessageSquare, Code } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -20,6 +20,18 @@ const navItems = [
   { href: '/profile', icon: Users, label: 'Profile' },
 ];
 
+const devNavItems = [
+    {href: '/search', label: 'Search'},
+    {href: '/search-suggestions', label: 'Search w/ Suggestions'},
+    {href: '/discover-map', label: 'Discover (Map)'},
+    {href: '/discover-from', label: 'Discover From'},
+    {href: '/wallet', label: 'Wallet'},
+    {href: '/buy-credits-v1', label: 'Buy Credits (V1)'},
+    {href: '/buy-credits', label: 'Buy Credits (V2)'},
+    {href: '/send-credits-v1', label: 'Send Credits (V1)'},
+    {href: '/send-credits', label: 'Send Credits (V2)'},
+]
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
@@ -31,6 +43,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           className="relative max-w-md mx-auto h-24 flex items-center justify-around px-4"
         >
            <div className="absolute inset-x-2 bottom-0 h-20 bg-white/90 backdrop-blur-lg rounded-3xl shadow-[0_0_20px_rgba(0,0,0,0.1)]"></div>
+           
+            {/* Dev Menu Trigger */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="relative z-10 flex flex-col items-center justify-center text-muted-foreground transition-colors w-12 h-12">
+                  <Code className="w-7 h-7" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md w-[90vw] bg-white rounded-2xl p-0 shadow-xl border-none">
+                <DialogTitle className="p-4 border-b font-semibold text-primary">Dev Menu</DialogTitle>
+                <div className="flex flex-col text-base text-primary font-medium max-h-[70vh] overflow-y-auto">
+                    {devNavItems.map(item => (
+                       <DialogClose asChild key={item.href}>
+                           <Link href={item.href} className="text-left p-4 border-b last:border-b-0">{item.label}</Link>
+                       </DialogClose>
+                    ))}
+                </div>
+              </DialogContent>
+            </Dialog>
+
+
             {navItems.map((item) => {
               const isActive = pathname === item.href;
 
@@ -69,7 +102,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <item.icon className={cn('w-7 h-7', isActive && 'fill-current text-accent')} />
                 </Link>
               );
-            })}
+            }).filter(item => item !== null)}
         </div>
       </nav>
     </div>
