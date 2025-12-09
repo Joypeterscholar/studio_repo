@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Compass, Plus, MessageSquare, User, Users } from 'lucide-react';
+import { Home, Compass, Plus, Users, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -13,17 +13,15 @@ import {
 } from '@/components/ui/dialog';
 
 const navItems = [
-  { href: '/home', icon: Home },
-  { href: '/discover', icon: Compass },
-  { href: '/create', icon: Plus, isCentral: true },
-  { href: '/messages', icon: Users },
-  { href: '/profile', icon: MessageSquare },
+  { href: '/home', icon: Home, label: 'Home' },
+  { href: '/discover', icon: Compass, label: 'Discover' },
+  { href: '/create', icon: Plus, isCentral: true, label: 'Create' },
+  { href: '/messages', icon: MessageSquare, label: 'Messages' },
+  { href: '/profile', icon: Users, label: 'Profile' },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-
-  const centralItemIndex = navItems.findIndex(item => item.isCentral);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -33,7 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           className="relative max-w-md mx-auto h-24 bg-white/90 backdrop-blur-lg rounded-[2.5rem] shadow-[0_0_20px_rgba(0,0,0,0.1)]"
         >
           <div className="flex justify-around items-center h-full px-4">
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               if (item.isCentral) return <div key="placeholder" className="w-16" />;
               
               const isActive = pathname === item.href;
