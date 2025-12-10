@@ -4,17 +4,15 @@ import Image from 'next/image';
 import {
   ChevronDown,
   MapPin,
-  Search,
   SlidersHorizontal,
   X,
   Heart,
-  MessageSquare,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
-import { getUserById, loggedInUser, type User } from '@/lib/data';
+import type { User } from '@/lib/data';
 import Link from 'next/link';
 import {
   Dialog,
@@ -25,17 +23,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUser, useUsers, useUserById } from '@/firebase';
 
-const newUsers = [
-  { userId: '13', distance: 16 },
-  { userId: '14', distance: 4.8 },
-  { userId: '15', distance: 2.2 },
-];
-
-const mapUsers = [
-  { userId: '1', top: '20%', left: '45%' },
-  { userId: '4', top: '48%', left: '70%' },
-  { userId: '2', top: '75%', left: '35%' },
+const newUsersIds = ['13', '14', '15'];
+const mapUsersIds = ['1', '4', '2'];
+const mapUsersPositions = [
+  { top: '20%', left: '45%' },
+  { top: '48%', left: '70%' },
+  { top: '75%', left: '35%' },
 ];
 
 const feedItems = [
@@ -97,7 +92,7 @@ const UserCard = ({ user, distance }: { user: User; distance: number }) => {
 
 export default function DiscoverPage() {
   const mapImage = findImage('map-background');
-  const loggedInUserImage = findImage(loggedInUser.image.id);
+  const { data: loggedInUser } = useUser();
 
   const menuItems = [
     { label: 'Profile', href: '/profile' },
@@ -105,6 +100,12 @@ export default function DiscoverPage() {
     { label: 'Settings', href: '/settings' },
     { label: 'Messages', href: '/messages' },
   ];
+
+  if (!loggedInUser) {
+    return <div>Loading...</div>;
+  }
+
+  const loggedInUserImage = findImage(loggedInUser.image.id);
 
   return (
     <AppLayout>
@@ -227,8 +228,9 @@ export default function DiscoverPage() {
                     data-ai-hint={mapImage.imageHint}
                   />
                   <div className="absolute inset-0">
-                    {mapUsers.map(({ userId, top, left }) => {
-                      const user = getUserById(userId);
+                    {mapUsersIds.map((userId, index) => {
+                      const { data: user } = useUserById(userId);
+                      const position = mapUsersPositions[index];
                       if (!user) return null;
                       const userImage = findImage(user.image.id);
                       return (
@@ -239,7 +241,7 @@ export default function DiscoverPage() {
                             width={48}
                             height={48}
                             className="absolute object-cover border-2 border-white"
-                            style={{ top, left, transform: 'translate(-50%, -50%)' }}
+                            style={{ top: position.top, left: position.left, transform: 'translate(-50%, -50%)' }}
                             data-ai-hint={userImage.imageHint}
                           />
                         </Link>

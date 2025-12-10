@@ -6,9 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
-import { getConversationsWithUserDetails } from '@/lib/data';
-
-const conversations = getConversationsWithUserDetails();
+import { useConversations } from '@/firebase';
 
 const findImage = (id: string) => {
     const img = placeholderImages.find(p => p.id === id);
@@ -16,6 +14,16 @@ const findImage = (id: string) => {
 };
 
 export default function MessagesPage() {
+  const { data: conversations, loading } = useConversations();
+
+  if (loading) {
+    return (
+        <AppLayout>
+            <div className="flex items-center justify-center h-full">Loading...</div>
+        </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <div className="bg-primary text-primary-foreground min-h-screen">
@@ -32,11 +40,11 @@ export default function MessagesPage() {
         <main className="max-w-md mx-auto px-4 mt-4">
             <div className="space-y-3">
             {conversations.map((convo) => {
-                const image = findImage(convo.user?.image.id || '');
+                if (!convo.user) return null;
+                const image = findImage(convo.user.image.id || '');
                 const isUnread = !convo.lastMessage.isRead && convo.lastMessage.senderId !== '0';
                 
-                // Static time for hydration consistency
-                const timeString = '10:00';
+                const timeString = new Date(convo.lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 
                 return (
                     <Link href={`/messages/${convo.userId}`} key={convo.id} className="flex items-center space-x-4 p-3 rounded-2xl bg-white/10 border border-white/20">

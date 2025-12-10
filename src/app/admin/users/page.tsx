@@ -5,14 +5,6 @@ import Image from 'next/image';
 import { File, ListFilter, MoreHorizontal, PlusCircle } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -40,9 +32,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { users } from '@/lib/data';
+import { useUsers } from '@/firebase';
 
 export default function AdminUsersPage() {
+  const { data: users, loading } = useUsers();
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <Tabs defaultValue="all">
       <div className="flex items-center">

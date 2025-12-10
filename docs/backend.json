@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "A user of the application",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The user's full name"
+        },
+        "age": {
+          "type": "number",
+          "description": "The user's age"
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biography of the user"
+        },
+        "interests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "imageUrl": {
+              "type": "string",
+              "format": "uri"
+            },
+            "imageHint": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "imageUrl"]
+        },
+        "location": {
+          "type": "string",
+          "description": "The user's location"
+        },
+        "isOnline": {
+          "type": "boolean"
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/user/properties/image"
+          }
+        }
+      },
+      "required": ["name", "age", "bio", "image", "location", "isOnline"]
+    },
+    "message": {
+      "title": "Message",
+      "description": "A chat message between users",
+      "type": "object",
+      "properties": {
+        "senderId": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isRead": {
+          "type": "boolean"
+        }
+      },
+      "required": ["senderId", "text", "timestamp", "isRead"]
+    },
+    "conversation": {
+      "title": "Conversation",
+      "description": "A collection of messages between two users",
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/message"
+          }
+        }
+      },
+      "required": ["userIds", "messages"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/user"
+      },
+      "description": "Stores individual user profiles."
+    },
+    "/conversations/{conversationId}": {
+      "schema": {
+        "$ref": "#/entities/conversation"
+      },
+      "description": "Stores chat conversations between users."
+    }
+  }
+}

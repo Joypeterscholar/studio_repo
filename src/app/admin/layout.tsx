@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -38,9 +39,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
-import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
-import { loggedInUser } from '@/lib/data';
+import { useUser } from '@/firebase';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -48,9 +49,6 @@ const navItems = [
   { href: '/admin/posts', icon: FileText, label: 'Posts' },
 ];
 
-const findImage = (id: string) => {
-    return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
-};
 
 export default function AdminLayout({
   children,
@@ -58,7 +56,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const loggedInUserImage = findImage(loggedInUser.image.id);
+  const { data: loggedInUser } = useUser();
 
   const breadcrumbItems = pathname.split('/').filter(Boolean);
 
@@ -184,13 +182,19 @@ export default function AdminLayout({
                 size="icon"
                 className="overflow-hidden rounded-full"
               >
-                <Image
-                  src={loggedInUserImage.imageUrl}
-                  width={36}
-                  height={36}
-                  alt="Avatar"
-                  className="overflow-hidden rounded-full"
-                />
+                {loggedInUser ? (
+                  <Image
+                    src={loggedInUser.image.imageUrl}
+                    width={36}
+                    height={36}
+                    alt="Avatar"
+                    className="overflow-hidden rounded-full"
+                  />
+                ) : (
+                    <Avatar>
+                        <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

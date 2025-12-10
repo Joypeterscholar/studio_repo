@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
+import { FirebaseProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'LINQUP',
@@ -21,8 +22,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@900&family=Alegreya:ital,wght@0,400..900;1,400..900&family=Belleza&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('font-body antialiased min-h-screen flex flex-col')}>
-        {children}
-        <Toaster />
+        <FirebaseProvider>
+          {children}
+          <Toaster />
+        </FirebaseProvider>
       </body>
     </html>
   );

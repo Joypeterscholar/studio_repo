@@ -7,19 +7,16 @@ import {
   MessageCircle,
   Send,
   Plus,
-  Compass,
-  Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/components/layout/AppLayout';
 import Logo from '@/components/layout/Logo';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useUser } from '@/firebase';
 
 const stories = [
-  { id: 'my-story', name: 'My Story', imageId: 'user-self', isOwn: true },
   { id: 'selena', name: 'Selena', imageId: 'user-2' },
   { id: 'clara', name: 'Clara', imageId: 'user-1' },
   { id: 'fabian', name: 'Fabian', imageId: 'user-male-1' },
@@ -55,6 +52,10 @@ const findImage = (id: string) => {
 };
 
 export default function HomePage() {
+  const { data: loggedInUser } = useUser();
+  const myStoryImage = loggedInUser ? findImage(loggedInUser.image.id) : null;
+
+
   return (
     <AppLayout>
       <div className="flex flex-col bg-background">
@@ -71,6 +72,26 @@ export default function HomePage() {
 
         <div className="pl-4">
           <div className="flex space-x-4 overflow-x-auto pb-2">
+            {myStoryImage && (
+               <Link href="/story" className="flex-shrink-0 text-center w-20">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-pink-400 to-purple-400">
+                    <Image
+                      src={myStoryImage.imageUrl}
+                      alt="My Story"
+                      width={80}
+                      height={80}
+                      className="rounded-full object-cover w-full h-full border-2 border-white"
+                      data-ai-hint={myStoryImage.imageHint}
+                    />
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-6 h-6 bg-accent rounded-full flex items-center justify-center border-2 border-white">
+                    <Plus className="w-4 h-4 text-accent-foreground" />
+                  </div>
+                </div>
+                <p className="text-xs mt-2 font-medium truncate">My Story</p>
+              </Link>
+            )}
             {stories.map((story) => {
               const image = findImage(story.imageId);
               return (
@@ -86,11 +107,6 @@ export default function HomePage() {
                         data-ai-hint={image.imageHint}
                       />
                     </div>
-                    {story.isOwn && (
-                      <div className="absolute bottom-0 right-0 w-6 h-6 bg-accent rounded-full flex items-center justify-center border-2 border-white">
-                        <Plus className="w-4 h-4 text-accent-foreground" />
-                      </div>
-                    )}
                   </div>
                   <p className="text-xs mt-2 font-medium truncate">{story.name}</p>
                 </Link>

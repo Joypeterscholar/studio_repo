@@ -14,9 +14,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { getUserById, type User } from '@/lib/data';
+import { type User } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { useUserById } from '@/firebase';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -27,7 +28,7 @@ export default function VideoCallPage() {
   const params = useParams();
   const { toast } = useToast();
   const userId = params.id as string;
-  const otherUser = getUserById(userId);
+  const { data: otherUser } = useUserById(userId);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);

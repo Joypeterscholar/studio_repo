@@ -13,22 +13,15 @@ import {
   Music,
   Pen,
   Heart,
-  MessageSquare,
   Globe,
   PartyPopper,
   Gem,
-  Camera,
-  Waves,
-  Leaf,
-  Users,
   Flame,
-  BrainCircuit,
   X,
   Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { getUserById } from '@/lib/data';
 import { useParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -39,6 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useUserById } from '@/firebase';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -111,8 +105,11 @@ export default function UserProfilePage() {
   const router = useRouter();
   const params = useParams();
   const userId = params.id as string;
-  const user = getUserById(userId);
+  const { data: user, loading } = useUserById(userId);
 
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
   if (!user) {
     return (
       <div className="flex h-screen items-center justify-center">

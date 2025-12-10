@@ -21,7 +21,7 @@ import {
   DialogClose
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { loggedInUser } from '@/lib/data';
+import { useUser } from '@/firebase';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -134,6 +134,12 @@ const Comment = ({ comment }: { comment: any }) => {
 export default function PostPage({ params }: { params: { id: string } }) {
   const authorImage = findImage(post.authorImageId);
   const bgImage = findImage(post.backgroundImageId);
+  const { data: loggedInUser, loading } = useUser();
+
+  if (loading || !loggedInUser) {
+    return <div>Loading...</div>
+  }
+
   const loggedInUserImage = findImage(loggedInUser.image.id);
 
 

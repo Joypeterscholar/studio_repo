@@ -1,4 +1,4 @@
-import { placeholderImages, type ImagePlaceholder } from './placeholder-images';
+import { placeholderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
 
 export interface User {
   id: string;
@@ -199,17 +199,15 @@ export const conversations: Conversation[] = [
 ];
 
 // Mock API functions
-export const getUserById = (id: string): User | undefined => users.find(u => u.id === id) || (id === '0' ? loggedInUser : undefined);
-export const getTodaysPicks = (): User[] => users.slice(0, 5);
-export const getNearbyUsers = (): User[] => users.slice(5, 11);
-export const getMatches = (): User[] => users.slice(0, 4);
-export const getConversations = (): Conversation[] => conversations;
-export const getConversationById = (id: string): Conversation | undefined => conversations.find(c => c.id === id);
+export const getMockUserById = (id: string): User | undefined => users.find(u => u.id === id) || (id === '0' ? loggedInUser : undefined);
+export const getMockLoggedInUser = (): User => loggedInUser;
+export const getMockUsers = (): User[] => users;
+export const getMockConversationById = (id: string): Conversation | undefined => conversations.find(c => c.id === id);
 
 // Add a function to get user details for conversations
-export const getConversationsWithUserDetails = () => {
+export const getMockConversations = () => {
   return conversations.map(conv => {
-    const user = getUserById(conv.userId);
+    const user = getMockUserById(conv.userId);
     const lastMessage = conv.messages[conv.messages.length - 1];
     return {
       ...conv,

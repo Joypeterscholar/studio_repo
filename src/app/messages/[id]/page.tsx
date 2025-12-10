@@ -15,15 +15,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  getConversationById,
-  getUserById,
-  loggedInUser,
   type Message,
   type User,
 } from '@/lib/data';
 import { useParams } from 'next/navigation';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { useConversationById, useUser, useUserById } from '@/firebase';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -38,11 +36,11 @@ const DoubleCheck = ({ className }: { className?: string }) => (
 
 export default function ConversationPage() {
   const params = useParams();
-  const conversationId = `conv-${params.id}`;
-  const conversation = getConversationById(conversationId);
-  const otherUser = conversation
-    ? getUserById(conversation.userId)
-    : undefined;
+  const userId = params.id as string;
+  
+  const { data: conversation, loading: convLoading } = useConversationById(userId);
+  const { data: otherUser, loading: userLoading } = useUserById(userId);
+  const { data: loggedInUser, loading: loggedInUserLoading } = useUser();
 
   const [messages, setMessages] = useState<Message[]>(
     conversation?.messages || []
@@ -51,7 +49,7 @@ export default function ConversationPage() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim() === '' || !otherUser) return;
+    if (newMessage.trim() === '' || !otherUser || !loggedInUser) return;
 
     const message: Message = {
       id: `msg-${Date.now()}`,
@@ -65,7 +63,15 @@ export default function ConversationPage() {
     setNewMessage('');
   };
 
-  if (!conversation || !otherUser) {
+  if (convLoading || userLoading || loggedInUserLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-primary text-primary-foreground">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!conversation || !otherUser || !loggedInUser) {
     return (
       <div className="flex h-screen items-center justify-center bg-primary text-primary-foreground">
         <p>Conversation not found.</p>
