@@ -98,6 +98,84 @@
         }
       },
       "required": ["userIds", "messages"]
+    },
+    "post": {
+      "title": "Post",
+      "description": "A user-generated post with text and images.",
+      "type": "object",
+      "properties": {
+        "authorId": {
+          "type": "string",
+          "description": "The ID of the user who created the post."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the post."
+        },
+        "content": {
+          "type": "string",
+          "description": "The main body content of the post."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the post (e.g., Travel, Photography)."
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/user/properties/image"
+          }
+        },
+        "likes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A list of user IDs who liked the post."
+        },
+        "comments": {
+            "type": "array",
+            "items": {
+                "$ref": "#/entities/comment"
+            }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["authorId", "title", "content", "createdAt"]
+    },
+    "comment": {
+        "title": "Comment",
+        "description": "A comment on a user-generated post.",
+        "type": "object",
+        "properties": {
+            "authorId": {
+                "type": "string",
+                "description": "The ID of the user who wrote the comment."
+            },
+            "text": {
+                "type": "string",
+                "description": "The content of the comment."
+            },
+            "timestamp": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "likes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "A list of user IDs who liked the comment."
+            },
+            "replies": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/entities/comment"
+                }
+            }
+        },
+        "required": ["authorId", "text", "timestamp"]
     }
   },
   "auth": {
@@ -115,6 +193,12 @@
         "$ref": "#/entities/conversation"
       },
       "description": "Stores chat conversations between users."
+    },
+    "/posts/{postId}": {
+      "schema": {
+        "$ref": "#/entities/post"
+      },
+      "description": "Stores user-generated posts."
     }
   }
 }
