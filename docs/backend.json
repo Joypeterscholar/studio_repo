@@ -176,6 +176,38 @@
             }
         },
         "required": ["authorId", "text", "timestamp"]
+    },
+    "transaction": {
+      "title": "Transaction",
+      "description": "An in-app purchase transaction, such as buying credits.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who made the purchase."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The monetary value of the transaction."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency of the transaction (e.g., USD, NGN)."
+        },
+        "creditsPurchased": {
+          "type": "number",
+          "description": "The amount of in-app currency (LQ) purchased."
+        },
+        "purchaseDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "The unique identifier for the payment gateway transaction."
+        }
+      },
+      "required": ["userId", "amount", "currency", "creditsPurchased", "purchaseDate", "transactionId"]
     }
   },
   "auth": {
@@ -199,6 +231,12 @@
         "$ref": "#/entities/post"
       },
       "description": "Stores user-generated posts."
+    },
+    "/transactions/{transactionId}": {
+      "schema": {
+        "$ref": "#/entities/transaction"
+      },
+      "description": "Stores all in-app purchase transactions."
     }
   }
 }
