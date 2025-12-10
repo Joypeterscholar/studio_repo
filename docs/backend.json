@@ -208,6 +208,31 @@
         }
       },
       "required": ["userId", "amount", "currency", "creditsPurchased", "purchaseDate", "transactionId"]
+    },
+    "connection": {
+      "title": "Connection",
+      "description": "Represents a relationship between two users.",
+      "type": "object",
+      "properties": {
+        "fromUserId": {
+          "type": "string",
+          "description": "The ID of the user initiating the action."
+        },
+        "toUserId": {
+          "type": "string",
+          "description": "The ID of the user receiving the action."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["liked", "requested", "connected", "blocked"],
+          "description": "The state of the connection."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["fromUserId", "toUserId", "status", "createdAt"]
     }
   },
   "auth": {
@@ -237,6 +262,12 @@
         "$ref": "#/entities/transaction"
       },
       "description": "Stores all in-app purchase transactions."
+    },
+    "/connections/{connectionId}": {
+      "schema": {
+        "$ref": "#/entities/connection"
+      },
+      "description": "Stores relationships (likes, requests, connections) between users."
     }
   }
 }
