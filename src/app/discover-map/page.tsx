@@ -11,13 +11,14 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
-import { getUserById, loggedInUser, type User } from '@/lib/data';
+import type { User } from '@/firebase/mock-data';
 import Link from 'next/link';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useUser, useUserById } from '@/firebase';
 
 const newUsers = [
   { userId: '13', distance: 16 },
@@ -35,7 +36,14 @@ const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-const UserCard = ({ user, distance }: { user: User; distance: number }) => {
+const UserCard = ({ userId, distance }: { userId: string; distance: number }) => {
+  const { data: user, loading } = useUserById(userId);
+
+  if (loading || !user) {
+      return (
+          <div className="flex-shrink-0 w-40 h-[220px] bg-muted rounded-2xl animate-pulse" />
+      )
+  }
   const userImage = findImage(user.image.id);
   return (
     <Link href={`/user/${user.id}`} className="flex-shrink-0 w-40 relative">
@@ -66,6 +74,16 @@ const UserCard = ({ user, distance }: { user: User; distance: number }) => {
 
 export default function DiscoverMapPage() {
   const mapImage = findImage('map-background');
+  const { data: loggedInUser, loading } = useUser();
+
+  if (loading || !loggedInUser) {
+      return (
+          <AppLayout>
+              <div className="p-4">Loading...</div>
+          </AppLayout>
+      )
+  }
+
   const loggedInUserImage = findImage(loggedInUser.image.id);
 
   return (
@@ -103,10 +121,8 @@ export default function DiscoverMapPage() {
             <h2 className="text-xl font-bold text-primary mb-3">New</h2>
             <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4">
               {newUsers.map(({ userId, distance }) => {
-                const user = getUserById(userId);
-                if (!user) return null;
                 return (
-                  <UserCard key={userId} user={user} distance={distance} />
+                  <UserCard key={userId} userId={userId} distance={distance} />
                 );
               })}
             </div>
@@ -125,8 +141,9 @@ export default function DiscoverMapPage() {
               />
               <div className="absolute inset-0">
                 {mapUsers.map(({ userId, top, left }) => {
-                  const user = getUserById(userId);
-                  if (!user) return null;
+                  const { data: user, loading: userLoading } = useUserById(userId);
+                  if (userLoading || !user) return null;
+
                   const userImage = findImage(user.image.id);
                   return (
                     <Link href={`/user/${user.id}`} key={userId}>
@@ -135,7 +152,7 @@ export default function DiscoverMapPage() {
                         alt={user.name}
                         width={48}
                         height={48}
-                        className="absolute object-cover border-2 border-white"
+                        className="absolute object-cover border-2 border-white rounded-full"
                         style={{ top, left, transform: 'translate(-50%, -50%)' }}
                         data-ai-hint={userImage.imageHint}
                       />

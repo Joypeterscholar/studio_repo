@@ -6,7 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { getUserById, type User } from '@/lib/data';
+import { useUserById } from '@/firebase';
 import Link from 'next/link';
 
 const likedByUsers = [

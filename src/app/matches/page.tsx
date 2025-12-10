@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { User, getUserById } from '@/lib/data';
+import { useUserById } from '@/firebase';
 
 const matchesData = [
   { userId: '1', match: 100, distance: 1.3, location: 'HANOVER' },
@@ -22,6 +21,50 @@ const matchesData = [
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
+
+function MatchCard({ matchInfo }: { matchInfo: typeof matchesData[0] }) {
+    const { data: user, loading } = useUserById(matchInfo.userId);
+
+    if (loading || !user) {
+        return (
+            <div className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse"></div>
+        );
+    }
+    
+    const userImage = findImage(user.image.id);
+
+    return (
+        <Link href={`/user/${user.id}`} key={user.id}>
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-lg group">
+                <Image
+                    src={userImage.imageUrl}
+                    alt={user.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={userImage.imageHint}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                
+                <div className="absolute top-2 left-2 right-2">
+                    <div className="bg-accent/80 text-accent-foreground text-xs font-bold py-1 px-3 rounded-full inline-block">
+                        {matchInfo.match}% Match
+                    </div>
+                </div>
+                
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <div className="bg-black/30 backdrop-blur-sm rounded-full text-xs px-2 py-0.5 inline-block mb-1">
+                        {matchInfo.distance} km away
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <p className="font-bold text-lg truncate">{user.name}, {user.age}</p>
+                        <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
+                    </div>
+                    <p className="text-xs opacity-80 tracking-widest uppercase">{matchInfo.location}</p>
+                </div>
+            </div>
+        </Link>
+    )
+}
 
 export default function MatchesPage() {
   const router = useRouter();
@@ -58,43 +101,9 @@ export default function MatchesPage() {
             </h2>
 
             <div className="grid grid-cols-2 gap-4">
-                {matchesData.map(matchInfo => {
-                    const user = getUserById(matchInfo.userId);
-                    if (!user) return null;
-                    const userImage = findImage(user.image.id);
-
-                    return (
-                        <Link href={`/user/${user.id}`} key={user.id}>
-                            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-lg group">
-                                <Image
-                                    src={userImage.imageUrl}
-                                    alt={user.name}
-                                    fill
-                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                    data-ai-hint={userImage.imageHint}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                                
-                                <div className="absolute top-2 left-2 right-2">
-                                    <div className="bg-accent/80 text-accent-foreground text-xs font-bold py-1 px-3 rounded-full inline-block">
-                                        {matchInfo.match}% Match
-                                    </div>
-                                </div>
-                                
-                                <div className="absolute bottom-3 left-3 right-3 text-white">
-                                    <div className="bg-black/30 backdrop-blur-sm rounded-full text-xs px-2 py-0.5 inline-block mb-1">
-                                        {matchInfo.distance} km away
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <p className="font-bold text-lg truncate">{user.name}, {user.age}</p>
-                                        <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
-                                    </div>
-                                    <p className="text-xs opacity-80 tracking-widest uppercase">{matchInfo.location}</p>
-                                </div>
-                            </div>
-                        </Link>
-                    )
-                })}
+                {matchesData.map(matchInfo => (
+                   <MatchCard key={matchInfo.userId} matchInfo={matchInfo} />
+                ))}
             </div>
         </main>
       </div>

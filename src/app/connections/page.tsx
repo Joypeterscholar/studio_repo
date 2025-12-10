@@ -8,7 +8,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { User, getUserById } from '@/lib/data';
+import { useUserById } from '@/firebase';
 
 const connectRequests = [
     { userId: '8', name: 'Alfredo Calzoni', imageId: 'user-male-1' },
