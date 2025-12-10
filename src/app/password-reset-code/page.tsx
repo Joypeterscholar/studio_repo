@@ -35,7 +35,7 @@ export default function PasswordResetCodePage() {
     <div className="flex min-h-screen flex-col bg-background p-4 sm:p-6 md:p-8">
         <div className="flex items-center">
             <Link href="/reset-password">
-              <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full">
+              <Button variant="ghost" size="icon" className="h-12 w-12">
                   <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>

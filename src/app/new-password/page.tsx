@@ -44,7 +44,7 @@ export default function NewPasswordPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="************"
-                className="pr-10 h-12 rounded-full"
+                className="pr-10 h-12"
               />
               <Button
                 type="button"
@@ -69,7 +69,7 @@ export default function NewPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="JohnShabalaya%%$$!$"
-                className="pr-10 h-12 rounded-full"
+                className="pr-10 h-12"
               />
               <Button
                 type="button"

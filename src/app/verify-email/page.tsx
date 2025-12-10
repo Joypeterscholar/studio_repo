@@ -59,7 +59,7 @@ export default function VerifyEmailPage() {
                 onFocus={(e) => e.target.select()}
                 ref={(el) => (inputsRef.current[index] = el)}
                 className={cn(
-                    "h-20 w-16 sm:h-24 sm:w-20 text-center text-3xl font-bold border-primary/50 focus:border-primary focus:ring-primary",
+                    "h-20 w-16 sm:h-24 sm:w-20 text-center text-3xl font-bold rounded-2xl border-primary/50 focus:border-primary focus:ring-primary",
                     error && "border-destructive text-destructive focus:border-destructive focus:ring-destructive"
                 )}
               />

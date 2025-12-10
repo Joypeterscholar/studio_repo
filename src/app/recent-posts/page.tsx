@@ -49,7 +49,7 @@ export default function RecentPostsPage() {
     return (
       <div className="flex flex-col h-screen bg-background text-foreground">
         <header className="p-4">
-            <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10">
+            <Button onClick={() => router.back()} variant="ghost" size="icon" className="w-10 h-10">
               <ChevronLeft className="h-6 w-6" />
             </Button>
         </header>
@@ -75,7 +75,7 @@ export default function RecentPostsPage() {
         </main>
         <footer className="p-6">
             <Link href="/create-post" passHref>
-                <Button className="w-full rounded-full" size="lg">
+                <Button className="w-full" size="lg">
                     Add a Post <Plus className="w-5 h-5 ml-2" />
                 </Button>
             </Link>
@@ -88,13 +88,13 @@ export default function RecentPostsPage() {
     <AppLayout>
       <div className="flex flex-col h-full bg-background text-foreground">
         <header className="flex items-center justify-between p-4 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full border w-10 h-10">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="border w-10 h-10">
             <ChevronLeft className="h-6 w-6" />
           </Button>
           <h1 className="text-xl font-bold text-primary">Recent Posts</h1>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10 text-primary">
+              <Button variant="ghost" size="icon" className="border w-10 h-10 text-primary">
                 <FilterIcon />
               </Button>
             </DialogTrigger>

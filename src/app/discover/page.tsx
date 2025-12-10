@@ -155,7 +155,7 @@ export default function DiscoverPage() {
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full w-12 h-12"
+                className="w-12 h-12"
               >
                 <SlidersHorizontal className="w-6 h-6" />
               </Button>
@@ -168,16 +168,16 @@ export default function DiscoverPage() {
 
         <main className="flex-grow overflow-y-auto px-4">
           <Tabs defaultValue="for-you" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-full bg-primary/5 p-1 h-12">
+            <TabsList className="grid w-full grid-cols-2 bg-primary/5 p-1 h-12">
               <TabsTrigger
                 value="for-you"
-                className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
               >
                 For you
               </TabsTrigger>
               <TabsTrigger
                 value="around-me"
-                className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
               >
                 Around me
               </TabsTrigger>
@@ -204,13 +204,13 @@ export default function DiscoverPage() {
                 );
               })}
                <div className="flex justify-center items-center gap-4 py-4">
-                  <Button variant="outline" size="icon" className="w-16 h-16 rounded-full border-gray-300 text-gray-500 bg-white shadow-md">
+                  <Button variant="outline" size="icon" className="w-16 h-16 border-gray-300 text-gray-500 bg-white shadow-md">
                       <X className="w-8 h-8" />
                   </Button>
-                  <Button variant="outline" size="icon" className="w-14 h-14 rounded-full border-purple-400 text-purple-500 bg-white shadow-md">
+                  <Button variant="outline" size="icon" className="w-14 h-14 border-purple-400 text-purple-500 bg-white shadow-md">
                       <StarIcon className="w-8 h-8 fill-current" />
                   </Button>
-                  <Button variant="outline" size="icon" className="w-16 h-16 rounded-full border-accent text-accent bg-white shadow-md">
+                  <Button variant="outline" size="icon" className="w-16 h-16 border-accent text-accent bg-white shadow-md">
                       <Heart className="w-8 h-8 fill-current" />
                   </Button>
               </div>
@@ -238,7 +238,7 @@ export default function DiscoverPage() {
                             alt={user.name}
                             width={48}
                             height={48}
-                            className="absolute rounded-full object-cover border-2 border-white"
+                            className="absolute object-cover border-2 border-white"
                             style={{ top, left, transform: 'translate(-50%, -50%)' }}
                             data-ai-hint={userImage.imageHint}
                           />
@@ -247,7 +247,7 @@ export default function DiscoverPage() {
                     })}
 
                     <Button
-                      className="absolute rounded-full bg-primary text-primary-foreground h-auto py-2 px-4"
+                      className="absolute bg-primary text-primary-foreground h-auto py-2 px-4"
                       style={{
                         top: '30%',
                         left: '50%',

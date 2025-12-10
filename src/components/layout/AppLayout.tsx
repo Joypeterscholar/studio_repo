@@ -21,24 +21,24 @@ const navItems = [
 ];
 
 const devNavItems = [
-    {href: '/search', label: 'Search'},
-    {href: '/search-suggestions', label: 'Search w/ Suggestions'},
-    {href: '/discover-map', label: 'Discover (Map)'},
-    {href: '/discover-from', label: 'Discover From'},
-    {href: '/wallet', label: 'Wallet'},
+    {href: '/block-user', label: 'Block User'},
     {href: '/buy-credits', label: 'Buy Credits'},
     {href: '/buy-credits-v1', label: 'Buy Credits (V1)'},
     {href: '/buy-credits-v2', label: 'Buy Credits (V2)'},
+    {href: '/connections', label: 'Connections'},
+    {href: '/delete-account', label: 'Delete Account'},
+    {href: '/discover-from', label: 'Discover From'},
+    {href: '/discover-map', label: 'Discover (Map)'},
+    {href: '/likes', label: 'Likes'},
+    {href: '/notifications', label: 'Notifications'},
+    {href: '/recent-posts', label: 'Recent Posts'},
+    {href: '/search', label: 'Search'},
+    {href: '/search-suggestions', label: 'Search w/ Suggestions'},
     {href: '/send-credits', label: 'Send Credits'},
     {href: '/send-credits-v1', label: 'Send Credits (V1)'},
     {href: '/settings', label: 'Settings'},
-    {href: '/likes', label: 'Likes'},
-    {href: '/connections', label: 'Connections'},
-    {href: '/notifications', label: 'Notifications'},
     {href: '/video-call/1', label: 'Video Call'},
-    {href: '/block-user', label: 'Block User'},
-    {href: '/delete-account', label: 'Delete Account'},
-    {href: '/recent-posts', label: 'Recent Posts'},
+    {href: '/wallet', label: 'Wallet'},
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

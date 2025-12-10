@@ -75,7 +75,7 @@ export default function BuyCreditsV1Page() {
     <AppLayout>
       <div className="flex flex-col min-h-full bg-muted/50">
         <header className="flex items-center p-4">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10 border bg-white">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="border bg-white">
             <ChevronLeft className="h-6 w-6 text-primary" />
           </Button>
           <div className="flex-grow text-center">
@@ -94,7 +94,7 @@ export default function BuyCreditsV1Page() {
                   variant={selectedAmount === amount ? 'default' : 'outline'}
                   onClick={() => setSelectedAmount(amount)}
                   className={cn(
-                    "rounded-lg text-base h-12",
+                    "text-base h-12",
                     selectedAmount === amount ? 'bg-primary text-primary-foreground' : 'text-primary/70 border-border'
                   )}
                 >
@@ -102,7 +102,7 @@ export default function BuyCreditsV1Page() {
                 </Button>
               ))}
             </div>
-            <Button size="lg" className="w-full rounded-full mt-6 flex items-center">
+            <Button size="lg" className="w-full mt-6 flex items-center">
                 <WalletCards className="w-5 h-5 mr-2" />
                 Buy Credits
             </Button>
@@ -128,7 +128,7 @@ export default function BuyCreditsV1Page() {
                             <DialogHeader className="flex flex-row items-center justify-between text-left mb-4">
                                 <DialogTitle className="text-xl font-bold text-primary">Add new card</DialogTitle>
                                 <DialogClose asChild>
-                                    <Button variant="ghost" size="icon" className="rounded-full">
+                                    <Button variant="ghost" size="icon">
                                         <X className="w-5 h-5 text-muted-foreground"/>
                                     </Button>
                                 </DialogClose>
@@ -165,7 +165,7 @@ export default function BuyCreditsV1Page() {
                                         </div>
                                     </div>
                                 </div>
-                                <Button type="submit" size="lg" className="w-full rounded-full">
+                                <Button type="submit" size="lg" className="w-full">
                                     Save card information
                                 </Button>
                             </form>

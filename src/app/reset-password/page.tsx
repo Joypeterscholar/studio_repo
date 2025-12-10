@@ -18,9 +18,9 @@ export default function ResetPasswordPage() {
         </p>
 
         <Tabs defaultValue="telephone" className="mt-8">
-          <TabsList className="grid w-full grid-cols-2 rounded-full bg-primary/10 p-1">
-            <TabsTrigger value="email" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md">Email Reset</TabsTrigger>
-            <TabsTrigger value="telephone" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md">Telephone</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-primary/10 p-1">
+            <TabsTrigger value="email" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md">Email Reset</TabsTrigger>
+            <TabsTrigger value="telephone" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md">Telephone</TabsTrigger>
           </TabsList>
           <form className="mt-8 space-y-6">
             <TabsContent value="email">
@@ -30,7 +30,7 @@ export default function ResetPasswordPage() {
                     id="email" 
                     type="email" 
                     placeholder="Enter your email address..." 
-                    className="h-14 rounded-full border-0 bg-primary/10 pl-12 focus-visible:ring-primary"
+                    className="h-14 border-0 bg-primary/10 pl-12 focus-visible:ring-primary"
                     />
                 </div>
             </TabsContent>
@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
                     id="telephone" 
                     type="tel" 
                     placeholder="+234  _ _ _   _ _ _   _ _ 09" 
-                    className="h-14 rounded-full border-0 bg-primary/10 pl-12 focus-visible:ring-primary"
+                    className="h-14 border-0 bg-primary/10 pl-12 focus-visible:ring-primary"
                     />
                 </div>
             </TabsContent>

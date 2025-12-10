@@ -146,7 +146,7 @@ export default function UserProfilePage() {
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full bg-black/30 text-white hover:bg-black/50"
+            className="bg-black/30 text-white hover:bg-black/50"
             onClick={() => router.back()}
           >
             <ChevronLeft className="h-6 w-6" />
@@ -156,7 +156,7 @@ export default function UserProfilePage() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/30 text-white hover:bg-black/50"
+                className="bg-black/30 text-white hover:bg-black/50"
               >
                 <SlidersHorizontal className="h-6 w-6" />
               </Button>
@@ -166,7 +166,7 @@ export default function UserProfilePage() {
                 <DialogTitle className="sr-only">User Actions</DialogTitle>
                 <span></span>
                  <DialogClose asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full h-auto w-auto p-0">
+                    <Button variant="ghost" size="icon" className="h-auto w-auto p-0">
                       <X className="w-5 h-5 text-muted-foreground" />
                     </Button>
                   </DialogClose>
@@ -197,14 +197,14 @@ export default function UserProfilePage() {
         <div className="absolute bottom-4 left-4 z-10 flex gap-2">
           <Button
             variant="secondary"
-            className="rounded-full bg-accent/90 text-accent-foreground backdrop-blur-sm"
+            className="bg-accent/90 text-accent-foreground backdrop-blur-sm"
           >
             <Music className="w-4 h-4 mr-2" />
             Music
           </Button>
           <Button
             variant="secondary"
-            className="rounded-full bg-white/90 text-foreground backdrop-blur-sm"
+            className="bg-white/90 text-foreground backdrop-blur-sm"
           >
             <Pen className="w-4 h-4 mr-2" />
             Writing
@@ -237,7 +237,7 @@ export default function UserProfilePage() {
             <Button
               variant="outline"
               size="icon"
-              className="rounded-full border-2 w-10 h-10 shadow-md"
+              className="border-2 w-10 h-10 shadow-md"
             >
               <ArrowUp className="w-5 h-5 text-primary" />
             </Button>
@@ -279,7 +279,7 @@ export default function UserProfilePage() {
                 <Button
                   key={interest.name}
                   variant="outline"
-                  className="rounded-full bg-accent/20 border-accent/30 text-accent-foreground flex items-center gap-2 transition-all duration-200 text-sm h-9"
+                  className="bg-accent/20 border-accent/30 text-accent-foreground flex items-center gap-2 transition-all duration-200 text-sm h-9"
                 >
                   {typeof interest.icon === 'string' ? (
                     <span className="text-base">{interest.icon}</span>
@@ -315,7 +315,7 @@ export default function UserProfilePage() {
           <Link href="/block-user">
             <Button
               variant="destructive"
-              className="w-full h-12 rounded-full text-lg"
+              className="w-full h-12 text-lg"
             >
               Block User
             </Button>
@@ -331,12 +331,12 @@ export default function UserProfilePage() {
           <Button
             variant="outline"
             size="icon"
-            className="h-16 w-16 rounded-full border-accent text-accent bg-accent/10 shadow-lg"
+            className="h-16 w-16 border-accent text-accent bg-accent/10 shadow-lg"
           >
             <Heart className="w-8 h-8" />
           </Button>
           <Link href={`/video-call/${user.id}`} className='flex-grow'>
-            <Button className="h-16 rounded-full w-full text-lg font-bold shadow-lg bg-green-500 hover:bg-green-600">
+            <Button className="h-16 w-full text-lg font-bold shadow-lg bg-green-500 hover:bg-green-600">
                 Video Call
                 <Video className="w-6 h-6 ml-2" />
             </Button>

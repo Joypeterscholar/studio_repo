@@ -57,7 +57,7 @@ export default function InterestsPage() {
     <div className="flex flex-col h-screen bg-background text-foreground">
       <header className="flex items-center justify-between p-4 md:p-6">
         <Logo isLinqUp className="w-28 text-primary" />
-        <Button variant="ghost" size="icon" className="rounded-full border w-10 h-10">
+        <Button variant="ghost" size="icon" className="border w-10 h-10">
           <Bell className="h-5 w-5" />
         </Button>
       </header>
@@ -73,7 +73,7 @@ export default function InterestsPage() {
               variant="outline"
               onClick={() => toggleInterest(interest.name)}
               className={cn(
-                'rounded-full border-gray-300 flex items-center gap-2 transition-all duration-200',
+                'border-gray-300 flex items-center gap-2 transition-all duration-200',
                 selectedInterests.includes(interest.name)
                   ? 'bg-accent text-accent-foreground border-accent'
                   : 'bg-white text-foreground'
@@ -88,7 +88,7 @@ export default function InterestsPage() {
 
       <footer className="p-6">
         <Link href="/home" passHref>
-          <Button className="w-full rounded-full" size="lg">
+          <Button className="w-full" size="lg">
             Get on the Roll!
           </Button>
         </Link>

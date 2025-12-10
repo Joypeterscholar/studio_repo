@@ -42,7 +42,6 @@ export default function CreatePostPage() {
           onClick={() => router.back()}
           variant="ghost"
           size="icon"
-          className="rounded-full w-10 h-10"
         >
           <ChevronLeft className="h-6 w-6 text-primary" />
         </Button>
@@ -50,7 +49,7 @@ export default function CreatePostPage() {
           <DialogTrigger asChild>
             <Button
               variant="ghost"
-              className="text-primary rounded-full"
+              className="text-primary"
             >
               <X className="h-6 w-6" />
             </Button>
@@ -72,7 +71,7 @@ export default function CreatePostPage() {
                 className="text-2xl font-bold border-none shadow-none p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
                 defaultValue="Food in Italy"
             />
-             <Button variant="outline" className="rounded-full mt-2 border-primary text-primary">
+             <Button variant="outline" className="mt-2 border-primary text-primary">
                 Photography
              </Button>
         </div>
@@ -92,7 +91,7 @@ export default function CreatePostPage() {
                                 className="rounded-lg object-cover"
                                 data-ai-hint={image.imageHint}
                             />
-                            <Button size="icon" variant="ghost" onClick={() => removeImage(image.id)} className="absolute top-1 right-1 h-6 w-6 bg-black/50 hover:bg-black/70 text-white rounded-full">
+                            <Button size="icon" variant="ghost" onClick={() => removeImage(image.id)} className="absolute top-1 right-1 h-6 w-6 bg-black/50 hover:bg-black/70 text-white">
                                 <X className="w-4 h-4" />
                             </Button>
                         </div>
@@ -103,7 +102,7 @@ export default function CreatePostPage() {
 
         <Input 
             placeholder="What's on your mind?"
-            className="rounded-full h-12 px-4 bg-muted border-none"
+            className="h-12 px-4 bg-muted border-none"
         />
 
       </main>
@@ -118,7 +117,7 @@ export default function CreatePostPage() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full text-muted-foreground"
+              className="text-muted-foreground"
             >
               <Smile />
             </Button>
@@ -126,7 +125,7 @@ export default function CreatePostPage() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full text-muted-foreground"
+              className="text-muted-foreground"
             >
               <Paperclip />
             </Button>
@@ -134,7 +133,7 @@ export default function CreatePostPage() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full text-muted-foreground"
+              className="text-muted-foreground"
             >
               <Camera />
             </Button>
@@ -142,7 +141,7 @@ export default function CreatePostPage() {
           <Button
             type="submit"
             size="icon"
-            className="h-12 w-12 flex-shrink-0 rounded-full bg-accent text-accent-foreground"
+            className="h-12 w-12 flex-shrink-0 bg-accent text-accent-foreground"
           >
             <Send className="h-6 w-6" />
           </Button>

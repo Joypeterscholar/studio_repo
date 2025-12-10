@@ -91,7 +91,7 @@ export default function DiscoverMapPage() {
             <Button
               variant="outline"
               size="icon"
-              className="rounded-full w-12 h-12"
+              className="w-12 h-12"
             >
               <Search className="w-6 h-6" />
             </Button>
@@ -135,7 +135,7 @@ export default function DiscoverMapPage() {
                         alt={user.name}
                         width={48}
                         height={48}
-                        className="absolute rounded-full object-cover border-2 border-white"
+                        className="absolute object-cover border-2 border-white"
                         style={{ top, left, transform: 'translate(-50%, -50%)' }}
                         data-ai-hint={userImage.imageHint}
                       />
@@ -144,7 +144,7 @@ export default function DiscoverMapPage() {
                 })}
 
                 <Button
-                  className="absolute rounded-full bg-primary text-primary-foreground h-auto py-2 px-4"
+                  className="absolute bg-primary text-primary-foreground h-auto py-2 px-4"
                   style={{
                     top: '30%',
                     left: '50%',

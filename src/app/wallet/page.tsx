@@ -19,7 +19,7 @@ export default function WalletPage() {
     <AppLayout>
       <div className="flex flex-col h-full bg-muted/50">
         <header className="flex items-center p-4">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10 border bg-white">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="border bg-white">
             <ChevronLeft className="h-6 w-6 text-primary" />
           </Button>
           <div className="flex-grow text-center">
@@ -34,13 +34,13 @@ export default function WalletPage() {
                 <p className="text-4xl font-bold text-primary my-2">217LQ</p>
                 <div className="flex flex-col gap-3 mt-4">
                     <Link href="/send-credits" passHref>
-                        <Button size="lg" className="w-full rounded-full bg-cyan-400 hover:bg-cyan-500 text-white">
+                        <Button size="lg" className="w-full bg-cyan-400 hover:bg-cyan-500 text-white">
                             <Send className="w-5 h-5 mr-2 -ml-2 rotate-[-45deg] translate-y-px" />
                             Send Credits
                         </Button>
                     </Link>
                     <Link href="/buy-credits" passHref>
-                        <Button size="lg" className="w-full rounded-full">
+                        <Button size="lg" className="w-full">
                             <WalletCards className="w-5 h-5 mr-2" />
                             Buy Credits
                         </Button>

@@ -15,7 +15,7 @@ export default function CreateStatusPage() {
           onClick={() => router.back()}
           variant="ghost"
           size="icon"
-          className="h-10 w-10 rounded-full"
+          className="h-10 w-10"
         >
           <X className="h-6 w-6" />
         </Button>
@@ -38,7 +38,7 @@ export default function CreateStatusPage() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full text-muted-foreground"
+              className="text-muted-foreground"
             >
               <Smile />
             </Button>
@@ -46,7 +46,7 @@ export default function CreateStatusPage() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full text-muted-foreground"
+              className="text-muted-foreground"
             >
               <Camera />
             </Button>
@@ -54,7 +54,7 @@ export default function CreateStatusPage() {
           <Button
             type="submit"
             size="icon"
-            className="h-12 w-12 flex-shrink-0 rounded-full bg-accent text-accent-foreground"
+            className="h-12 w-12 flex-shrink-0 bg-accent text-accent-foreground"
           >
             <Send className="h-6 w-6" />
           </Button>

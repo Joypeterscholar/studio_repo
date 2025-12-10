@@ -37,7 +37,7 @@ export default function LoginPage() {
             <label htmlFor="email" className="text-sm font-medium">Email</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <Input id="email" type="email" placeholder="Type something here" className="pl-10 rounded-full h-12" />
+              <Input id="email" type="email" placeholder="Type something here" className="pl-10 h-12" />
             </div>
           </div>
           
@@ -50,7 +50,7 @@ export default function LoginPage() {
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <Input id="password" type="password" placeholder="Type something here..." className="pl-10 rounded-full h-12" />
+              <Input id="password" type="password" placeholder="Type something here..." className="pl-10 h-12" />
             </div>
           </div>
 

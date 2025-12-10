@@ -104,7 +104,7 @@ export default function SettingsPage() {
   return (
     <div className="bg-muted/50 text-foreground min-h-screen">
       <header className="flex items-center p-4 bg-white shadow-sm">
-        <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10">
+        <Button onClick={() => router.back()} variant="ghost" size="icon" className="w-10 h-10">
           <ChevronLeft className="h-6 w-6 text-primary" />
         </Button>
         <h1 className="text-xl font-bold text-primary mx-auto">Settings</h1>
@@ -150,7 +150,7 @@ export default function SettingsPage() {
                   <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
                       <DialogTitle className="text-xl font-bold text-primary">Select Country</DialogTitle>
                       <DialogClose asChild>
-                        <Button variant="ghost" size="icon" className="rounded-full">
+                        <Button variant="ghost" size="icon">
                             <X className="w-5 h-5"/>
                         </Button>
                       </DialogClose>
@@ -203,7 +203,7 @@ export default function SettingsPage() {
                 <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
                   <DialogTitle className="text-xl font-bold text-primary">Select Language</DialogTitle>
                   <DialogClose asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full">
+                    <Button variant="ghost" size="icon">
                       <X className="w-5 h-5 text-muted-foreground" />
                     </Button>
                   </DialogClose>
@@ -278,7 +278,7 @@ export default function SettingsPage() {
             <DialogHeader className="flex flex-row items-center justify-between p-4 border-b">
               <DialogTitle className="text-xl font-bold text-primary">Interested in</DialogTitle>
               <DialogClose asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
+                <Button variant="ghost" size="icon">
                   <X className="w-5 h-5 text-muted-foreground" />
                 </Button>
               </DialogClose>
@@ -310,7 +310,7 @@ export default function SettingsPage() {
         </Dialog>
 
 
-        <Button variant="outline" className="w-full rounded-full bg-white text-primary border-primary h-12 text-base">
+        <Button variant="outline" className="w-full bg-white text-primary border-primary h-12 text-base">
             Logout
         </Button>
       </main>

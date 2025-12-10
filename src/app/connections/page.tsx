@@ -34,7 +34,7 @@ export default function ConnectionsPage() {
         <AppLayout>
             <div className="flex flex-col min-h-full bg-background text-foreground">
                 <header className="flex items-center p-4">
-                    <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10 border">
+                    <Button onClick={() => router.back()} variant="ghost" size="icon" className="border">
                         <ChevronLeft className="h-6 w-6 text-primary" />
                     </Button>
                     <div className="flex-grow text-center">
@@ -66,10 +66,10 @@ export default function ConnectionsPage() {
                                         </div>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Button variant="outline" size="sm" className="rounded-full border-primary/20 text-primary/80">
+                                        <Button variant="outline" size="sm" className="border-primary/20 text-primary/80">
                                             Ignore
                                         </Button>
-                                        <Button variant="outline" size="sm" className="rounded-full border-primary text-primary">
+                                        <Button variant="outline" size="sm" className="border-primary text-primary">
                                             Accept
                                         </Button>
                                     </div>
@@ -107,11 +107,11 @@ export default function ConnectionsPage() {
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
-                                            <Button variant="outline" size="sm" className="rounded-full border-primary/20 text-primary/80">
+                                            <Button variant="outline" size="sm" className="border-primary/20 text-primary/80">
                                                 Disconnect
                                             </Button>
                                             <Link href={`/messages/${user.userId}`}>
-                                                <Button variant="outline" size="sm" className="rounded-full border-primary text-primary">
+                                                <Button variant="outline" size="sm" className="border-primary text-primary">
                                                     Message
                                                 </Button>
                                             </Link>

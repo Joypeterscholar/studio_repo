@@ -25,7 +25,7 @@ export default function SendCreditPage() {
     <AppLayout>
       <div className="flex flex-col h-full bg-muted/50">
         <header className="flex items-center p-4">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10 border bg-white">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="border bg-white">
             <ChevronLeft className="h-6 w-6 text-primary" />
           </Button>
           <div className="flex-grow text-center">
@@ -44,7 +44,7 @@ export default function SendCreditPage() {
               type="text"
               value={amount}
               onChange={handleAmountChange}
-              className="h-14 text-lg rounded-xl border-primary/30 focus-visible:ring-primary"
+              className="h-14 text-lg border-primary/30 focus-visible:ring-primary"
               pattern="\d*"
             />
             
@@ -52,7 +52,7 @@ export default function SendCreditPage() {
               Send {amount || 0}LQ to {recipientName}
             </p>
 
-            <Button size="lg" className="w-full rounded-full h-14 text-lg">
+            <Button size="lg" className="w-full h-14 text-lg">
               <WalletCards className="w-6 h-6 mr-2" />
               Send {amount || 0}LQ
             </Button>

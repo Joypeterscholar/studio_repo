@@ -63,7 +63,7 @@ export default function HomePage() {
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full border w-10 h-10"
+            className="border w-10 h-10"
           >
             <Bell className="h-5 w-5" />
           </Button>
@@ -101,16 +101,16 @@ export default function HomePage() {
 
         <main className="px-4 py-4">
           <Tabs defaultValue="make-friends" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-full bg-primary/5 p-1 h-12">
+            <TabsList className="grid w-full grid-cols-2 bg-primary/5 p-1 h-12">
               <TabsTrigger
                 value="make-friends"
-                className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
               >
                 Make Friends
               </TabsTrigger>
               <TabsTrigger
                 value="search-partners"
-                className="rounded-full data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md text-primary/80"
               >
                 Search Partners
               </TabsTrigger>
@@ -139,13 +139,13 @@ export default function HomePage() {
                       </div>
 
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
-                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                        <Button variant="ghost" size="icon" className="bg-black/30 h-12 w-12 text-white hover:bg-black/50">
                           <ThumbsUp />
                         </Button>
-                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                        <Button variant="ghost" size="icon" className="bg-black/30 h-12 w-12 text-white hover:bg-black/50">
                           <MessageCircle />
                         </Button>
-                        <Button variant="ghost" size="icon" className="rounded-full bg-black/30 h-12 w-12 text-white hover:bg-black/50">
+                        <Button variant="ghost" size="icon" className="bg-black/30 h-12 w-12 text-white hover:bg-black/50">
                           <Send />
                         </Button>
                       </div>

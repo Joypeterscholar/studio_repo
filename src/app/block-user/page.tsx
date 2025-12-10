@@ -14,7 +14,7 @@ export default function BlockUserPage() {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
       <header className="p-4">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full border w-10 h-10">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="border w-10 h-10">
             <ChevronLeft className="h-6 w-6" />
           </Button>
       </header>
@@ -39,10 +39,10 @@ export default function BlockUserPage() {
         </p>
 
         <div className="mt-12 w-full max-w-sm space-y-4">
-          <Button onClick={() => router.back()} variant="outline" className="w-full rounded-full" size="lg">
+          <Button onClick={() => router.back()} variant="outline" className="w-full" size="lg">
             Exit
           </Button>
-          <Button variant="destructive" className="w-full rounded-full bg-red-500 hover:bg-red-600 text-white" size="lg">
+          <Button variant="destructive" className="w-full" size="lg">
             Block User
           </Button>
         </div>
