@@ -146,19 +146,6 @@ export default function LoginPage() {
             </Button>
           </form>
         </Form>
-
-        <div className="my-6 flex items-center">
-          <div className="flex-grow border-t border-muted" />
-          <span className="mx-4 text-sm text-muted-foreground">or continue with</span>
-          <div className="flex-grow border-t border-muted" />
-        </div>
-
-        <div className="space-y-4">
-          <Button variant="outline" className="w-full justify-start" size="lg" onClick={onGoogleSubmit}>
-            <GoogleIcon />
-            <span className="flex-grow text-center">Login with Google</span>
-          </Button>
-        </div>
       </div>
     </div>
   );
