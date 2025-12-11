@@ -101,7 +101,6 @@ export async function seedDatabase(db: Firestore) {
       toUserId,
       status: getRandomItem(statuses),
       createdAt: serverTimestamp(),
-      // Add userIds for easier querying
       userIds: [fromUserId, toUserId],
     });
   }

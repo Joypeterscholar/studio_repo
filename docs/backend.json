@@ -222,6 +222,13 @@
           "type": "string",
           "description": "The ID of the user receiving the action."
         },
+        "userIds": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "An array containing the IDs of both users in the connection for easy querying."
+        },
         "status": {
           "type": "string",
           "enum": ["liked", "requested", "connected", "blocked"],
@@ -232,7 +239,7 @@
           "format": "date-time"
         }
       },
-      "required": ["fromUserId", "toUserId", "status", "createdAt"]
+      "required": ["fromUserId", "toUserId", "userIds", "status", "createdAt"]
     }
   },
   "auth": {
