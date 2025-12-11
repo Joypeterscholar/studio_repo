@@ -7,12 +7,12 @@ import Logo from '@/components/layout/Logo';
 export default function SplashScreen() {
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     router.push('/onboarding');
-  //   }, 7000);
-  //   return () => clearTimeout(timer);
-  // }, [router]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/onboarding');
+    }, 2000); // Shortened for quicker access during testing
+    return () => clearTimeout(timer);
+  }, [router]);
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden">
