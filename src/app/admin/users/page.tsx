@@ -34,13 +34,33 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUsers } from '@/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
+import { placeholderImages } from '@/lib/placeholder-images';
+
+const findImage = (id: string) => {
+    return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
+};
+
 
 export default function AdminUsersPage() {
   const { data: users, loading } = useUsers();
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  const TableSkeleton = () => (
+    Array.from({length: 10}).map((_, i) => (
+        <TableRow key={i}>
+            <TableCell className="hidden sm:table-cell">
+                <Skeleton className="h-12 w-12 rounded-full" />
+            </TableCell>
+            <TableCell><Skeleton className="h-6 w-32" /></TableCell>
+            <TableCell><Skeleton className="h-6 w-16" /></TableCell>
+            <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-24" /></TableCell>
+            <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-40" /></TableCell>
+            <TableCell>
+                <Skeleton className="h-8 w-8" />
+            </TableCell>
+        </TableRow>
+    ))
+  );
 
   return (
     <Tabs defaultValue="all">
@@ -116,62 +136,65 @@ export default function AdminUsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="hidden sm:table-cell">
-                      <Image
-                        alt="User avatar"
-                        className="aspect-square rounded-full object-cover"
-                        height="48"
-                        src={user.image.imageUrl}
-                        width="48"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>
-                      <Badge variant={user.isOnline ? 'default' : 'outline'}
-                        className={user.isOnline ? 'bg-green-500 hover:bg-green-600' : ''}
-                      >
-                        {user.isOnline ? 'Online' : 'Offline'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {user.location}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {user.interests.slice(0, 3).join(', ')}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>View Profile</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            Ban
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {loading ? <TableSkeleton /> : users.map((user) => {
+                    const image = user.image ? findImage(user.image.id) : placeholderImages[0];
+                    return (
+                        <TableRow key={user.id}>
+                        <TableCell className="hidden sm:table-cell">
+                        <Image
+                            alt="User avatar"
+                            className="aspect-square rounded-full object-cover"
+                            height="48"
+                            src={image.imageUrl}
+                            width="48"
+                            data-ai-hint={image.imageHint}
+                        />
+                        </TableCell>
+                        <TableCell className="font-medium">{user.name}</TableCell>
+                        <TableCell>
+                        <Badge variant={user.isOnline ? 'default' : 'outline'}
+                            className={user.isOnline ? 'bg-green-500 hover:bg-green-600' : ''}
+                        >
+                            {user.isOnline ? 'Online' : 'Offline'}
+                        </Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                        {user.location}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                        {user.interests.slice(0, 3).join(', ')}
+                        </TableCell>
+                        <TableCell>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                            <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                            >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                            </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem>View Profile</DropdownMenuItem>
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">
+                                Ban
+                            </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        </TableCell>
+                    </TableRow>
+                    )
+                })}
               </TableBody>
             </Table>
           </CardContent>
           <CardFooter>
             <div className="text-xs text-muted-foreground">
-              Showing <strong>1-10</strong> of <strong>{users.length}</strong>{' '}
-              users
+                {loading ? <Skeleton className="h-4 w-32" /> : `Showing <strong>1-${users.length}</strong> of <strong>${users.length}</strong> users`}
             </div>
           </CardFooter>
         </Card>

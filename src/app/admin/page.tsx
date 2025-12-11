@@ -4,12 +4,8 @@
 import {
   Activity,
   ArrowUpRight,
-  CircleUser,
   CreditCard,
   DollarSign,
-  Menu,
-  Package2,
-  Search,
   Users,
   Database,
 } from 'lucide-react';
@@ -43,8 +39,9 @@ import {
 import { seedDatabase } from '@/lib/seed';
 import { useFirestore, useUsers } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { userActivityData, userDemographicsData } from '@/lib/charts-data';
+import { userActivityData } from '@/lib/charts-data';
 import type { User } from '@/lib/data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminDashboardPage() {
   const firestore = useFirestore();
@@ -76,13 +73,13 @@ export default function AdminDashboardPage() {
     }
   }
 
-  // Use live data for recent signups, placeholder for sales
   const recentSignups = users.slice(0, 5);
 
+  // Placeholder for sales data
   const recentSales = users.slice(5, 10).map(user => ({
       id: user.id,
       name: user.name,
-      email: `${user.name.split(' ')[0].toLowerCase()}@email.com`,
+      email: `${user.name.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/, '')}@email.com`,
       amount: `+$${((Math.random() * 100) + 20).toFixed(2)}`,
       avatarUrl: user.image.imageUrl,
       fallback: user.name.split(' ').map(n => n[0]).join(''),
@@ -109,7 +106,7 @@ export default function AdminDashboardPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{users.length}</div>
+            {usersLoading ? <Skeleton className="h-8 w-1/2" /> : <div className="text-2xl font-bold">{users.length}</div>}
             <p className="text-xs text-muted-foreground">
               +12.1% from last month
             </p>
@@ -133,7 +130,7 @@ export default function AdminDashboardPage() {
                 <Database className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <Button onClick={handleSeedDatabase}>
+                <Button onClick={handleSeedDatabase} disabled={!firestore}>
                     Seed Data
                 </Button>
                 <p className="text-xs text-muted-foreground mt-2">
@@ -159,7 +156,6 @@ export default function AdminDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {usersLoading ? <p>Loading users...</p> : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -172,7 +168,14 @@ export default function AdminDashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recentSignups.map((user: User) => (
+                {usersLoading ? Array.from({length: 5}).map((_, i) => (
+                     <TableRow key={i}>
+                        <TableCell><Skeleton className="h-9 w-full" /></TableCell>
+                        <TableCell className="hidden sm:table-cell"><Skeleton className="h-6 w-16" /></TableCell>
+                        <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-24" /></TableCell>
+                        <TableCell className="text-right"><Skeleton className="h-6 w-8 ml-auto" /></TableCell>
+                    </TableRow>
+                )) : recentSignups.map((user: User) => (
                     <TableRow key={user.id}>
                     <TableCell>
                         <div className="flex items-center gap-3">
@@ -196,15 +199,24 @@ export default function AdminDashboardPage() {
                 ))}
               </TableBody>
             </Table>
-            )}
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
+            <CardDescription>A list of recent credit purchases.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-8">
-             {usersLoading ? <p>Loading...</p> : recentSales.map((sale) => (
+             {usersLoading ? Array.from({length: 5}).map((_, i) => (
+                 <div key={i} className="flex items-center gap-4">
+                     <Skeleton className="h-9 w-9 rounded-full" />
+                     <div className="grid gap-1 w-full">
+                         <Skeleton className="h-4 w-2/3" />
+                         <Skeleton className="h-3 w-1/2" />
+                     </div>
+                     <Skeleton className="h-5 w-1/4 ml-auto" />
+                 </div>
+             )) : recentSales.map((sale) => (
                  <div key={sale.id} className="flex items-center gap-4">
                  <Avatar className="hidden h-9 w-9 sm:flex">
                    <AvatarImage src={sale.avatarUrl} alt="Avatar" />
@@ -226,6 +238,7 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>User Activity</CardTitle>
+            <CardDescription>New vs. Active users over the last week.</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
             <ActivityChart />
@@ -234,6 +247,7 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>User Demographics</CardTitle>
+            <CardDescription>A breakdown of users by age group.</CardDescription>
           </CardHeader>
           <CardContent>
             <BarChart />

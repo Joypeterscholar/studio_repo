@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, Heart, MessageCircle } from 'lucide-react';
+import { ChevronLeft, Heart, MessageCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
@@ -13,6 +13,7 @@ import { useFirestore } from '@/firebase';
 import { collection, query, where } from 'firebase/firestore';
 import { type Connection, type User } from '@/lib/data';
 import { useMemo } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 const findImage = (id: string) => {
@@ -22,10 +23,8 @@ const findImage = (id: string) => {
 function MatchCard({ connection }: { connection: Connection }) {
     const { data: loggedInUser } = useLoggedInUser();
     
-    // Determine the other user's ID
     const otherUserId = useMemo(() => {
         if (!loggedInUser || !connection) return null;
-        // The connection now has userIds, so we use that.
         const otherId = (connection.userIds || []).find(id => id !== loggedInUser.id);
         return otherId;
     }, [loggedInUser, connection]);
@@ -34,7 +33,9 @@ function MatchCard({ connection }: { connection: Connection }) {
 
     if (loading || !user) {
         return (
-            <div className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse"></div>
+            <div className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse">
+                <Skeleton className="w-full h-full rounded-3xl" />
+            </div>
         );
     }
     
@@ -84,11 +85,17 @@ export default function MatchesPage() {
   const connectionsQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('userIds', 'array-contains', loggedInUser.id), where('status', '==', 'connected')) : null;
   const { data: matches, loading } = useCollection<Connection>(connectionsQuery);
 
+  const MatchSkeleton = () => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {Array.from({length: 6}).map((_, i) => <Skeleton key={i} className="relative aspect-[3/4] rounded-3xl" />)}
+    </div>
+  );
+
   return (
     <AppLayout>
       <div className="flex flex-col bg-background min-h-full">
         <header className="flex items-center justify-between p-4">
-          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10">
+          <Button onClick={() => router.back()} variant="ghost" size="icon" className="rounded-full w-10 h-10 border">
             <ChevronLeft className="h-6 w-6" />
           </Button>
           <h1 className="text-xl font-bold text-primary">Matches</h1>
@@ -96,31 +103,45 @@ export default function MatchesPage() {
         </header>
 
         <div className="flex justify-center gap-8 my-4">
-          <div className="text-center">
+          <Link href="/likes" className="text-center">
             <Button variant="outline" className="w-20 h-20 rounded-full border-4 border-primary/20 flex-col gap-1">
                 <Heart className="w-8 h-8 text-primary/80 fill-primary/20" />
             </Button>
             <p className="mt-2 text-sm text-muted-foreground">Likes <span className="font-semibold text-primary">32</span></p>
-          </div>
-          <div className="text-center">
+          </Link>
+          <Link href="/connections" className="text-center">
             <Button variant="outline" className="w-20 h-20 rounded-full border-4 border-primary/20 flex-col gap-1">
                 <MessageCircle className="w-8 h-8 text-primary/80" />
             </Button>
-            <p className="mt-2 text-sm text-muted-foreground">Connect <span className="font-semibold text-primary">15</span></p>
-          </div>
+            <p className="mt-2 text-sm text-muted-foreground">Connects <span className="font-semibold text-primary">15</span></p>
+          </Link>
         </div>
 
         <main className="px-4 pb-8">
             <h2 className="text-lg font-bold text-primary mb-4">
-                Your Matches <span className="text-accent">{matches.length}</span>
+                Your Matches <span className="text-accent">{!loading ? matches.length : ''}</span>
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {loading && Array.from({length: 6}).map((_, i) => <div key={i} className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse"></div>)}
-                {!loading && matches.map(connection => (
-                   <MatchCard key={connection.id} connection={connection} />
-                ))}
-            </div>
+            {loading && <MatchSkeleton />}
+
+            {!loading && matches.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground">
+                    <Users className="w-16 h-16 mb-4" />
+                    <h3 className="text-lg font-semibold">No Matches Yet</h3>
+                    <p>Start exploring and like profiles to find matches.</p>
+                     <Link href="/discover" className="mt-4">
+                        <Button>Discover People</Button>
+                    </Link>
+                </div>
+            )}
+
+            {!loading && matches.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {matches.map(connection => (
+                        <MatchCard key={connection.id} connection={connection} />
+                    ))}
+                </div>
+            )}
         </main>
       </div>
     </AppLayout>

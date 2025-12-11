@@ -1,9 +1,10 @@
+
 'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, X, Plus } from 'lucide-react';
+import { ChevronLeft, X, Plus, Filter, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
@@ -15,20 +16,15 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
+import { useCollection, useUser } from '@/firebase';
+import { collection, query, where } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
+import type { Post } from '@/lib/data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
-
-const posts: any[] = [
-  // {
-  //   id: '1',
-  //   title: 'Exploring Indiana in the midst of whatever',
-  //   preview: 'What about that new jacket i...',
-  //   date: '04/25',
-  //   authorImageId: 'user-male-1',
-  // },
-];
 
 const FilterIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,28 +39,59 @@ const FilterIcon = () => (
 
 export default function RecentPostsPage() {
   const router = useRouter();
+  const firestore = useFirestore();
+  const { data: user, loading: userLoading } = useUser();
+
+  const postsQuery = firestore && user ? query(collection(firestore, 'posts'), where('authorId', '==', user.id)) : null;
+  const { data: posts, loading: postsLoading } = useCollection<Post>(postsQuery);
+
   const crossIcon = findImage('delete-cross-icon');
+
+  const LoadingSkeleton = () => (
+    <div className="divide-y divide-border">
+        {Array.from({length: 5}).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 py-4">
+                <Skeleton className="w-14 h-14 rounded-lg" />
+                <div className="flex-grow space-y-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-3 w-1/2" />
+                </div>
+                <Skeleton className="h-4 w-10" />
+            </div>
+        ))}
+    </div>
+  );
+
+  if (postsLoading || userLoading) {
+    return (
+       <AppLayout>
+            <div className="flex flex-col h-full bg-background text-foreground">
+                <header className="flex items-center justify-between p-4 sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+                    <Button onClick={() => router.back()} variant="ghost" size="icon" className="border w-10 h-10">
+                        <ChevronLeft className="h-6 w-6" />
+                    </Button>
+                    <h1 className="text-xl font-bold text-primary">My Posts</h1>
+                    <div className="w-10 h-10"></div>
+                </header>
+                <main className="flex-grow overflow-y-auto px-4">
+                    <LoadingSkeleton />
+                </main>
+            </div>
+       </AppLayout>
+    )
+  }
 
   if (posts.length === 0) {
     return (
       <div className="flex flex-col h-screen bg-background text-foreground">
         <header className="p-4">
-            <Button onClick={() => router.back()} variant="ghost" size="icon" className="w-10 h-10">
+            <Button onClick={() => router.back()} variant="ghost" size="icon" className="w-10 h-10 border">
               <ChevronLeft className="h-6 w-6" />
             </Button>
         </header>
 
         <main className="flex-grow flex flex-col items-center justify-center text-center px-4 pb-16">
-            {crossIcon && (
-                <Image
-                    src={crossIcon.imageUrl}
-                    alt={crossIcon.description}
-                    width={150}
-                    height={150}
-                    className="mb-8"
-                    data-ai-hint={crossIcon.imageHint}
-                />
-            )}
+            <FileText className="w-20 h-20 mb-6 text-muted-foreground" />
           
           <h1 className="text-xl font-bold text-primary mb-2">
             You do not have any posts yet.
@@ -91,7 +118,7 @@ export default function RecentPostsPage() {
           <Button onClick={() => router.back()} variant="ghost" size="icon" className="border w-10 h-10">
             <ChevronLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-xl font-bold text-primary">Recent Posts</h1>
+          <h1 className="text-xl font-bold text-primary">My Posts</h1>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon" className="border w-10 h-10 text-primary">
@@ -122,22 +149,23 @@ export default function RecentPostsPage() {
         <main className="flex-grow overflow-y-auto px-4">
           <div className="divide-y divide-border">
             {posts.map((post) => {
-              const authorImage = findImage(post.authorImageId);
+              const postImage = post.images.length > 0 ? findImage(post.images[0].id) : placeholderImages[0];
+              const postDate = new Date(post.createdAt.seconds * 1000).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' });
               return (
                 <Link href={`/post/${post.id}`} key={post.id} className="flex items-center gap-4 py-4">
                   <Image
-                    src={authorImage.imageUrl}
-                    alt={authorImage.description}
+                    src={postImage.imageUrl}
+                    alt={postImage.description}
                     width={56}
                     height={56}
-                    className="rounded-full object-cover w-14 h-14"
-                    data-ai-hint={authorImage.imageHint}
+                    className="rounded-lg object-cover w-14 h-14"
+                    data-ai-hint={postImage.imageHint}
                   />
-                  <div className="flex-grow">
-                    <h2 className="font-semibold text-primary">{post.title}</h2>
-                    <p className="text-sm text-muted-foreground truncate">{post.preview}</p>
+                  <div className="flex-grow overflow-hidden">
+                    <h2 className="font-semibold text-primary truncate">{post.title}</h2>
+                    <p className="text-sm text-muted-foreground truncate">{post.content}</p>
                   </div>
-                  <span className="text-sm text-muted-foreground">{post.date}</span>
+                  <span className="text-sm text-muted-foreground flex-shrink-0">{postDate}</span>
                 </Link>
               );
             })}

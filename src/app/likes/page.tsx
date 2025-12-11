@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { type Connection, type User } from '@/lib/data';
 import { collection, query, where } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -21,7 +22,7 @@ const LikedByUserRow = ({ connection }: { connection: Connection }) => {
     const { data: user, loading } = useUserById(connection.fromUserId);
 
     if (loading || !user || !user.image) {
-        return <div className="h-20 my-2 bg-muted rounded-lg animate-pulse" />;
+        return <Skeleton className="h-20 my-2 w-full rounded-lg" />;
     }
 
     const image = findImage(user.image.id);
@@ -62,6 +63,23 @@ export default function LikesPage() {
     const likesQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('toUserId', '==', loggedInUser.id), where('status', '==', 'liked')) : null;
     const { data: likedByUsers, loading } = useCollection<Connection>(likesQuery);
 
+    const LoadingSkeleton = () => (
+        <>
+            {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between py-4">
+                    <div className="flex items-center gap-4">
+                        <Skeleton className="w-14 h-14 rounded-full" />
+                        <div className="space-y-2">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-24" />
+                        </div>
+                    </div>
+                    <Skeleton className="h-9 w-24 rounded-full" />
+                </div>
+            ))}
+        </>
+    );
+
     return (
         <AppLayout>
             <div className="flex flex-col min-h-full bg-background text-foreground">
@@ -77,18 +95,18 @@ export default function LikesPage() {
 
                 <main className="flex-grow px-4">
                     <div className="divide-y divide-border">
-                        {loading && Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 my-2 bg-muted rounded-lg animate-pulse" />)}
+                        {loading && <LoadingSkeleton />}
+                        {!loading && likedByUsers.length === 0 && (
+                            <div className="flex flex-col items-center justify-center h-96 text-center text-muted-foreground">
+                                <Heart className="w-16 h-16 mb-4" />
+                                <h3 className="text-lg font-semibold">No Likes Yet</h3>
+                                <p>People who like your profile will appear here.</p>
+                            </div>
+                        )}
                         {!loading && likedByUsers.map((connection) => (
                             <LikedByUserRow key={connection.id} connection={connection} />
                         ))}
                     </div>
-                    {likedByUsers.length > 5 && (
-                        <div className="text-center py-6">
-                            <Button variant="link" className="text-primary">
-                                See more
-                            </Button>
-                        </div>
-                    )}
                 </main>
             </div>
         </AppLayout>

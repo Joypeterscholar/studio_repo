@@ -12,6 +12,7 @@ import { useCollection, useUserById, useUser as useLoggedInUser } from '@/fireba
 import { type Connection, type User } from '@/lib/data';
 import { collection, query, where } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -108,8 +109,29 @@ export default function ConnectionsPage() {
     const connectRequestsQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('toUserId', '==', loggedInUser.id), where('status', '==', 'requested')) : null;
     const { data: connectRequests, loading: requestsLoading } = useCollection<Connection>(connectRequestsQuery);
     
+    // This query was incorrect. For connections, we need to find where the user's ID is in the 'userIds' array.
     const connectionsQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('userIds', 'array-contains', loggedInUser.id), where('status', '==', 'connected')) : null;
     const { data: connections, loading: connectionsLoading } = useCollection<Connection>(connectionsQuery);
+
+    const LoadingSkeleton = () => (
+        <>
+            {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between py-4">
+                    <div className="flex items-center gap-4">
+                        <Skeleton className="w-14 h-14 rounded-full" />
+                        <div className="space-y-2">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-24" />
+                        </div>
+                    </div>
+                    <div className="flex gap-2">
+                        <Skeleton className="h-9 w-20" />
+                        <Skeleton className="h-9 w-20" />
+                    </div>
+                </div>
+            ))}
+        </>
+    );
 
     return (
         <AppLayout>
@@ -126,23 +148,22 @@ export default function ConnectionsPage() {
 
                 <main className="flex-grow px-4">
                     <div className="divide-y divide-border">
-                        {requestsLoading && Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 my-2 bg-muted rounded-lg animate-pulse" />)}
+                        {requestsLoading && <LoadingSkeleton />}
+                        {!requestsLoading && connectRequests.length === 0 && (
+                            <div className="text-center py-10 text-muted-foreground">No new connect requests.</div>
+                        )}
                         {!requestsLoading && connectRequests.map((request) => (
                            <ConnectionRequestRow key={request.id} connection={request} />
                         ))}
                     </div>
-                    {connectRequests.length > 3 && (
-                        <div className="text-center py-4">
-                            <Button variant="link" className="text-primary">
-                                See more
-                            </Button>
-                        </div>
-                    )}
-
+                    
                     <div className="mt-8">
                          <h2 className="text-xl font-bold text-primary mb-2">Connections</h2>
                          <div className="divide-y divide-border">
-                            {connectionsLoading && Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 my-2 bg-muted rounded-lg animate-pulse" />)}
+                            {connectionsLoading && <LoadingSkeleton />}
+                            {!connectionsLoading && connections.length === 0 && (
+                                <div className="text-center py-10 text-muted-foreground">You haven't made any connections yet.</div>
+                            )}
                             {!connectionsLoading && connections.map((connection) => (
                                <ConnectionRow key={connection.id} connection={connection} />
                             ))}

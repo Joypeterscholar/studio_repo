@@ -9,11 +9,11 @@ import {
   X,
   Heart,
   Star,
+  Compass,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import type { User } from '@/lib/data';
 import Link from 'next/link';
 import {
   Dialog,
@@ -25,28 +25,29 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUser, useUsers, useUserById, useCollection } from '@/firebase';
-import { type Post } from '@/lib/data';
+import { type Post, type User } from '@/lib/data';
 import { collection, query } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
-
-const mapUsersIds = ['1', '4', '2'];
-const mapUsersPositions = [
-  { top: '20%', left: '45%' },
-  { top: '48%', left: '70%' },
-  { top: '75%', left: '35%' },
-];
+import { Skeleton } from '@/components/ui/skeleton';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
 export default function DiscoverPage() {
-  const mapImage = findImage('map-background');
   const { data: loggedInUser, loading: userLoading } = useUser();
   const firestore = useFirestore();
+  const { data: users, loading: usersLoading } = useUsers();
 
   const postsQuery = firestore ? query(collection(firestore, 'posts')) : null;
   const { data: feedItems, loading: postsLoading } = useCollection<Post>(postsQuery);
+  
+  const mapUsers = users.slice(0, 3);
+  const mapUsersPositions = [
+    { top: '20%', left: '45%' },
+    { top: '48%', left: '70%' },
+    { top: '75%', left: '35%' },
+  ];
 
   const menuItems = [
     { label: 'Profile', href: '/profile' },
@@ -56,15 +57,30 @@ export default function DiscoverPage() {
   ];
 
   if (userLoading) {
-    return <div>Loading...</div>;
+    return <AppLayout><div className="flex h-full items-center justify-center">Loading...</div></AppLayout>;
   }
 
   if (!loggedInUser) {
-    // Or redirect to login
-    return <div>Please log in.</div>;
+    return <AppLayout><div className="flex h-full items-center justify-center p-4">Please log in to discover. <Link href="/login" className="ml-2"><Button>Login</Button></Link></div></AppLayout>;
   }
 
   const loggedInUserImage = findImage(loggedInUser.image.id);
+
+  const FeedSkeleton = () => (
+    <div className="space-y-6">
+        <div className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg bg-muted animate-pulse max-w-md mx-auto">
+            <Skeleton className="w-full h-full" />
+            <div className="absolute bottom-6 left-6 right-6">
+                <Skeleton className="h-6 w-3/4 mb-4" />
+            </div>
+        </div>
+         <div className="flex justify-center items-center gap-4 py-4">
+            <Skeleton className="w-16 h-16 rounded-full" />
+            <Skeleton className="w-14 h-14 rounded-full" />
+            <Skeleton className="w-16 h-16 rounded-full" />
+        </div>
+    </div>
+  );
 
   return (
     <AppLayout>
@@ -144,57 +160,68 @@ export default function DiscoverPage() {
             </TabsList>
 
             <TabsContent value="for-you" className="mt-6 space-y-6">
-               {postsLoading && <div className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg bg-muted animate-pulse" />}
-               {!postsLoading && feedItems.map((item) => {
+               {postsLoading && <FeedSkeleton />}
+               {!postsLoading && feedItems.length === 0 && (
+                   <div className="flex flex-col items-center justify-center h-[60vh] text-center text-muted-foreground">
+                        <Compass className="w-16 h-16 mb-4" />
+                        <h3 className="text-lg font-semibold">Nothing to show</h3>
+                        <p>There are no posts to show you right now.</p>
+                   </div>
+               )}
+               {!postsLoading && feedItems.map((item, index) => {
                 const bgImage = item.images.length > 0 ? findImage(item.images[0].id) : placeholderImages[0];
                 return (
-                  <div key={item.id} className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg max-w-md mx-auto">
-                    <Image
-                        src={bgImage.imageUrl}
-                        alt={bgImage.description}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={bgImage.imageHint}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                    
-                    <div className="absolute bottom-6 left-6 right-6 text-white">
-                        <p className="text-xl font-bold leading-tight mb-4">{item.title}</p>
+                  <div key={item.id}>
+                    <div className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg max-w-md mx-auto">
+                        <Image
+                            src={bgImage.imageUrl}
+                            alt={bgImage.description}
+                            fill
+                            className="object-cover"
+                            data-ai-hint={bgImage.imageHint}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                        
+                        <div className="absolute bottom-6 left-6 right-6 text-white">
+                            <p className="text-xl font-bold leading-tight mb-4">{item.title}</p>
+                        </div>
                     </div>
+                     {index === feedItems.length - 1 && (
+                        <div className="flex justify-center items-center gap-4 py-4">
+                            <Button variant="outline" size="icon" className="w-16 h-16 border-gray-300 text-gray-500 bg-white shadow-md">
+                                <X className="w-8 h-8" />
+                            </Button>
+                            <Button variant="outline" size="icon" className="w-14 h-14 border-purple-400 text-purple-500 bg-white shadow-md">
+                                <Star className="w-8 h-8 fill-current" />
+                            </Button>
+                            <Button variant="outline" size="icon" className="w-16 h-16 border-accent text-accent bg-white shadow-md">
+                                <Heart className="w-8 h-8 fill-current" />
+                            </Button>
+                        </div>
+                     )}
                   </div>
                 );
               })}
-               <div className="flex justify-center items-center gap-4 py-4">
-                  <Button variant="outline" size="icon" className="w-16 h-16 border-gray-300 text-gray-500 bg-white shadow-md">
-                      <X className="w-8 h-8" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="w-14 h-14 border-purple-400 text-purple-500 bg-white shadow-md">
-                      <Star className="w-8 h-8 fill-current" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="w-16 h-16 border-accent text-accent bg-white shadow-md">
-                      <Heart className="w-8 h-8 fill-current" />
-                  </Button>
-              </div>
             </TabsContent>
 
             <TabsContent value="around-me" className="mt-6">
                 <div className="relative max-w-md mx-auto">
+                  <Skeleton className="w-full h-[60vh] rounded-3xl" />
                   <Image
-                    src={mapImage.imageUrl}
-                    alt={mapImage.description}
-                    width={600}
-                    height={400}
+                    src={findImage('map-background').imageUrl}
+                    alt={findImage('map-background').description}
+                    fill
                     className="w-full h-auto rounded-3xl object-cover"
-                    data-ai-hint={mapImage.imageHint}
+                    data-ai-hint={findImage('map-background').imageHint}
                   />
                   <div className="absolute inset-0">
-                    {mapUsersIds.map((userId, index) => {
-                      const { data: user } = useUserById(userId);
-                      const position = mapUsersPositions[index];
+                    {usersLoading && <div className="absolute inset-0 bg-muted/50 animate-pulse rounded-3xl" />}
+                    {!usersLoading && mapUsers.map((user, index) => {
                       if (!user || !user.image) return null;
+                      const position = mapUsersPositions[index];
                       const userImage = findImage(user.image.id);
                       return (
-                        <Link href={`/user/${user.id}`} key={userId}>
+                        <Link href={`/user/${user.id}`} key={user.id}>
                           <Image
                             src={userImage.imageUrl}
                             alt={user.name}
@@ -207,18 +234,6 @@ export default function DiscoverPage() {
                         </Link>
                       );
                     })}
-
-                    <Button
-                      className="absolute bg-primary text-primary-foreground h-auto py-2 px-4"
-                      style={{
-                        top: '30%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                      }}
-                    >
-                      <span className="text-xs mr-2">((•))</span> Connect with
-                      Clara 👋
-                    </Button>
                   </div>
                 </div>
             </TabsContent>
