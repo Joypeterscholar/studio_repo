@@ -1,74 +1,86 @@
 
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/layout/Logo';
+import { placeholderImages } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
-const allPages = [
-  { href: '/home', label: 'Home Feed' },
-  { href: '/discover', label: 'Discover' },
-  { href: '/discover-map', label: 'Discover (Map)' },
-  { href: '/discover-from', label: 'Discover From' },
-  { href: '/matches', label: 'Matches' },
-  { href: '/likes', label: 'Likes' },
-  { href: '/connections', label: 'Connections' },
-  { href: '/messages', label: 'Messages' },
-  { href: '/messages/user_2', label: 'Conversation with a User' },
-  { href: '/profile', label: 'My Profile' },
-  { href: '/user/user_3', label: 'View Another User Profile' },
-  { href: '/post/post_1', label: 'View Post' },
-  { href: '/create-post', label: 'Create Post' },
-  { href: '/create-status', label: 'Create Status' },
-  { href: '/recent-posts', label: 'My Recent Posts' },
-  { href: '/story', label: 'Story Page' },
-  { href: '/wallet', label: 'Wallet' },
-  { href: '/buy-credits', label: 'Buy Credits' },
-  { href: '/buy-credits-v1', label: 'Buy Credits (V1)' },
-  { href: '/buy-credits-v2', label: 'Buy Credits (V2)' },
-  { href: '/send-credits', label: 'Send Credits' },
-  { href: '/send-credits-v1', label: 'Send Credits (V1)' },
-  { href: '/settings', label: 'Settings' },
-  { href: '/notifications', label: 'Notifications' },
-  { href: '/search', label: 'Search' },
-  { href: '/search-suggestions', label: 'Search Suggestions' },
-  { href: '/block-user', label: 'Block User Confirmation' },
-  { href: '/delete-account', label: 'Delete Account Confirmation' },
-  { href: '/interests', label: 'Interests Selection' },
-  { href: '/video-call/user_4', label: 'Video Call' },
-  { href: '/admin', label: 'Admin Dashboard' },
-];
+const onboardingImages = [
+  placeholderImages.find((p) => p.id === 'onboarding-1'),
+  placeholderImages.find((p) => p.id === 'onboarding-2'),
+  placeholderImages.find((p) => p.id === 'onboarding-3'),
+  placeholderImages.find((p) => p.id === 'onboarding-4'),
+  placeholderImages.find((p) => p.id === 'onboarding-5'),
+].filter(Boolean) as any[];
 
 
-export default function Onboarding() {
-
+export default function OnboardingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 md:p-6">
-        <header className="flex items-center justify-center mb-8">
-            <Logo isLinqUp className="w-40 text-primary" />
-        </header>
-        <main className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-primary">Application Testing Hub</h1>
-                <p className="text-muted-foreground mt-2">Use this page to navigate to and test every feature of your application.</p>
-            </div>
+    <div className="flex h-screen w-screen flex-col bg-primary text-primary-foreground">
+      <header className="flex items-center justify-center pt-16">
+        <Logo isLinqUp className="w-40" />
+      </header>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {allPages.sort((a,b) => a.label.localeCompare(b.label)).map(page => (
-                    <Link href={page.href} key={page.href} passHref>
-                       <Button variant="outline" className="w-full h-auto justify-start text-left py-3 rounded-lg">
-                           {page.label}
-                       </Button>
-                    </Link>
-                ))}
-            </div>
+      <main className="flex-grow flex flex-col justify-center">
+        <Carousel
+          opts={{
+            align: 'start',
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-1">
+            {onboardingImages.map((image, index) => (
+              <CarouselItem key={index} className="pl-1 basis-full">
+                <div className="p-1">
+                    <div className="relative aspect-square w-[90vw] max-w-[400px] mx-auto">
+                      <Image
+                        src={image.imageUrl}
+                        alt={image.description}
+                        fill
+                        className="object-contain"
+                        data-ai-hint={image.imageHint}
+                      />
+                    </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+        <div className="px-8 text-center mt-4">
+            <h1 className="text-3xl font-headline">Find Your Perfect Match</h1>
+            <p className="mt-2 opacity-80">
+                Connect with people who share your interests and values. Explore profiles, chat, and build meaningful relationships.
+            </p>
+        </div>
+      </main>
 
-            <div className="text-center mt-12">
-                 <Link href="/home" passHref>
-                       <Button size="lg">Start Using The App</Button>
-                 </Link>
-            </div>
-        </main>
+      <footer className="p-8" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link href="/signup" passHref className="flex-1">
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full bg-white text-primary hover:bg-white/90"
+            >
+              Create an account
+            </Button>
+          </Link>
+          <Link href="/login" passHref className="flex-1">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full border-white text-white hover:bg-white/10 hover:text-white"
+            >
+              Log In
+            </Button>
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }
