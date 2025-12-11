@@ -1,7 +1,7 @@
 'use client';
 import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
-import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getFirestore, type Firestore, doc, collection } from 'firebase/firestore';
 import { firebaseConfig } from './config';
 import { useMemo } from 'react';
 
@@ -17,20 +17,21 @@ let app: FirebaseApp;
 let auth: Auth;
 let firestore: Firestore;
 
+// This function should only be called on the client side.
 export function initializeFirebase() {
-  if (getApps().length === 0) {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    firestore = getFirestore(app);
+  if (typeof window !== 'undefined') {
+    if (getApps().length === 0) {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      firestore = getFirestore(app);
+    }
   }
   return { app, auth, firestore };
 }
 
+
 export function useUserById(id: string | null | undefined) {
-    const { useDoc } = require('./firestore/use-doc');
-    const { useFirestore } = require('./provider');
     const firestore = useFirestore();
-    const { doc } = require('firebase/firestore');
     
     const docRef = useMemo(() => {
         if (!firestore || !id) return null;
@@ -41,10 +42,7 @@ export function useUserById(id: string | null | undefined) {
 }
 
 export function useUsers() {
-    const { useCollection } = require('./firestore/use-collection');
-    const { useFirestore } = require('./provider');
     const firestore = useFirestore();
-    const { collection } = require('firebase/firestore');
 
     const collectionRef = useMemo(() => {
         if (!firestore) return null;
@@ -55,10 +53,7 @@ export function useUsers() {
 }
 
 export function useConversations() {
-    const { useCollection } = require('./firestore/use-collection');
-    const { useFirestore } = require('./provider');
     const firestore = useFirestore();
-    const { collection } = require('firebase/firestore');
 
     const collectionRef = useMemo(() => {
         if (!firestore) return null;
@@ -69,10 +64,7 @@ export function useConversations() {
 }
 
 export function useConversationById(id: string | null | undefined) {
-    const { useDoc } = require('./firestore/use-doc');
-    const { useFirestore } = require('./provider');
     const firestore = useFirestore();
-    const { doc } = require('firebase/firestore');
 
     const docRef = useMemo(() => {
         if (!firestore || !id) return null;
