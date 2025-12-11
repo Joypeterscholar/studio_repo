@@ -32,6 +32,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { signOutUser } from '@/firebase/auth/auth-service';
 
 const GenderIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -68,7 +70,7 @@ const AustraliaFlagIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path d="M12 12L10.9393 11.0607L12 10.1213L13.0607 11.0607L12 12Z" fill="white"/>
         <path d="M17 10L16.4697 9.53033L17 9.06066L17.5303 9.53033L17 10Z" fill="white"/>
         <path d="M15 14L14.4697 13.5303L15 13.0607L15.5303 13.5303L15 14Z" fill="white"/>
-        <path d="M19 14L18.4697 13.5303L19 13.0607L19.5303 13.5303L19 14Z" fill="white"/>
+        `"M19 14L18.4697 13.5303L19 13.0607L19.5303 13.5303L19 14Z" fill="white"/>
         <path d="M17 16L16.4697 15.5303L17 15.0607L17.5303 15.5303L17 16Z" fill="white"/>
     </svg>
 );
@@ -84,6 +86,7 @@ const interestOptions = ['Male', 'Female', 'Trans', 'Non-binary'];
 
 export default function SettingsPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [notifications, setNotifications] = useState(true);
   const [autoplay, setAutoplay] = useState(false);
   const [distancePreferenceEnabled, setDistancePreferenceEnabled] = useState(true);
@@ -100,6 +103,24 @@ export default function SettingsPage() {
         : [...prev, interest]
     );
   }
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+      router.push('/login');
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Logout Failed",
+        description: "Could not log out. Please try again.",
+      });
+    }
+  };
 
   return (
     <div className="bg-muted/50 text-foreground min-h-screen">
@@ -310,7 +331,7 @@ export default function SettingsPage() {
         </Dialog>
 
 
-        <Button variant="outline" className="w-full bg-white text-primary border-primary h-12 text-base">
+        <Button onClick={handleLogout} variant="outline" className="w-full bg-white text-primary border-primary h-12 text-base">
             Logout
         </Button>
       </main>
