@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -34,6 +35,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { signOutUser } from '@/firebase/auth/auth-service';
+import { useAuth, useFirestore } from '@/firebase';
 
 const GenderIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -87,6 +89,8 @@ const interestOptions = ['Male', 'Female', 'Trans', 'Non-binary'];
 export default function SettingsPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useAuth();
+  const firestore = useFirestore();
   const [notifications, setNotifications] = useState(true);
   const [autoplay, setAutoplay] = useState(false);
   const [distancePreferenceEnabled, setDistancePreferenceEnabled] = useState(true);
@@ -105,8 +109,9 @@ export default function SettingsPage() {
   }
 
   const handleLogout = async () => {
+    if (!auth || !firestore) return;
     try {
-      await signOutUser();
+      await signOutUser(auth, firestore);
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",

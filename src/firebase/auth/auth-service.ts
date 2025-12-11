@@ -2,21 +2,16 @@
 'use client';
 
 import {
-  getAuth,
+  type Auth,
   signInAnonymously,
   onAuthStateChanged,
   signOut,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { initializeFirebase } from '../index';
+import { type Firestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { placeholderImages } from '@/lib/placeholder-images';
 
-// This function should only be called on the client side.
-const { auth, firestore } = initializeFirebase();
-
-const createUserProfile = async (user: FirebaseUser) => {
-  if (!firestore) throw new Error('Firestore not initialized');
+const createUserProfile = async (firestore: Firestore, user: FirebaseUser) => {
   const userRef = doc(firestore, 'users', user.uid);
   const userDoc = await getDoc(userRef);
 
@@ -46,21 +41,19 @@ const createUserProfile = async (user: FirebaseUser) => {
   }
 };
 
-export const signInAsGuest = async (): Promise<void> => {
-    if (!auth) throw new Error('Firebase Auth has not been initialized');
-
+export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<void> => {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             unsubscribe(); // Unsubscribe to avoid multiple calls
             if (user) {
                 // User is already signed in.
-                await updateDoc(doc(firestore!, 'users', user.uid), { isOnline: true });
+                await updateDoc(doc(firestore, 'users', user.uid), { isOnline: true });
                 resolve();
             } else {
                 // No user is signed in, sign in anonymously.
                 try {
                     const userCredential = await signInAnonymously(auth);
-                    await createUserProfile(userCredential.user);
+                    await createUserProfile(firestore, userCredential.user);
                     resolve();
                 } catch (error) {
                     console.error("Error signing in anonymously:", error);
@@ -75,10 +68,7 @@ export const signInAsGuest = async (): Promise<void> => {
     });
 };
 
-export async function signOutUser(): Promise<void> {
-  if (!auth || !firestore) {
-    throw new Error('Firebase has not been initialized');
-  }
+export async function signOutUser(auth: Auth, firestore: Firestore): Promise<void> {
   const currentUser = auth.currentUser;
   if (currentUser) {
     try {

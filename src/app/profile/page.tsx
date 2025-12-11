@@ -15,7 +15,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
-import { useUser } from '@/firebase';
+import { useAuth, useFirestore, useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { signOutUser } from '@/firebase/auth/auth-service';
 import { useRouter } from 'next/navigation';
@@ -47,10 +47,13 @@ export default function ProfilePage() {
   const { data: user, loading } = useUser();
   const { toast } = useToast();
   const router = useRouter();
+  const auth = useAuth();
+  const firestore = useFirestore();
   
   const handleLogout = async () => {
+    if (!auth || !firestore) return;
     try {
-      await signOutUser();
+      await signOutUser(auth, firestore);
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",

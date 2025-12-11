@@ -24,7 +24,7 @@ export function useUser() {
     }
 
     // Ensure user is signed in (anonymously if needed)
-    signInAsGuest().then(() => {
+    signInAsGuest(auth, firestore).then(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseAuthUser | null) => {
             if (firebaseUser) {
               const userDocRef = doc(firestore, 'users', firebaseUser.uid);

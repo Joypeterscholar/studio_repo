@@ -11,24 +11,16 @@ export { useDoc } from './firestore/use-doc';
 export { useUser } from './auth/use-user';
 export * from './hooks';
 
-let firebaseServices: { app: FirebaseApp; auth: Auth; firestore: Firestore } | null = null;
+let app: FirebaseApp;
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApps()[0];
+}
+
+const auth = getAuth(app);
+const firestore = getFirestore(app);
 
 export function initializeFirebase() {
-  if (firebaseServices) {
-    return firebaseServices;
-  }
-
-  let app: FirebaseApp;
-  if (getApps().length === 0) {
-    app = initializeApp(firebaseConfig);
-  } else {
-    app = getApps()[0];
-  }
-
-  const auth = getAuth(app);
-  const firestore = getFirestore(app);
-  
-  firebaseServices = { app, auth, firestore };
-  
-  return firebaseServices;
+  return { app, auth, firestore };
 }
