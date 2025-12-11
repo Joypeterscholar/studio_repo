@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
   Bar,
 } from 'recharts';
-import { userActivityData, userDemographicsData } from './data';
+import { userActivityData, userDemographicsData } from '@/lib/charts-data';
 
 export const ActivityChart = () => (
   <ResponsiveContainer width="100%" height={300}>
