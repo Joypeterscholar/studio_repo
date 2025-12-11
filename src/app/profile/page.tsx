@@ -14,6 +14,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
+import { useUser } from '@/firebase';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -47,10 +48,31 @@ const menuItems = [
 ];
 
 export default function ProfilePage() {
-  const mainPhoto = findImage('profile-main');
-  const photo1 = findImage('profile-side-1');
-  const photo2 = findImage('profile-side-2');
-  const avatar = findImage('user-male-2');
+  const { data: user, loading } = useUser();
+  
+  if (loading) {
+    return (
+        <AppLayout>
+            <div className="flex justify-center items-center h-full">Loading...</div>
+        </AppLayout>
+    )
+  }
+
+  if (!user) {
+      return (
+          <AppLayout>
+              <div className="p-4">
+                  <p>User not found. Please log in.</p>
+                  <Link href="/login"><Button>Login</Button></Link>
+              </div>
+          </AppLayout>
+      )
+  }
+
+  const mainPhoto = user.gallery?.length > 0 ? findImage(user.gallery[0].id) : findImage(user.image.id);
+  const photo1 = user.gallery?.length > 1 ? findImage(user.gallery[1].id) : placeholderImages[1];
+  const photo2 = user.gallery?.length > 2 ? findImage(user.gallery[2].id) : placeholderImages[2];
+  const avatar = findImage(user.image.id);
 
   return (
     <AppLayout>
@@ -60,7 +82,7 @@ export default function ProfilePage() {
             <div className="flex items-center gap-3">
               <Image
                 src={avatar.imageUrl}
-                alt="Adichy Jnr"
+                alt={user.name}
                 width={56}
                 height={56}
                 className="rounded-full object-cover"
@@ -68,7 +90,7 @@ export default function ProfilePage() {
               />
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h1 className="text-xl font-bold text-primary">Adichy Jnr</h1>
+                  <h1 className="text-xl font-bold text-primary">{user.name}</h1>
                   <VerifiedIcon />
                 </div>
                 <button className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -177,7 +199,7 @@ export default function ProfilePage() {
           </div>
           <div className="flex items-center gap-1 text-muted-foreground mb-6">
             <MapPin className="w-4 h-4" />
-            <span>Yaba, Lagos</span>
+            <span>{user.location}</span>
             <Pencil className="w-3 h-3 ml-1" />
           </div>
 
@@ -188,9 +210,7 @@ export default function ProfilePage() {
                 <Pencil className="w-4 h-4 text-muted-foreground" />
               </div>
               <p className="text-muted-foreground text-sm">
-                Lorem ipsum dolor sit amet consectetur. Odio sapien ipsum
-                posuere arcu quis sit tincidunt dictum. Tortor et nunc felis
-                tincidunt. Venenatis feugiat vitae rhoncus amet aliquet.
+                {user.bio}
               </p>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-sm">
@@ -207,10 +227,14 @@ export default function ProfilePage() {
             </div>
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="flex justify-between items-center mb-1">
-                <h2 className="font-bold text-primary text-lg">Occupation</h2>
+                <h2 className="font-bold text-primary text-lg">Interests</h2>
                 <Pencil className="w-4 h-4 text-muted-foreground" />
               </div>
-              <p className="text-muted-foreground text-sm">Odontologist</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {user.interests.map(interest => (
+                    <div key={interest} className="bg-muted px-3 py-1 rounded-full text-sm">{interest}</div>
+                ))}
+              </div>
             </div>
           </div>
         </main>

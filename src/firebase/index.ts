@@ -1,12 +1,16 @@
+'use client';
 import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
 
-import { getMockConversations, getMockConversationById, getMockUsers, getMockUserById, getMockLoggedInUser } from './mock-data';
-
 export * from './provider';
 export { FirebaseClientProvider } from './client-provider';
+
+export { useCollection } from './firestore/use-collection';
+export { useDoc } from './firestore/use-doc';
+export { useUser } from './auth/use-user';
+
 
 let app: FirebaseApp;
 let auth: Auth;
@@ -21,36 +25,44 @@ export function initializeFirebase() {
   return { app, auth, firestore };
 }
 
-
-// MOCK DATA HOOKS
-// These hooks simulate fetching data from Firebase.
-// They will be replaced with actual Firestore hooks later.
-
-export function useUser() {
-    // In a real app, this would use `useAuthState` from `react-firebase-hooks/auth`
-    // and then fetch the user profile from Firestore.
-    const user = getMockLoggedInUser();
-    return { data: user, loading: false };
-}
-
 export function useUserById(id: string) {
-    const user = getMockUserById(id);
-    return { data: user, loading: false };
+    const { useDoc } = require('./firestore/use-doc');
+    const { useFirestore } = require('./provider');
+    const firestore = useFirestore();
+    const { doc } = require('firebase/firestore');
+    
+    const docRef = firestore ? doc(firestore, 'users', id) : null;
+    return useDoc(docRef);
 }
 
 export function useUsers() {
-    const users = getMockUsers();
-    return { data: users, loading: false };
+    const { useCollection } = require('./firestore/use-collection');
+    const { useFirestore } = require('./provider');
+    const firestore = useFirestore();
+    const { collection } = require('firebase/firestore');
+
+    const collectionRef = firestore ? collection(firestore, 'users') : null;
+    return useCollection(collectionRef);
 }
 
 export function useConversations() {
-    const conversations = getMockConversations();
-    return { data: conversations, loading: false };
+    const { useCollection } = require('./firestore/use-collection');
+    const { useFirestore } = require('./provider');
+    const firestore = useFirestore();
+    const { collection } = require('firebase/firestore');
+
+    const collectionRef = firestore ? collection(firestore, 'conversations') : null;
+    // This part is tricky without knowing the logged-in user's ID on the server.
+    // For now, we'll fetch all conversations, but this should be filtered.
+    return useCollection(collectionRef);
 }
 
-export function useConversationById(userId: string) {
-    // This logic is a bit different because our mock data identifies conversations by user id
-    const conversations = getMockConversations();
-    const conversation = conversations.find(c => c.userId === userId);
-    return { data: conversation, loading: false };
+export function useConversationById(id: string) {
+    const { useDoc } = require('./firestore/use-doc');
+    const { useFirestore } = require('./provider');
+    const firestore = useFirestore();
+    const { doc } = require('firebase/firestore');
+
+    const docRef = firestore ? doc(firestore, 'conversations', id) : null;
+    return useDoc(docRef);
 }

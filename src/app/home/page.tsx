@@ -14,46 +14,24 @@ import AppLayout from '@/components/layout/AppLayout';
 import Logo from '@/components/layout/Logo';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { useUser } from '@/firebase';
-
-const stories = [
-  { id: 'selena', name: 'Selena', imageId: 'user-2' },
-  { id: 'clara', name: 'Clara', imageId: 'user-1' },
-  { id: 'fabian', name: 'Fabian', imageId: 'user-male-1' },
-  { id: 'georgia', name: 'Georgia', imageId: 'user-3' },
-  { id: 'ethan', name: 'Ethan', imageId: 'user-male-2' },
-];
-
-const feedItems = [
-  {
-    id: 'feed-1',
-    category: 'Travel',
-    categoryIcon: '🏝️',
-    backgroundImageId: 'feed-prague',
-    question: 'If you could live anywhere in the world, where would you pick?',
-    authorName: 'Miranda Kehlani',
-    authorLocation: 'STUTTGART',
-    authorImageId: 'user-7',
-  },
-  {
-    id: 'feed-2',
-    category: 'Casual Dating',
-    categoryIcon: '😎',
-    backgroundImageId: 'feed-couple',
-    question: null,
-    authorName: 'John & Jane',
-    authorLocation: 'BERLIN',
-    authorImageId: 'user-8',
-  },
-];
+import { useUser, useUsers, useCollection } from '@/firebase';
+import { useFirestore } from '@/firebase';
+import { collection, query, limit } from 'firebase/firestore';
+import type { Post, User } from '@/lib/data';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
 export default function HomePage() {
-  const { data: loggedInUser } = useUser();
-  const myStoryImage = loggedInUser ? findImage(loggedInUser.image.id) : null;
+  const { data: loggedInUser, loading: userLoading } = useUser();
+  const { data: stories, loading: storiesLoading } = useUsers();
+  const firestore = useFirestore();
+  
+  const postsQuery = firestore ? query(collection(firestore, 'posts'), limit(10)) : null;
+  const { data: feedItems, loading: feedLoading } = useCollection<Post>(postsQuery);
+
+  const myStoryImage = loggedInUser?.image ? findImage(loggedInUser.image.id) : null;
 
 
   return (
@@ -72,6 +50,7 @@ export default function HomePage() {
 
         <div className="pl-4">
           <div className="flex space-x-4 overflow-x-auto pb-2">
+            {userLoading && <div className="w-20 h-20 rounded-full bg-muted animate-pulse" />}
             {myStoryImage && (
                <Link href="/story" className="flex-shrink-0 text-center w-20">
                 <div className="relative">
@@ -92,8 +71,10 @@ export default function HomePage() {
                 <p className="text-xs mt-2 font-medium truncate">My Story</p>
               </Link>
             )}
+            {storiesLoading && Array.from({length: 5}).map((_, i) => <div key={i} className="w-20 h-20 rounded-full bg-muted animate-pulse" />)}
             {stories.map((story) => {
-              const image = findImage(story.imageId);
+              if (!story.image) return null;
+              const image = findImage(story.image.id);
               return (
                 <Link href="/story" key={story.id} className="flex-shrink-0 text-center w-20">
                   <div className="relative">
@@ -132,9 +113,13 @@ export default function HomePage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="make-friends" className="mt-6 space-y-6">
+              {feedLoading && Array.from({length: 2}).map((_, i) => <div key={i} className="h-[50vh] rounded-3xl bg-muted animate-pulse" />) }
               {feedItems.map((item) => {
-                const bgImage = findImage(item.backgroundImageId);
-                const authorImage = findImage(item.authorImageId);
+                const bgImage = item.images.length > 0 ? findImage(item.images[0].id) : placeholderImages[0];
+                const { data: author } = useUser(item.authorId);
+                if (!author || !author.image) return null;
+                const authorImage = findImage(author.image.id);
+                
                 return (
                   <Link href={`/post/${item.id}`} key={item.id} className="block">
                     <div className="relative h-[50vh] rounded-3xl overflow-hidden shadow-lg">
@@ -149,7 +134,7 @@ export default function HomePage() {
                       
                       <div className="absolute top-4 left-4">
                           <div className="flex items-center gap-2 rounded-full bg-black/30 text-white text-sm px-3 py-1.5 backdrop-blur-sm">
-                              <span>{item.categoryIcon}</span>
+                              {/* <span>{item.categoryIcon}</span> */}
                               <span>{item.category}</span>
                           </div>
                       </div>
@@ -167,7 +152,7 @@ export default function HomePage() {
                       </div>
 
                       <div className="absolute bottom-6 left-6 right-6 text-white">
-                        {item.question && <p className="text-xl font-bold leading-tight mb-4">{item.question}</p>}
+                        <p className="text-xl font-bold leading-tight mb-4">{item.title}</p>
                         <div className="flex items-center gap-3">
                           <Image
                               src={authorImage.imageUrl}
@@ -178,8 +163,8 @@ export default function HomePage() {
                               data-ai-hint={authorImage.imageHint}
                           />
                           <div>
-                              <p className="font-semibold text-sm">{item.authorName}</p>
-                              <p className="text-xs opacity-80 tracking-widest">{item.authorLocation}</p>
+                              <p className="font-semibold text-sm">{author.name}</p>
+                              <p className="text-xs opacity-80 tracking-widest">{author.location}</p>
                           </div>
                         </div>
                       </div>

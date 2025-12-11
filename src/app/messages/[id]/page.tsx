@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -17,11 +17,15 @@ import { Input } from '@/components/ui/input';
 import {
   type Message,
   type User,
+  type Conversation,
 } from '@/lib/data';
 import { useParams } from 'next/navigation';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
-import { useConversationById, useUser, useUserById } from '@/firebase';
+import { useCollection, useUser, useUserById } from '@/firebase';
+import { useFirestore } from '@/firebase';
+import { collection, query, where, orderBy } from 'firebase/firestore';
+
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -36,34 +40,31 @@ const DoubleCheck = ({ className }: { className?: string }) => (
 
 export default function ConversationPage() {
   const params = useParams();
-  const userId = params.id as string;
+  const otherUserId = params.id as string;
   
-  const { data: conversation, loading: convLoading } = useConversationById(userId);
-  const { data: otherUser, loading: userLoading } = useUserById(userId);
+  const { data: otherUser, loading: userLoading } = useUserById(otherUserId);
   const { data: loggedInUser, loading: loggedInUserLoading } = useUser();
+  const firestore = useFirestore();
 
-  const [messages, setMessages] = useState<Message[]>(
-    conversation?.messages || []
-  );
+  const conversationId = useMemo(() => {
+    if (!loggedInUser || !otherUserId) return null;
+    return [loggedInUser.id, otherUserId].sort().join('_');
+  }, [loggedInUser, otherUserId]);
+
+  const messagesQuery = firestore && conversationId ? query(collection(firestore, `conversations/${conversationId}/messages`), orderBy('timestamp', 'asc')) : null;
+  const { data: messages, loading: messagesLoading } = useCollection<Message>(messagesQuery);
+  
   const [newMessage, setNewMessage] = useState('');
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === '' || !otherUser || !loggedInUser) return;
-
-    const message: Message = {
-      id: `msg-${Date.now()}`,
-      senderId: loggedInUser.id,
-      text: newMessage.trim(),
-      timestamp: new Date().toISOString(),
-      isRead: false,
-    };
-
-    setMessages([...messages, message]);
+    // In a real app, you would add the message to Firestore here.
+    console.log("Sending message:", newMessage);
     setNewMessage('');
   };
 
-  if (convLoading || userLoading || loggedInUserLoading) {
+  if (userLoading || loggedInUserLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-primary text-primary-foreground">
         <p>Loading...</p>
@@ -71,10 +72,10 @@ export default function ConversationPage() {
     );
   }
 
-  if (!conversation || !otherUser || !loggedInUser) {
+  if (!otherUser || !loggedInUser) {
     return (
       <div className="flex h-screen items-center justify-center bg-primary text-primary-foreground">
-        <p>Conversation not found.</p>
+        <p>User not found.</p>
       </div>
     );
   }
@@ -103,6 +104,7 @@ export default function ConversationPage() {
 
       <div className="flex-grow overflow-y-auto rounded-t-[2.5rem] bg-background p-6">
         <div className="flex flex-col gap-4">
+          {messagesLoading && Array.from({length: 5}).map((_, i) => <div key={i} className={`h-12 w-2/3 rounded-2xl bg-muted animate-pulse ${i % 2 === 0 ? 'self-start' : 'self-end'}`} />) }
           {messages.map((message) => {
             const isSender = message.senderId === loggedInUser.id;
             const user = isSender ? loggedInUser : otherUser;

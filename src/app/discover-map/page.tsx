@@ -10,40 +10,26 @@ import {
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
-import type { User } from '@/firebase/mock-data';
+import type { User } from '@/lib/data';
 import Link from 'next/link';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useUser, useUserById } from '@/firebase';
+import { useUser, useUserById, useUsers } from '@/firebase';
 
-const newUsers = [
-  { userId: '13', distance: 16 },
-  { userId: '14', distance: 4.8 },
-  { userId: '15', distance: 2.2 },
-];
-
-const mapUsers = [
-  { userId: '1', top: '20%', left: '45%' },
-  { userId: '4', top: '48%', left: '70%' },
-  { userId: '2', top: '75%', left: '35%' },
+const mapUsersPositions = [
+  { top: '20%', left: '45%' },
+  { top: '48%', left: '70%' },
+  { top: '75%', left: '35%' },
 ];
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-const UserCard = ({ userId, distance }: { userId: string; distance: number }) => {
-  const { data: user, loading } = useUserById(userId);
-
-  if (loading || !user) {
-      return (
-          <div className="flex-shrink-0 w-40 h-[220px] bg-muted rounded-2xl animate-pulse" />
-      )
-  }
+const UserCard = ({ user, distance }: { user: User; distance: number }) => {
   const userImage = findImage(user.image.id);
   return (
     <Link href={`/user/${user.id}`} className="flex-shrink-0 w-40 relative">
@@ -75,13 +61,21 @@ const UserCard = ({ userId, distance }: { userId: string; distance: number }) =>
 export default function DiscoverMapPage() {
   const mapImage = findImage('map-background');
   const { data: loggedInUser, loading } = useUser();
+  const { data: users, loading: usersLoading } = useUsers();
 
-  if (loading || !loggedInUser) {
+  const newUsers = users.slice(0, 3);
+  const mapUsers = users.slice(3, 6);
+
+  if (loading || usersLoading) {
       return (
           <AppLayout>
               <div className="p-4">Loading...</div>
           </AppLayout>
       )
+  }
+
+  if (!loggedInUser) {
+    return <AppLayout><div>Please log in</div></AppLayout>
   }
 
   const loggedInUserImage = findImage(loggedInUser.image.id);
@@ -120,9 +114,10 @@ export default function DiscoverMapPage() {
           <div>
             <h2 className="text-xl font-bold text-primary mb-3">New</h2>
             <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4">
-              {newUsers.map(({ userId, distance }) => {
+              {newUsers.map((user) => {
+                const distance = parseFloat((Math.random() * 15).toFixed(1));
                 return (
-                  <UserCard key={userId} userId={userId} distance={distance} />
+                  <UserCard key={user.id} user={user} distance={distance} />
                 );
               })}
             </div>
@@ -140,20 +135,19 @@ export default function DiscoverMapPage() {
                 data-ai-hint={mapImage.imageHint}
               />
               <div className="absolute inset-0">
-                {mapUsers.map(({ userId, top, left }) => {
-                  const { data: user, loading: userLoading } = useUserById(userId);
-                  if (userLoading || !user) return null;
-
+                {mapUsers.map((user, index) => {
+                  if (!user.image) return null;
+                  const position = mapUsersPositions[index];
                   const userImage = findImage(user.image.id);
                   return (
-                    <Link href={`/user/${user.id}`} key={userId}>
+                    <Link href={`/user/${user.id}`} key={user.id}>
                       <Image
                         src={userImage.imageUrl}
                         alt={user.name}
                         width={48}
                         height={48}
                         className="absolute object-cover border-2 border-white rounded-full"
-                        style={{ top, left, transform: 'translate(-50%, -50%)' }}
+                        style={{ top: position.top, left: position.left, transform: 'translate(-50%, -50%)' }}
                         data-ai-hint={userImage.imageHint}
                       />
                     </Link>

@@ -14,7 +14,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { type User } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { useUserById } from '@/firebase';
@@ -28,7 +27,7 @@ export default function VideoCallPage() {
   const params = useParams();
   const { toast } = useToast();
   const userId = params.id as string;
-  const { data: otherUser } = useUserById(userId);
+  const { data: otherUser, loading } = useUserById(userId);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
@@ -95,6 +94,14 @@ export default function VideoCallPage() {
 
   const toggleMute = () => setIsMuted((prev) => !prev);
   const toggleCamera = () => setIsCameraOff((prev) => !prev);
+  
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center bg-black text-white">Connecting...</div>
+  }
+  
+  if (!otherUser) {
+    return <div className="flex h-screen items-center justify-center bg-black text-white">User not found</div>
+  }
   
   const remoteUserImage = otherUser ? findImage(otherUser.image.id) : placeholderImages[0];
 

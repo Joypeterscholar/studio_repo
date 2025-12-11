@@ -7,23 +7,28 @@ import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
 import AppLayout from '@/components/layout/AppLayout';
 import Link from 'next/link';
-import { useUserById } from '@/firebase';
+import { useUserById, useCollection, useUser as useLoggedInUser } from '@/firebase';
+import { useFirestore } from '@/firebase';
+import { collection, query, where } from 'firebase/firestore';
+import { type Connection, type User } from '@/lib/data';
+import { useMemo } from 'react';
 
-const matchesData = [
-  { userId: '1', match: 100, distance: 1.3, location: 'HANOVER' },
-  { userId: '2', match: 94, distance: 2, location: 'DORTMUND' },
-  { userId: '3', match: 89, distance: 2.5, location: 'BERLIN' },
-  { userId: '4', match: 80, distance: 2.5, location: 'MUNICH' },
-  { userId: '5', match: 68, distance: 5, location: 'HAMBURG' },
-  { userId: '6', match: 72, distance: 8, location: 'COLOGNE' },
-];
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-function MatchCard({ matchInfo }: { matchInfo: typeof matchesData[0] }) {
-    const { data: user, loading } = useUserById(matchInfo.userId);
+function MatchCard({ connection }: { connection: Connection }) {
+    const { data: loggedInUser } = useLoggedInUser();
+    
+    // Determine the other user's ID
+    const otherUserId = useMemo(() => {
+        if (!loggedInUser || !connection) return null;
+        const otherId = connection.userIds.find(id => id !== loggedInUser.id);
+        return otherId;
+    }, [loggedInUser, connection]);
+
+    const { data: user, loading } = useUserById(otherUserId || '');
 
     if (loading || !user) {
         return (
@@ -31,7 +36,10 @@ function MatchCard({ matchInfo }: { matchInfo: typeof matchesData[0] }) {
         );
     }
     
-    const userImage = findImage(user.image.id);
+    const userImage = user.image ? findImage(user.image.id) : placeholderImages[0];
+    const matchPercentage = Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+    const distance = (Math.random() * 10).toFixed(1);
+
 
     return (
         <Link href={`/user/${user.id}`} key={user.id}>
@@ -47,19 +55,19 @@ function MatchCard({ matchInfo }: { matchInfo: typeof matchesData[0] }) {
                 
                 <div className="absolute top-2 left-2 right-2">
                     <div className="bg-accent/80 text-accent-foreground text-xs font-bold py-1 px-3 rounded-full inline-block">
-                        {matchInfo.match}% Match
+                        {matchPercentage}% Match
                     </div>
                 </div>
                 
                 <div className="absolute bottom-3 left-3 right-3 text-white">
                     <div className="bg-black/30 backdrop-blur-sm rounded-full text-xs px-2 py-0.5 inline-block mb-1">
-                        {matchInfo.distance} km away
+                        {distance} km away
                     </div>
                     <div className="flex items-center gap-2">
                         <p className="font-bold text-lg truncate">{user.name}, {user.age}</p>
-                        <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
+                        {user.isOnline && <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />}
                     </div>
-                    <p className="text-xs opacity-80 tracking-widest uppercase">{matchInfo.location}</p>
+                    <p className="text-xs opacity-80 tracking-widest uppercase">{user.location}</p>
                 </div>
             </div>
         </Link>
@@ -68,6 +76,11 @@ function MatchCard({ matchInfo }: { matchInfo: typeof matchesData[0] }) {
 
 export default function MatchesPage() {
   const router = useRouter();
+  const firestore = useFirestore();
+  const { data: loggedInUser } = useLoggedInUser();
+  
+  const connectionsQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('userIds', 'array-contains', loggedInUser.id), where('status', '==', 'connected')) : null;
+  const { data: matches, loading } = useCollection<Connection>(connectionsQuery);
 
   return (
     <AppLayout>
@@ -97,12 +110,13 @@ export default function MatchesPage() {
 
         <main className="px-4 pb-8">
             <h2 className="text-lg font-bold text-primary mb-4">
-                Your Matches <span className="text-accent">{matchesData.length}</span>
+                Your Matches <span className="text-accent">{matches.length}</span>
             </h2>
 
             <div className="grid grid-cols-2 gap-4">
-                {matchesData.map(matchInfo => (
-                   <MatchCard key={matchInfo.userId} matchInfo={matchInfo} />
+                {loading && Array.from({length: 6}).map((_, i) => <div key={i} className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse"></div>)}
+                {!loading && matches.map(connection => (
+                   <MatchCard key={connection.id} connection={connection} />
                 ))}
             </div>
         </main>

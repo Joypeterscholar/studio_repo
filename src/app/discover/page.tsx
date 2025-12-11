@@ -7,11 +7,11 @@ import {
   SlidersHorizontal,
   X,
   Heart,
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
 import type { User } from '@/lib/data';
 import Link from 'next/link';
 import {
@@ -23,9 +23,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useUser, useUsers, useUserById } from '@/firebase';
+import { useUser, useUsers, useUserById, useCollection } from '@/firebase';
+import { type Post } from '@/lib/data';
+import { collection, query } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 
-const newUsersIds = ['13', '14', '15'];
 const mapUsersIds = ['1', '4', '2'];
 const mapUsersPositions = [
   { top: '20%', left: '45%' },
@@ -33,66 +35,17 @@ const mapUsersPositions = [
   { top: '75%', left: '35%' },
 ];
 
-const feedItems = [
-  {
-    id: 'feed-1',
-    category: 'Travel',
-    categoryIcon: '🏝️',
-    backgroundImageId: 'feed-prague',
-    question: 'If you could live anywhere in the world, where would you pick?',
-    authorName: 'Miranda Kehlani',
-    authorLocation: 'STUTTGART',
-    authorImageId: 'user-7',
-  },
-  {
-    id: 'feed-2',
-    category: 'Casual Dating',
-    categoryIcon: '😎',
-    backgroundImageId: 'feed-couple',
-    question: null,
-    authorName: 'John & Jane',
-    authorLocation: 'BERLIN',
-    authorImageId: 'user-8',
-  },
-];
-
-
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
-const UserCard = ({ user, distance }: { user: User; distance: number }) => {
-  const userImage = findImage(user.image.id);
-  return (
-    <Link href={`/user/${user.id}`} className="flex-shrink-0 w-40 relative">
-      <Image
-        src={userImage.imageUrl}
-        alt={user.name}
-        width={160}
-        height={220}
-        className="rounded-2xl object-cover w-full h-[220px]"
-        data-ai-hint={userImage.imageHint}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-2xl" />
-      <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
-        NEW
-      </div>
-      <div className="absolute bottom-2 left-2 right-2 text-white">
-        <p className="text-xs bg-black/30 backdrop-blur-sm rounded-full px-2 py-0.5 inline-block">
-          {distance} km away
-        </p>
-        <p className="font-bold truncate mt-1">
-          {user.name}, {user.age}
-        </p>
-        <p className="text-xs uppercase tracking-wider">{user.location}</p>
-      </div>
-    </Link>
-  );
-};
-
 export default function DiscoverPage() {
   const mapImage = findImage('map-background');
-  const { data: loggedInUser } = useUser();
+  const { data: loggedInUser, loading: userLoading } = useUser();
+  const firestore = useFirestore();
+
+  const postsQuery = firestore ? query(collection(firestore, 'posts')) : null;
+  const { data: feedItems, loading: postsLoading } = useCollection<Post>(postsQuery);
 
   const menuItems = [
     { label: 'Profile', href: '/profile' },
@@ -101,8 +54,13 @@ export default function DiscoverPage() {
     { label: 'Messages', href: '/messages' },
   ];
 
-  if (!loggedInUser) {
+  if (userLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!loggedInUser) {
+    // Or redirect to login
+    return <div>Please log in.</div>;
   }
 
   const loggedInUserImage = findImage(loggedInUser.image.id);
@@ -185,8 +143,9 @@ export default function DiscoverPage() {
             </TabsList>
 
             <TabsContent value="for-you" className="mt-6 space-y-6">
-               {feedItems.map((item) => {
-                const bgImage = findImage(item.backgroundImageId);
+               {postsLoading && <div className="relative h-[65vh] rounded-3xl overflow-hidden shadow-lg bg-muted animate-pulse" />}
+               {!postsLoading && feedItems.map((item) => {
+                const bgImage = item.images.length > 0 ? findImage(item.images[0].id) : placeholderImages[0];
                 return (
                   <div key={item.id} className="relative h-[65vh] rounded-3xl overflow-hidden shadow-lg">
                     <Image
@@ -199,7 +158,7 @@ export default function DiscoverPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                     
                     <div className="absolute bottom-6 left-6 right-6 text-white">
-                        {item.question && <p className="text-xl font-bold leading-tight mb-4">{item.question}</p>}
+                        <p className="text-xl font-bold leading-tight mb-4">{item.title}</p>
                     </div>
                   </div>
                 );
@@ -209,7 +168,7 @@ export default function DiscoverPage() {
                       <X className="w-8 h-8" />
                   </Button>
                   <Button variant="outline" size="icon" className="w-14 h-14 border-purple-400 text-purple-500 bg-white shadow-md">
-                      <StarIcon className="w-8 h-8 fill-current" />
+                      <Star className="w-8 h-8 fill-current" />
                   </Button>
                   <Button variant="outline" size="icon" className="w-16 h-16 border-accent text-accent bg-white shadow-md">
                       <Heart className="w-8 h-8 fill-current" />
@@ -231,7 +190,7 @@ export default function DiscoverPage() {
                     {mapUsersIds.map((userId, index) => {
                       const { data: user } = useUserById(userId);
                       const position = mapUsersPositions[index];
-                      if (!user) return null;
+                      if (!user || !user.image) return null;
                       const userImage = findImage(user.image.id);
                       return (
                         <Link href={`/user/${user.id}`} key={userId}>
@@ -240,7 +199,7 @@ export default function DiscoverPage() {
                             alt={user.name}
                             width={48}
                             height={48}
-                            className="absolute object-cover border-2 border-white"
+                            className="absolute object-cover border-2 border-white rounded-full"
                             style={{ top: position.top, left: position.left, transform: 'translate(-50%, -50%)' }}
                             data-ai-hint={userImage.imageHint}
                           />
@@ -268,9 +227,3 @@ export default function DiscoverPage() {
     </AppLayout>
   );
 }
-
-const StarIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-)

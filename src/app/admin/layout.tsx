@@ -56,9 +56,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { data: loggedInUser } = useUser();
+  const { data: loggedInUser, loading } = useUser();
 
   const breadcrumbItems = pathname.split('/').filter(Boolean);
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -182,7 +186,7 @@ export default function AdminLayout({
                 size="icon"
                 className="overflow-hidden rounded-full"
               >
-                {loggedInUser ? (
+                {loggedInUser && loggedInUser.image ? (
                   <Image
                     src={loggedInUser.image.imageUrl}
                     width={36}

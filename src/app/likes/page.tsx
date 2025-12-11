@@ -6,24 +6,60 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { useUserById } from '@/firebase';
+import { useUserById, useCollection } from '@/firebase';
 import Link from 'next/link';
-
-const likedByUsers = [
-    { userId: '8', name: 'Alfredo Calzoni', imageId: 'user-male-1' },
-    { userId: '2', name: 'Arlene McCoy', imageId: 'user-1' },
-    { userId: '3', name: 'Robert Fox', imageId: 'user-male-2' },
-    { userId: '7', name: 'Jerome Bell', imageId: 'user-7' },
-    { userId: '4', name: 'Cody Fisher', imageId: 'user-4' },
-    { userId: '6', name: 'Floyd Miles', imageId: 'user-11' },
-];
+import { type Connection, type User } from '@/lib/data';
+import { collection, query, where } from 'firebase/firestore';
+import { useFirestore, useUser as useLoggedInUser } from '@/firebase';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
 
+const LikedByUserRow = ({ connection }: { connection: Connection }) => {
+    const { data: user, loading } = useUserById(connection.fromUserId);
+
+    if (loading || !user || !user.image) {
+        return <div className="h-20 my-2 bg-muted rounded-lg animate-pulse" />;
+    }
+
+    const image = findImage(user.image.id);
+
+    return (
+        <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-4">
+                <Link href={`/user/${user.id}`}>
+                    <Image
+                        src={image.imageUrl}
+                        alt={user.name}
+                        width={56}
+                        height={56}
+                        className="rounded-full object-cover w-14 h-14"
+                        data-ai-hint={image.imageHint}
+                    />
+                </Link>
+                <div>
+                    <h2 className="font-semibold text-primary">{user.name}</h2>
+                    <p className="text-sm text-muted-foreground">Liked your profile</p>
+                </div>
+            </div>
+            <Link href={`/messages/${user.id}`}>
+                <Button variant="outline" className="rounded-full border-primary/50 text-primary">
+                    Message
+                </Button>
+            </Link>
+        </div>
+    );
+};
+
 export default function LikesPage() {
     const router = useRouter();
+    const firestore = useFirestore();
+    const { data: loggedInUser } = useLoggedInUser();
+
+    // Query for connections where the logged-in user is the recipient and status is 'liked'
+    const likesQuery = firestore && loggedInUser ? query(collection(firestore, 'connections'), where('toUserId', '==', loggedInUser.id), where('status', '==', 'liked')) : null;
+    const { data: likedByUsers, loading } = useCollection<Connection>(likesQuery);
 
     return (
         <AppLayout>
@@ -40,40 +76,18 @@ export default function LikesPage() {
 
                 <main className="flex-grow px-4">
                     <div className="divide-y divide-border">
-                        {likedByUsers.map((user) => {
-                            const image = findImage(user.imageId);
-                            return (
-                                <div key={user.userId} className="flex items-center justify-between py-4">
-                                    <div className="flex items-center gap-4">
-                                        <Link href={`/user/${user.userId}`}>
-                                            <Image
-                                                src={image.imageUrl}
-                                                alt={user.name}
-                                                width={56}
-                                                height={56}
-                                                className="rounded-full object-cover w-14 h-14"
-                                                data-ai-hint={image.imageHint}
-                                            />
-                                        </Link>
-                                        <div>
-                                            <h2 className="font-semibold text-primary">{user.name}</h2>
-                                            <p className="text-sm text-muted-foreground">Liked your profile</p>
-                                        </div>
-                                    </div>
-                                    <Link href={`/messages/${user.userId}`}>
-                                        <Button variant="outline" className="rounded-full border-primary/50 text-primary">
-                                            Message
-                                        </Button>
-                                    </Link>
-                                </div>
-                            );
-                        })}
+                        {loading && Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 my-2 bg-muted rounded-lg animate-pulse" />)}
+                        {!loading && likedByUsers.map((connection) => (
+                            <LikedByUserRow key={connection.id} connection={connection} />
+                        ))}
                     </div>
-                    <div className="text-center py-6">
-                        <Button variant="link" className="text-primary">
-                            See more
-                        </Button>
-                    </div>
+                    {likedByUsers.length > 5 && (
+                        <div className="text-center py-6">
+                            <Button variant="link" className="text-primary">
+                                See more
+                            </Button>
+                        </div>
+                    )}
                 </main>
             </div>
         </AppLayout>
