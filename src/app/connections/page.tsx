@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -7,10 +8,10 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { useCollection, useUserById } from '@/firebase';
+import { useCollection, useUserById, useUser as useLoggedInUser } from '@/firebase';
 import { type Connection, type User } from '@/lib/data';
 import { collection, query, where } from 'firebase/firestore';
-import { useFirestore, useUser as useLoggedInUser } from '@/firebase';
+import { useFirestore } from '@/firebase';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];

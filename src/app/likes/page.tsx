@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -6,11 +7,11 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { useUserById, useCollection } from '@/firebase';
+import { useUserById, useCollection, useUser as useLoggedInUser } from '@/firebase';
 import Link from 'next/link';
 import { type Connection, type User } from '@/lib/data';
 import { collection, query, where } from 'firebase/firestore';
-import { useFirestore, useUser as useLoggedInUser } from '@/firebase';
+import { useFirestore } from '@/firebase';
 
 const findImage = (id: string) => {
     return placeholderImages.find((p) => p.id === id) || placeholderImages[0];

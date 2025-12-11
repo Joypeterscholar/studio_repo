@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -24,7 +25,8 @@ function MatchCard({ connection }: { connection: Connection }) {
     // Determine the other user's ID
     const otherUserId = useMemo(() => {
         if (!loggedInUser || !connection) return null;
-        const otherId = connection.userIds.find(id => id !== loggedInUser.id);
+        // The connection now has userIds, so we use that.
+        const otherId = (connection.userIds || []).find(id => id !== loggedInUser.id);
         return otherId;
     }, [loggedInUser, connection]);
 

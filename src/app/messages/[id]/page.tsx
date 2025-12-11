@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -81,6 +82,8 @@ export default function ConversationPage() {
   }
   
   const loggedInUserImage = findImage(loggedInUser.image.id);
+  const otherUserImage = findImage(otherUser.image.id);
+
 
   return (
     <div className="flex h-screen flex-col bg-primary text-primary-foreground">
@@ -107,8 +110,8 @@ export default function ConversationPage() {
           {messagesLoading && Array.from({length: 5}).map((_, i) => <div key={i} className={`h-12 w-2/3 rounded-2xl bg-muted animate-pulse ${i % 2 === 0 ? 'self-start' : 'self-end'}`} />) }
           {messages.map((message) => {
             const isSender = message.senderId === loggedInUser.id;
-            const user = isSender ? loggedInUser : otherUser;
-            const userImage = findImage(user.image.id);
+            const userImage = isSender ? loggedInUserImage : otherUserImage;
+            const userName = isSender ? loggedInUser.name : otherUser.name;
             const messageDate = new Date(message.timestamp);
             const timeString = `${messageDate.getHours().toString().padStart(2, '0')}:${messageDate.getMinutes().toString().padStart(2, '0')}`;
 
@@ -121,7 +124,7 @@ export default function ConversationPage() {
               >
                 <Image
                   src={userImage.imageUrl}
-                  alt={user.name}
+                  alt={userName}
                   width={32}
                   height={32}
                   className="h-8 w-8 rounded-full object-cover"
