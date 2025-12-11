@@ -1,13 +1,11 @@
+
 'use client';
 
 import {
   getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  signInAnonymously,
+  onAuthStateChanged,
   signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  type UserCredential,
   type User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
@@ -23,10 +21,11 @@ const createUserProfile = async (user: FirebaseUser) => {
   const userDoc = await getDoc(userRef);
 
   if (!userDoc.exists()) {
+    const randomName = `User-${user.uid.substring(0, 5)}`;
     await setDoc(userRef, {
       id: user.uid,
-      name: user.displayName || 'New User',
-      age: 18,
+      name: user.displayName || randomName,
+      age: 25,
       bio: 'Just joined LinqUp! Looking to connect.',
       interests: ['New User'],
       image: user.photoURL
@@ -47,39 +46,34 @@ const createUserProfile = async (user: FirebaseUser) => {
   }
 };
 
-export async function signUpWithEmail(email: string, password: string, username: string): Promise<UserCredential> {
-  if (!auth) throw new Error('Firebase Auth has not been initialized');
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  // We can't update the user's display name directly on creation with password auth
-  // but we can pass it when we create the firestore doc
-  await createUserProfile(userCredential.user);
-  
-  if (firestore) {
-      const userRef = doc(firestore, 'users', userCredential.user.uid);
-      await updateDoc(userRef, { name: username });
-  }
+export const signInAsGuest = async (): Promise<void> => {
+    if (!auth) throw new Error('Firebase Auth has not been initialized');
 
-
-  return userCredential;
-}
-
-export async function signInWithEmail(email: string, password: string): Promise<UserCredential> {
-  if (!auth || !firestore) {
-    throw new Error('Firebase Auth has not been initialized');
-  }
-  const userCredential = await signInWithEmailAndPassword(auth, email, password);
-  const userRef = doc(firestore, 'users', userCredential.user.uid);
-  await updateDoc(userRef, { isOnline: true });
-  return userCredential;
-}
-
-export async function signInWithGoogle(): Promise<UserCredential> {
-  if (!auth) throw new Error('Firebase Auth has not been initialized');
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  await createUserProfile(userCredential.user);
-  return userCredential;
-}
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            unsubscribe(); // Unsubscribe to avoid multiple calls
+            if (user) {
+                // User is already signed in.
+                await updateDoc(doc(firestore!, 'users', user.uid), { isOnline: true });
+                resolve();
+            } else {
+                // No user is signed in, sign in anonymously.
+                try {
+                    const userCredential = await signInAnonymously(auth);
+                    await createUserProfile(userCredential.user);
+                    resolve();
+                } catch (error) {
+                    console.error("Error signing in anonymously:", error);
+                    reject(error);
+                }
+            }
+        }, (error) => {
+            // Handle errors in onAuthStateChanged
+            console.error("Auth state change error:", error);
+            reject(error);
+        });
+    });
+};
 
 export async function signOutUser(): Promise<void> {
   if (!auth || !firestore) {

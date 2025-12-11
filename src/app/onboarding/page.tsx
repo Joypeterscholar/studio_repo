@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -34,13 +35,6 @@ const allPages = [
   { href: '/block-user', label: 'Block User Confirmation' },
   { href: '/delete-account', label: 'Delete Account Confirmation' },
   { href: '/interests', label: 'Interests Selection' },
-  { href: '/login', label: 'Login' },
-  { href: '/signup', label: 'Sign Up' },
-  { href: '/reset-password', label: 'Reset Password' },
-  { href: '/password-reset-code', label: 'Password Reset Code' },
-  { href: '/new-password', label: 'New Password' },
-  { href: '/verify-email', label: 'Verify Email' },
-  { href: '/verify-email-success', label: 'Verify Email Success' },
   { href: '/video-call/user_4', label: 'Video Call' },
   { href: '/admin', label: 'Admin Dashboard' },
 ];

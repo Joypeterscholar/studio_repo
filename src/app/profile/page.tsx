@@ -1,8 +1,9 @@
+
 'use client';
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Pencil, MapPin, Wallet, ArrowUp, Settings2, X } from 'lucide-react';
+import { Pencil, MapPin, Wallet, ArrowUp, Settings2, X, LogOut } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
@@ -15,6 +16,10 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { useUser } from '@/firebase';
+import { useToast } from '@/hooks/use-toast';
+import { signOutUser } from '@/firebase/auth/auth-service';
+import { useRouter } from 'next/navigation';
+
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
@@ -37,19 +42,43 @@ const VerifiedIcon = () => (
   </svg>
 );
 
-const menuItems = [
-  { label: 'Matches', href: '/matches' },
-  { label: 'My Posts', href: '/recent-posts' },
-  { label: 'My Wallet', href: '/wallet' },
-  { label: 'Settings', href: '/settings' },
-  { label: 'Notifications', href: '/notifications' },
-  { label: 'Blocked Users' },
-  { label: 'Delete Account', isDestructive: true, href: '/delete-account' },
-];
 
 export default function ProfilePage() {
   const { data: user, loading } = useUser();
+  const { toast } = useToast();
+  const router = useRouter();
   
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+      // Anonymous user will be signed in again on next page load,
+      // so we can just reload or push to a page.
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Logout Failed",
+        description: "Could not log out. Please try again.",
+      });
+    }
+  };
+
+  const menuItems = [
+    { label: 'Matches', href: '/matches' },
+    { label: 'My Posts', href: '/recent-posts' },
+    { label: 'My Wallet', href: '/wallet' },
+    { label: 'Settings', href: '/settings' },
+    { label: 'Notifications', href: '/notifications' },
+    { label: 'Blocked Users' },
+    { label: 'Delete Account', isDestructive: true, href: '/delete-account' },
+    { label: 'Log Out', action: handleLogout, isDestructive: false, icon: LogOut },
+  ];
+
   if (loading) {
     return (
         <AppLayout>
@@ -63,7 +92,6 @@ export default function ProfilePage() {
           <AppLayout>
               <div className="p-4">
                   <p>User not found. Please log in.</p>
-                  <Link href="/login"><Button>Login</Button></Link>
               </div>
           </AppLayout>
       )
@@ -121,10 +149,12 @@ export default function ProfilePage() {
                     const content = (
                       <button
                         key={item.label}
-                        className={`text-left p-4 border-b w-full text-primary ${
+                        onClick={item.action}
+                        className={`flex items-center gap-3 text-left p-4 border-b w-full text-primary ${
                           item.isDestructive ? 'text-red-500' : ''
                         }`}
                       >
+                        {item.icon && <item.icon className="w-5 h-5" />}
                         {item.label}
                       </button>
                     );
