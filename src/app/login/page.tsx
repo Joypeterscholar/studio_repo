@@ -63,7 +63,7 @@ export default function LoginPage() {
                 description = "Invalid email or password. Please try again.";
                 break;
             default:
-                description = error.message;
+                description = "An unexpected error occurred during login.";
         }
       }
       toast({

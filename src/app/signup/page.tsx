@@ -66,7 +66,7 @@ export default function SignUpPage() {
                 description = "The password is too weak. Please choose a stronger password.";
                 break;
             default:
-                description = error.message;
+                description = "An unexpected error occurred during sign up.";
         }
       }
       toast({

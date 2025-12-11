@@ -6,8 +6,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   type UserCredential,
+  type User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { initializeFirebase } from '../index';
 import { placeholderImages } from '@/lib/placeholder-images';
 
@@ -27,6 +28,7 @@ export async function signUpWithEmail(email: string, password: string, username:
   
   // Create a default user profile
   await setDoc(userRef, {
+    id: user.uid,
     name: username,
     age: 18, // Default age
     bio: 'Just joined LinqUp! Looking to connect.',
@@ -41,15 +43,23 @@ export async function signUpWithEmail(email: string, password: string, username:
 }
 
 export async function signInWithEmail(email: string, password: string): Promise<UserCredential> {
-  if (!auth) {
+  if (!auth || !firestore) {
     throw new Error('Firebase Auth has not been initialized');
   }
-  return signInWithEmailAndPassword(auth, email, password);
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const userRef = doc(firestore, 'users', userCredential.user.uid);
+  await updateDoc(userRef, { isOnline: true });
+  return userCredential;
 }
 
 export async function signOutUser(): Promise<void> {
-  if (!auth) {
-    throw new Error('Firebase Auth has not been initialized');
+  if (!auth || !firestore) {
+    throw new Error('Firebase has not been initialized');
+  }
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const userRef = doc(firestore, 'users', currentUser.uid);
+    await updateDoc(userRef, { isOnline: false });
   }
   return signOut(auth);
 }
