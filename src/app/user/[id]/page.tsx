@@ -129,7 +129,7 @@ export default function UserProfilePage() {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground">
-      <div className="relative h-[60vh] w-full">
+      <div className="relative h-[60vh] md:h-[70vh] w-full">
         <Image
           src={userImage.imageUrl}
           alt={user.name}
@@ -209,7 +209,7 @@ export default function UserProfilePage() {
         </div>
       </div>
 
-      <div className="relative -mt-8 rounded-t-3xl bg-background p-6">
+      <div className="relative -mt-8 rounded-t-3xl bg-background p-6 max-w-4xl mx-auto w-full">
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold text-primary">
             {user.name}, {user.age}

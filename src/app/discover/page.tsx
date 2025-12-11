@@ -143,11 +143,11 @@ export default function DiscoverPage() {
             </TabsList>
 
             <TabsContent value="for-you" className="mt-6 space-y-6">
-               {postsLoading && <div className="relative h-[65vh] rounded-3xl overflow-hidden shadow-lg bg-muted animate-pulse" />}
+               {postsLoading && <div className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg bg-muted animate-pulse" />}
                {!postsLoading && feedItems.map((item) => {
                 const bgImage = item.images.length > 0 ? findImage(item.images[0].id) : placeholderImages[0];
                 return (
-                  <div key={item.id} className="relative h-[65vh] rounded-3xl overflow-hidden shadow-lg">
+                  <div key={item.id} className="relative h-[65vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-lg max-w-md mx-auto">
                     <Image
                         src={bgImage.imageUrl}
                         alt={bgImage.description}
@@ -177,7 +177,7 @@ export default function DiscoverPage() {
             </TabsContent>
 
             <TabsContent value="around-me" className="mt-6">
-                <div className="relative">
+                <div className="relative max-w-md mx-auto">
                   <Image
                     src={mapImage.imageUrl}
                     alt={mapImage.description}

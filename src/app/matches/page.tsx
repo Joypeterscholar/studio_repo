@@ -113,7 +113,7 @@ export default function MatchesPage() {
                 Your Matches <span className="text-accent">{matches.length}</span>
             </h2>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {loading && Array.from({length: 6}).map((_, i) => <div key={i} className="relative aspect-[3/4] rounded-3xl bg-muted animate-pulse"></div>)}
                 {!loading && matches.map(connection => (
                    <MatchCard key={connection.id} connection={connection} />

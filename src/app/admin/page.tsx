@@ -76,8 +76,8 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+    <div className="flex flex-col gap-4 md:gap-8">
+      <div className="grid gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-4">
          <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -150,11 +150,11 @@ export default function AdminDashboardPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>User</TableHead>
-                  <TableHead className="hidden xl:table-column">Type</TableHead>
-                  <TableHead className="hidden xl:table-column">
+                  <TableHead className="hidden sm:table-cell">Type</TableHead>
+                  <TableHead className="hidden sm:table-cell">
                     Status
                   </TableHead>
-                  <TableHead className="hidden xl:table-column">
+                  <TableHead className="hidden md:table-cell">
                     Date
                   </TableHead>
                   <TableHead className="text-right">Age</TableHead>
@@ -172,15 +172,15 @@ export default function AdminDashboardPage() {
                             <div className="font-medium">{signup.name}</div>
                         </div>
                     </TableCell>
-                    <TableCell className="hidden xl:table-column">
+                    <TableCell className="hidden sm:table-cell">
                         {signup.type}
                     </TableCell>
-                    <TableCell className="hidden xl:table-column">
+                    <TableCell className="hidden sm:table-cell">
                         <Badge className="text-xs" variant="outline">
                         {signup.status}
                         </Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                    <TableCell className="hidden md:table-cell">
                         {signup.date}
                     </TableCell>
                     <TableCell className="text-right">{signup.age}</TableCell>

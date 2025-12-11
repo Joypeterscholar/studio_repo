@@ -14,7 +14,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import Logo from '@/components/layout/Logo';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { useUser, useUsers, useCollection } from '@/firebase';
+import { useUser, useUsers, useCollection, useUserById } from '@/firebase';
 import { useFirestore } from '@/firebase';
 import { collection, query, limit } from 'firebase/firestore';
 import type { Post, User } from '@/lib/data';
@@ -48,7 +48,7 @@ export default function HomePage() {
           </Button>
         </header>
 
-        <div className="pl-4">
+        <div className="pl-4 md:pl-6">
           <div className="flex space-x-4 overflow-x-auto pb-2">
             {userLoading && <div className="w-20 h-20 rounded-full bg-muted animate-pulse" />}
             {myStoryImage && (
@@ -96,7 +96,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <main className="px-4 py-4">
+        <main className="px-4 py-4 md:px-6">
           <Tabs defaultValue="make-friends" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-primary/5 p-1 h-12">
               <TabsTrigger
@@ -113,16 +113,16 @@ export default function HomePage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="make-friends" className="mt-6 space-y-6">
-              {feedLoading && Array.from({length: 2}).map((_, i) => <div key={i} className="h-[50vh] rounded-3xl bg-muted animate-pulse" />) }
+              {feedLoading && Array.from({length: 2}).map((_, i) => <div key={i} className="h-[70vh] rounded-3xl bg-muted animate-pulse max-w-md mx-auto" />) }
               {feedItems.map((item) => {
                 const bgImage = item.images.length > 0 ? findImage(item.images[0].id) : placeholderImages[0];
-                const { data: author } = useUser(item.authorId);
-                if (!author || !author.image) return null;
+                const { data: author } = useUserById(item.authorId);
+                if (!author || !author.image) return <div key={item.id} className="h-[70vh] rounded-3xl bg-muted animate-pulse max-w-md mx-auto" />;
                 const authorImage = findImage(author.image.id);
                 
                 return (
                   <Link href={`/post/${item.id}`} key={item.id} className="block">
-                    <div className="relative h-[50vh] rounded-3xl overflow-hidden shadow-lg">
+                    <div className="relative h-[70vh] rounded-3xl overflow-hidden shadow-lg max-w-md mx-auto">
                       <Image
                         src={bgImage.imageUrl}
                         alt={bgImage.description}

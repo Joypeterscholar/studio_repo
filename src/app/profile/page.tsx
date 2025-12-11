@@ -140,7 +140,7 @@ export default function ProfilePage() {
         </header>
 
         <main className="px-4">
-          <div className="grid grid-cols-3 grid-rows-2 gap-2 h-80">
+          <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-2 gap-2 h-80 sm:h-96">
             <div className="col-span-2 row-span-2 relative rounded-xl overflow-hidden">
               <Image
                 src={mainPhoto.imageUrl}
@@ -156,7 +156,7 @@ export default function ProfilePage() {
                 My Photos <Pencil className="w-4 h-4 ml-2" />
               </Button>
             </div>
-            <div className="col-span-1 row-span-1 relative rounded-xl overflow-hidden">
+            <div className="hidden sm:block col-span-1 row-span-1 relative rounded-xl overflow-hidden">
               <Image
                 src={photo1.imageUrl}
                 alt={photo1.description}
@@ -165,7 +165,7 @@ export default function ProfilePage() {
                 data-ai-hint={photo1.imageHint}
               />
             </div>
-            <div className="col-span-1 row-span-1 relative rounded-xl overflow-hidden">
+            <div className="hidden sm:block col-span-1 row-span-1 relative rounded-xl overflow-hidden">
               <Image
                 src={photo2.imageUrl}
                 alt={photo2.description}
