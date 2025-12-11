@@ -1,6 +1,12 @@
 {
   "placeholderImages": [
     {
+      "id": "onboarding-hero",
+      "description": "A stylish couple sitting close together on steps, smiling.",
+      "imageUrl": "https://images.unsplash.com/photo-1533243232239-a03525a7eb4a?w=1080&h=1920&fit=crop",
+      "imageHint": "couple smiling"
+    },
+    {
       "id": "onboarding-1",
       "description": "Illustration of a diverse couple embracing in a heart shape",
       "imageUrl": "https://storage.googleapis.com/aifire.dev/misc/linqup/onboarding-1.png",
