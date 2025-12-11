@@ -82,25 +82,3 @@ export async function signOutUser(auth: Auth, firestore: Firestore): Promise<voi
   }
   return signOut(auth);
 }
-
-// The following functions are temporarily unused due to platform issues
-// but are kept for when the service is restored.
-
-export async function signUpWithEmail(auth: Auth, firestore: Firestore, email: string, password: string, username: string): Promise<UserCredential> {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  await createUserProfile(firestore, userCredential.user);
-  return userCredential;
-}
-
-export async function signInWithEmail(auth: Auth, firestore: Firestore, email: string, password: string): Promise<UserCredential> {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    await updateDoc(doc(firestore, 'users', userCredential.user.uid), { isOnline: true });
-    return userCredential;
-}
-
-export async function signInWithGoogle(auth: Auth, firestore: Firestore): Promise<UserCredential> {
-    const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    await createUserProfile(firestore, userCredential.user);
-    return userCredential;
-}

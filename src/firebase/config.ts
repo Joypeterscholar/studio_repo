@@ -1,11 +1,10 @@
 // This file is intentionally left blank.
 // The Firebase configuration will be injected by the build process.
 export const firebaseConfig = {
-    apiKey: "AIzaSyC2XPDrv6i2uwfO6TIboIsFdrJulTs6SQ4",
-    authDomain: "linqupweb.firebaseapp.com",
-    projectId: "linqupweb",
-    storageBucket: "linqupweb.firebasestorage.app",
-    messagingSenderId: "254862196833",
-    appId: "1:254862196833:web:53e0372a14feb20ff42a20",
-    measurementId: "G-DCTD3G2476"
-  };
+  apiKey: "AIzaSyC8aob9K4B2L5zA-hM55tXl1YYVGI_T7ro",
+  authDomain: "datafi-lite.firebaseapp.com",
+  projectId: "datafi-lite",
+  storageBucket: "datafi-lite.firebasestorage.app",
+  messagingSenderId: "1095692713249",
+  appId: "1:1095692713249:web:fc7ff2ea9a47c178bf9260"
+};
