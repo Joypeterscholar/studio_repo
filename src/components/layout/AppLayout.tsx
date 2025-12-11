@@ -21,6 +21,7 @@ const navItems = [
 ];
 
 const devNavItems = [
+    {href: '/admin', label: 'Admin Dashboard'},
     {href: '/block-user', label: 'Block User'},
     {href: '/buy-credits', label: 'Buy Credits'},
     {href: '/buy-credits-v1', label: 'Buy Credits (V1)'},
