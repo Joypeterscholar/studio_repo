@@ -38,17 +38,17 @@ import {
 import {
   ActivityChart,
   BarChart,
-  LineChart,
 } from '@/app/admin/admin-components';
-import { recentSales, recentSignups } from './data';
 import { seedDatabase } from '@/lib/seed';
-import { useFirestore } from '@/firebase';
+import { useFirestore, useUsers } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
-
+import { userActivityData, userDemographicsData } from '@/lib/charts-data';
+import type { User } from '@/lib/data';
 
 export default function AdminDashboardPage() {
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { data: users, loading: usersLoading } = useUsers();
 
   const handleSeedDatabase = async () => {
     if (!firestore) {
@@ -75,9 +75,21 @@ export default function AdminDashboardPage() {
     }
   }
 
+  // Use live data for recent signups, placeholder for sales
+  const recentSignups = users.slice(0, 5);
+
+  const recentSales = users.slice(5, 10).map(user => ({
+      id: user.id,
+      name: user.name,
+      email: `${user.name.split(' ')[0].toLowerCase()}@email.com`,
+      amount: `+$${((Math.random() * 100) + 20).toFixed(2)}`,
+      avatarUrl: user.image.imageUrl,
+      fallback: user.name.split(' ').map(n => n[0]).join(''),
+  }));
+
   return (
     <div className="flex flex-col gap-4 md:gap-8">
-      <div className="grid gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
          <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -96,7 +108,7 @@ export default function AdminDashboardPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">10,273</div>
+            <div className="text-2xl font-bold">{users.length}</div>
             <p className="text-xs text-muted-foreground">
               +12.1% from last month
             </p>
@@ -135,7 +147,7 @@ export default function AdminDashboardPage() {
             <div className="grid gap-2">
               <CardTitle>Recent Signups</CardTitle>
               <CardDescription>
-                Recent signups from the last 7 days.
+                Recent signups from your user base.
               </CardDescription>
             </div>
             <Button asChild size="sm" className="ml-auto gap-1">
@@ -146,48 +158,44 @@ export default function AdminDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
+            {usersLoading ? <p>Loading users...</p> : (
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>User</TableHead>
-                  <TableHead className="hidden sm:table-cell">Type</TableHead>
-                  <TableHead className="hidden sm:table-cell">
-                    Status
-                  </TableHead>
+                  <TableHead className="hidden sm:table-cell">Online</TableHead>
                   <TableHead className="hidden md:table-cell">
-                    Date
+                    Location
                   </TableHead>
                   <TableHead className="text-right">Age</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recentSignups.map((signup) => (
-                    <TableRow key={signup.id}>
+                {recentSignups.map((user: User) => (
+                    <TableRow key={user.id}>
                     <TableCell>
                         <div className="flex items-center gap-3">
                             <Avatar className="hidden h-9 w-9 sm:flex">
-                                <AvatarImage src={signup.avatarUrl} alt="Avatar" />
-                                <AvatarFallback>{signup.fallback}</AvatarFallback>
+                                <AvatarImage src={user.image.imageUrl} alt="Avatar" />
+                                <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                             </Avatar>
-                            <div className="font-medium">{signup.name}</div>
+                            <div className="font-medium">{user.name}</div>
                         </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                        {signup.type}
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="outline">
-                        {signup.status}
+                        <Badge className="text-xs" variant={user.isOnline ? 'default' : 'outline'}>
+                        {user.isOnline ? 'Online' : 'Offline'}
                         </Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                        {signup.date}
+                        {user.location}
                     </TableCell>
-                    <TableCell className="text-right">{signup.age}</TableCell>
+                    <TableCell className="text-right">{user.age}</TableCell>
                     </TableRow>
                 ))}
               </TableBody>
             </Table>
+            )}
           </CardContent>
         </Card>
         <Card>
@@ -195,7 +203,7 @@ export default function AdminDashboardPage() {
             <CardTitle>Recent Sales</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-8">
-            {recentSales.map((sale) => (
+             {usersLoading ? <p>Loading...</p> : recentSales.map((sale) => (
                  <div key={sale.id} className="flex items-center gap-4">
                  <Avatar className="hidden h-9 w-9 sm:flex">
                    <AvatarImage src={sale.avatarUrl} alt="Avatar" />
