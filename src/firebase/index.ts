@@ -3,6 +3,7 @@ import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 import { firebaseConfig } from './config';
+import { useMemo } from 'react';
 
 export * from './provider';
 export { FirebaseClientProvider } from './client-provider';
@@ -25,13 +26,17 @@ export function initializeFirebase() {
   return { app, auth, firestore };
 }
 
-export function useUserById(id: string) {
+export function useUserById(id: string | null | undefined) {
     const { useDoc } = require('./firestore/use-doc');
     const { useFirestore } = require('./provider');
     const firestore = useFirestore();
     const { doc } = require('firebase/firestore');
     
-    const docRef = firestore ? doc(firestore, 'users', id) : null;
+    const docRef = useMemo(() => {
+        if (!firestore || !id) return null;
+        return doc(firestore, 'users', id);
+    }, [firestore, id]);
+
     return useDoc(docRef);
 }
 
@@ -41,7 +46,11 @@ export function useUsers() {
     const firestore = useFirestore();
     const { collection } = require('firebase/firestore');
 
-    const collectionRef = firestore ? collection(firestore, 'users') : null;
+    const collectionRef = useMemo(() => {
+        if (!firestore) return null;
+        return collection(firestore, 'users');
+    }, [firestore]);
+    
     return useCollection(collectionRef);
 }
 
@@ -51,18 +60,24 @@ export function useConversations() {
     const firestore = useFirestore();
     const { collection } = require('firebase/firestore');
 
-    const collectionRef = firestore ? collection(firestore, 'conversations') : null;
-    // This part is tricky without knowing the logged-in user's ID on the server.
-    // For now, we'll fetch all conversations, but this should be filtered.
+    const collectionRef = useMemo(() => {
+        if (!firestore) return null;
+        return collection(firestore, 'conversations');
+    }, [firestore]);
+
     return useCollection(collectionRef);
 }
 
-export function useConversationById(id: string) {
+export function useConversationById(id: string | null | undefined) {
     const { useDoc } = require('./firestore/use-doc');
     const { useFirestore } = require('./provider');
     const firestore = useFirestore();
     const { doc } = require('firebase/firestore');
 
-    const docRef = firestore ? doc(firestore, 'conversations', id) : null;
+    const docRef = useMemo(() => {
+        if (!firestore || !id) return null;
+        return doc(firestore, 'conversations', id);
+    }, [firestore, id]);
+    
     return useDoc(docRef);
 }
