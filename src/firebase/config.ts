@@ -1,10 +1,11 @@
 // This file is intentionally left blank.
 // The Firebase configuration will be injected by the build process.
 export const firebaseConfig = {
-  apiKey: "AIzaSyC8aob9K4B2L5zA-hM55tXl1YYVGI_T7ro",
-  authDomain: "datafi-lite.firebaseapp.com",
-  projectId: "datafi-lite",
-  storageBucket: "datafi-lite.firebasestorage.app",
-  messagingSenderId: "1095692713249",
-  appId: "1:1095692713249:web:fc7ff2ea9a47c178bf9260"
+  apiKey: "AIzaSyCz_9cHg42Rcuj4uHf_c1u2RO4_L79DEG0",
+  authDomain: "datafi-api-marketplace-local.firebaseapp.com",
+  projectId: "datafi-api-marketplace-local",
+  storageBucket: "datafi-api-marketplace-local.firebasestorage.app",
+  messagingSenderId: "372330907748",
+  appId: "1:372330907748:web:af2e117cfead7c7f63b771"
 };
+
