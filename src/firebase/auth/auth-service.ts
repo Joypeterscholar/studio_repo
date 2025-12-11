@@ -7,6 +7,11 @@ import {
   onAuthStateChanged,
   signOut,
   type User as FirebaseUser,
+  createUserWithEmailAndPassword,
+  type UserCredential,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 import { type Firestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -44,13 +49,11 @@ const createUserProfile = async (firestore: Firestore, user: FirebaseUser) => {
 export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<void> => {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            unsubscribe(); // Unsubscribe to avoid multiple calls
+            unsubscribe();
             if (user) {
-                // User is already signed in.
                 await updateDoc(doc(firestore, 'users', user.uid), { isOnline: true });
                 resolve();
             } else {
-                // No user is signed in, sign in anonymously.
                 try {
                     const userCredential = await signInAnonymously(auth);
                     await createUserProfile(firestore, userCredential.user);
@@ -61,7 +64,6 @@ export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<v
                 }
             }
         }, (error) => {
-            // Handle errors in onAuthStateChanged
             console.error("Auth state change error:", error);
             reject(error);
         });
@@ -79,4 +81,23 @@ export async function signOutUser(auth: Auth, firestore: Firestore): Promise<voi
     }
   }
   return signOut(auth);
+}
+
+export async function signUpWithEmail(auth: Auth, firestore: Firestore, email: string, password: string, username: string): Promise<UserCredential> {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  await createUserProfile(firestore, userCredential.user);
+  return userCredential;
+}
+
+export async function signInWithEmail(auth: Auth, firestore: Firestore, email: string, password: string): Promise<UserCredential> {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    await updateDoc(doc(firestore, 'users', userCredential.user.uid), { isOnline: true });
+    return userCredential;
+}
+
+export async function signInWithGoogle(auth: Auth, firestore: Firestore): Promise<UserCredential> {
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    await createUserProfile(firestore, userCredential.user);
+    return userCredential;
 }
