@@ -40,7 +40,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { useUser } from '@/firebase';
+import { FirebaseClientProvider, useUser } from '@/firebase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const navItems = [
@@ -50,7 +50,7 @@ const navItems = [
 ];
 
 
-export default function AdminLayout({
+function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -217,4 +217,12 @@ export default function AdminLayout({
       </div>
     </div>
   );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <FirebaseClientProvider>
+            <AdminDashboardLayout>{children}</AdminDashboardLayout>
+        </FirebaseClientProvider>
+    )
 }
