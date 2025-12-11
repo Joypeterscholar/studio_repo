@@ -83,6 +83,9 @@ export async function signOutUser(auth: Auth, firestore: Firestore): Promise<voi
   return signOut(auth);
 }
 
+// The following functions are temporarily unused due to platform issues
+// but are kept for when the service is restored.
+
 export async function signUpWithEmail(auth: Auth, firestore: Firestore, email: string, password: string, username: string): Promise<UserCredential> {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   await createUserProfile(firestore, userCredential.user);
