@@ -12,6 +12,7 @@ import {
   PanelLeft,
   Search,
   Home,
+  ShieldAlert,
 } from 'lucide-react';
 
 import {
@@ -43,6 +44,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider, useUser } from '@/firebase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -62,7 +64,35 @@ function AdminDashboardLayout({
   const breadcrumbItems = pathname.split('/').filter(Boolean);
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center gap-2">
+            <LayoutDashboard className="h-8 w-8 animate-pulse" />
+            <p className="text-muted-foreground">Loading Admin Dashboard...</p>
+        </div>
+    </div>
+  }
+
+  if (!loggedInUser?.isAdmin) {
+    return (
+        <div className="flex min-h-screen w-full items-center justify-center bg-muted/40 p-4">
+            <Card className="w-full max-w-md">
+                <CardHeader className="text-center">
+                    <CardTitle className="flex flex-col items-center gap-2 text-2xl">
+                        <ShieldAlert className="h-12 w-12 text-destructive" />
+                        Access Denied
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                    <p className="text-muted-foreground">
+                        You do not have permission to view this page. Please contact an administrator if you believe this is an error.
+                    </p>
+                    <Link href="/home">
+                        <Button className="mt-6">Go to Home</Button>
+                    </Link>
+                </CardContent>
+            </Card>
+        </div>
+    )
   }
 
   return (
@@ -197,7 +227,7 @@ function AdminDashboardLayout({
                   />
                 ) : (
                     <Avatar>
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarFallback>A</AvatarFallback>
                     </Avatar>
                 )}
               </Button>

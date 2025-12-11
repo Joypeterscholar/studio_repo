@@ -49,6 +49,10 @@
         "isOnline": {
           "type": "boolean"
         },
+        "isAdmin": {
+            "type": "boolean",
+            "description": "Whether the user has admin privileges."
+        },
         "gallery": {
           "type": "array",
           "items": {

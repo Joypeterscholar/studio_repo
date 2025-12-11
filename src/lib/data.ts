@@ -10,6 +10,7 @@ export interface User {
   location: string;
   isOnline: boolean;
   gallery: ImagePlaceholder[];
+  isAdmin?: boolean;
 }
 
 export interface Post {
