@@ -1,0 +1,63 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // USERS
+    // Allow anyone to read user profiles (public info)
+    // Allow users to create, update, and delete only their own profile
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isOwner(userId);
+    }
+
+    // POSTS
+    // Allow anyone to read posts
+    // Allow authenticated users to create posts
+    // Allow post owners to update or delete their own posts
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && isOwner(resource.data.authorId);
+    }
+    
+    // CONVERSATIONS
+    // Only participants can read or write messages in a conversation
+    match /conversations/{conversationId} {
+      allow read, write: if isSignedIn() && request.auth.uid in resource.data.userIds;
+    }
+    
+    // MESSAGES SUBCOLLECTION (if used)
+    // Only participants of the parent conversation can read or write messages
+    match /conversations/{conversationId}/messages/{messageId} {
+       allow read, write: if isSignedIn() && get(/databases/$(database)/documents/conversations/$(conversationId)).data.userIds.hasAny([request.auth.uid]);
+    }
+
+    // TRANSACTIONS
+    // Users can only create and read their own transactions. No updates/deletes allowed for integrity.
+    match /transactions/{transactionId} {
+      allow read, create: if isSignedIn() && isOwner(request.resource.data.userId);
+      allow update, delete: if false;
+    }
+
+    // CONNECTIONS
+    // Users can create connections (like, request)
+    // Users can read connections they are part of
+    // Users can update/delete connections (e.g., accept request, unfriend) they are part of
+    match /connections/{connectionId} {
+      allow read: if isSignedIn() && (request.auth.uid == resource.data.fromUserId || request.auth.uid == resource.data.toUserId);
+      allow create: if isSignedIn() && isOwner(request.resource.data.fromUserId);
+      allow update, delete: if isSignedIn() && (isOwner(resource.data.fromUserId) || isOwner(resource.data.toUserId));
+    }
+  }
+}
