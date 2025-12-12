@@ -7,11 +7,6 @@ import {
   onAuthStateChanged,
   signOut,
   type User as FirebaseUser,
-  createUserWithEmailAndPassword,
-  type UserCredential,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
 } from 'firebase/auth';
 import { type Firestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -40,6 +35,7 @@ const createUserProfile = async (firestore: Firestore, user: FirebaseUser) => {
       location: 'Unknown',
       isOnline: true,
       gallery: [],
+      isAdmin: false, // Ensure isAdmin is set for new users
     });
   } else {
     await updateDoc(userRef, { isOnline: true });
@@ -50,9 +46,13 @@ export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<v
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             unsubscribe();
-            if (user) {
-                // If user is already signed in, just ensure their profile is online and resolve.
-                // This handles cases of page refresh for an already signed-in user.
+            if (user && !user.isAnonymous) {
+                // If a non-anonymous user is somehow logged in, sign them out first
+                await signOut(auth);
+            }
+            
+            if (user && user.isAnonymous) {
+                // If anonymous user is already signed in, just ensure their profile is online and resolve.
                 await updateDoc(doc(firestore, 'users', user.uid), { isOnline: true }).catch(console.error);
                 resolve();
             } else {
@@ -73,27 +73,6 @@ export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<v
     });
 };
 
-
-export async function signUpWithEmail(auth: Auth, firestore: Firestore, email: string, password: string): Promise<UserCredential> {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  await createUserProfile(firestore, userCredential.user);
-  return userCredential;
-}
-
-export async function signInWithEmail(auth: Auth, firestore: Firestore, email: string, password: string): Promise<UserCredential> {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    await updateDoc(doc(firestore, 'users', userCredential.user.uid), { isOnline: true });
-    return userCredential;
-}
-
-export async function signInWithGoogle(auth: Auth, firestore: Firestore): Promise<UserCredential> {
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  await createUserProfile(firestore, userCredential.user);
-  return userCredential;
-}
-
-
 export async function signOutUser(auth: Auth, firestore: Firestore): Promise<void> {
   const currentUser = auth.currentUser;
   if (currentUser) {
@@ -104,5 +83,7 @@ export async function signOutUser(auth: Auth, firestore: Firestore): Promise<voi
         console.error("Error updating user status on logout:", error);
     }
   }
-  return signOut(auth);
+  // For guest mode, signing out isn't strictly necessary unless you want to clear the session.
+  // We'll keep the anonymous session alive.
+  // return signOut(auth);
 }
