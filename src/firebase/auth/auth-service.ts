@@ -47,24 +47,17 @@ export const signInAsGuest = async (auth: Auth, firestore: Firestore): Promise<v
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             unsubscribe();
             if (user && !user.isAnonymous) {
-                // If a non-anonymous user is somehow logged in, sign them out first
                 await signOut(auth);
             }
             
             if (user && user.isAnonymous) {
-                // If anonymous user is already signed in, just ensure their profile is online and resolve.
                 await updateDoc(doc(firestore, 'users', user.uid), { isOnline: true }).catch(console.error);
                 resolve();
             } else {
-                // If no user, sign in anonymously and create profile.
-                try {
-                    const userCredential = await signInAnonymously(auth);
-                    await createUserProfile(firestore, userCredential.user);
-                    resolve();
-                } catch (error) {
-                    console.error("Error signing in anonymously:", error);
-                    reject(error);
-                }
+                // If there is no user, we just resolve.
+                // We are not attempting to sign in anonymously to avoid the admin-restricted-operation error.
+                // The app will run without a user context.
+                resolve();
             }
         }, (error) => {
             console.error("Auth state change error:", error);
