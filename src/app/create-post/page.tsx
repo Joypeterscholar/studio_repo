@@ -16,20 +16,13 @@ import { Input } from '@/components/ui/input';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
-const addedImages = [
-  { id: 'profile-side-1', hint: 'man suit' },
-  { id: 'story-background', hint: 'food drink' },
-  { id: 'profile-side-2', hint: 'man studying' },
-];
-
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id);
 };
 
-
 export default function CreatePostPage() {
   const router = useRouter();
-  const [images, setImages] = useState(addedImages);
+  const [images, setImages] = useState<{ id: string, hint: string }[]>([]);
 
   const removeImage = (id: string) => {
     setImages(images.filter(img => img.id !== id));
@@ -69,10 +62,10 @@ export default function CreatePostPage() {
             <Input 
                 placeholder="Post Title"
                 className="text-2xl font-bold border-none shadow-none p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
-                defaultValue="Food in Italy"
+                defaultValue=""
             />
              <Button variant="outline" className="mt-2 border-primary text-primary">
-                Photography
+                Category
              </Button>
         </div>
 
@@ -97,6 +90,9 @@ export default function CreatePostPage() {
                         </div>
                     )
                 })}
+                 <Button variant="outline" className="aspect-square h-full w-full flex items-center justify-center">
+                    <Camera className="w-8 h-8 text-muted-foreground" />
+                 </Button>
             </div>
         </div>
 

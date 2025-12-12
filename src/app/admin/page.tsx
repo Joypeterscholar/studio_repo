@@ -7,7 +7,6 @@ import {
   CreditCard,
   DollarSign,
   Users,
-  Database,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -36,54 +35,15 @@ import {
   ActivityChart,
   BarChart,
 } from '@/app/admin/admin-components';
-import { seedDatabase } from '@/lib/seed';
-import { useFirestore, useUsers } from '@/firebase';
-import { useToast } from '@/hooks/use-toast';
-import { userActivityData } from '@/lib/charts-data';
+import { useUsers } from '@/firebase';
 import type { User } from '@/lib/data';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminDashboardPage() {
-  const firestore = useFirestore();
-  const { toast } = useToast();
   const { data: users, loading: usersLoading } = useUsers();
 
-  const handleSeedDatabase = async () => {
-    if (!firestore) {
-        toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Firestore is not available.",
-        });
-        return;
-    }
-    try {
-      await seedDatabase(firestore);
-      toast({
-        title: "Database Seeded",
-        description: "Sample data has been added to Firestore.",
-      });
-    } catch (error) {
-      console.error("Error seeding database:", error);
-      toast({
-        variant: "destructive",
-        title: "Seeding Failed",
-        description: "Could not add sample data to Firestore.",
-      });
-    }
-  }
-
   const recentSignups = users.slice(0, 5);
-
-  // Placeholder for sales data
-  const recentSales = users.slice(5, 10).map(user => ({
-      id: user.id,
-      name: user.name,
-      email: `${user.name.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/, '')}@email.com`,
-      amount: `+$${((Math.random() * 100) + 20).toFixed(2)}`,
-      avatarUrl: user.image.imageUrl,
-      fallback: user.name.split(' ').map(n => n[0]).join(''),
-  }));
+  const recentSales: any[] = [];
 
   return (
     <div className="flex flex-col gap-4 md:gap-8">
@@ -94,9 +54,9 @@ export default function AdminDashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">$0.00</div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              No sales data available
             </p>
           </CardContent>
         </Card>
@@ -108,7 +68,7 @@ export default function AdminDashboardPage() {
           <CardContent>
             {usersLoading ? <Skeleton className="h-8 w-1/2" /> : <div className="text-2xl font-bold">{users.length}</div>}
             <p className="text-xs text-muted-foreground">
-              +12.1% from last month
+              +0% from last month
             </p>
           </CardContent>
         </Card>
@@ -118,23 +78,21 @@ export default function AdminDashboardPage() {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+573</div>
+            <div className="text-2xl font-bold">0</div>
             <p className="text-xs text-muted-foreground">
-              +201 since last hour
+              No activity data available
             </p>
           </CardContent>
         </Card>
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Seed Database</CardTitle>
-                <Database className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <Button onClick={handleSeedDatabase} disabled={!firestore}>
-                    Seed Data
-                </Button>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Populate Firestore with sample data.
+                <div className="text-2xl font-bold">0</div>
+                <p className="text-xs text-muted-foreground">
+                    No subscription data
                 </p>
             </CardContent>
         </Card>
@@ -231,6 +189,9 @@ export default function AdminDashboardPage() {
                  <div className="ml-auto font-medium">{sale.amount}</div>
                </div>
             ))}
+             {!usersLoading && recentSales.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">No recent sales.</p>
+             )}
           </CardContent>
         </Card>
       </div>

@@ -12,7 +12,10 @@ import {
   ResponsiveContainer,
   Bar,
 } from 'recharts';
-import { userActivityData, userDemographicsData } from '@/lib/charts-data';
+
+// Mock data has been removed. Charts will be empty until real data is provided.
+const userActivityData: any[] = [];
+const userDemographicsData: any[] = [];
 
 export const ActivityChart = () => (
   <ResponsiveContainer width="100%" height={300}>

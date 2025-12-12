@@ -22,64 +22,14 @@ import {
   DialogClose
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { useUser } from '@/firebase';
+import { useUser, usePostById, useUserById } from '@/firebase';
+import { useParams } from 'next/navigation';
+import { type Comment as CommentType } from '@/lib/data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const findImage = (id: string) => {
   return placeholderImages.find((p) => p.id === id) || placeholderImages[0];
 };
-
-// Dummy data, this would come from an API based on params.id
-const post = {
-  id: 'feed-1',
-  question: 'If you could live anywhere in the world, where would you pick?',
-  authorName: 'Miranda Kehlani',
-  authorLocation: 'STUTTGART',
-  authorImageId: 'user-7',
-  backgroundImageId: 'feed-prague',
-  body: [
-    'Lorem ipsum dolor sit amet consectetur. Odio sapien ipsum molestie arcu quis sit tincidunt dignissim. Venenatis feugiat vitae amet aliquet. Quis mi fames odio felis. Tempus pretium non massa vitae.',
-    'Neque lacus neque odio pharetra sed sit egestas tempus sit. Scelerisque diam malesuada nunc nulla risus congue volutpat. Integer risus ac lectus sed nulla. Fringilla suscipit a leo sit purus pharetra accumsan pellentesque. Lacus ultricies tristique id pellentesque.',
-  ],
-};
-
-const comments = [
-  {
-    id: 'comment-1',
-    authorName: 'Joy Peters',
-    authorImageId: 'user-1',
-    timestamp: '3d',
-    text: 'Office ipsum you must be muted. Left on needle running discussion individual. Get dunder reality cc nail when eco-system speed anyway forward. We let or jumping kimono I.',
-    likes: 32,
-    replies: [
-       {
-        id: 'reply-1-1',
-        authorName: 'Ademola Olamide',
-        authorImageId: 'user-male-1',
-        timestamp: '1h',
-        text: 'You look so gorgeous I\'d eat you like a snack that you are!',
-        likes: 5,
-      }
-    ]
-  },
-   {
-    id: 'comment-2',
-    authorName: 'Bobo Chucks',
-    authorImageId: 'user-male-2',
-    timestamp: '3d',
-    text: 'Office ipsum you must be muted. Left on needle running discussion individual. Get dunder reality cc nail when eco-system speed anyway forward. We let or jumping kimono I.',
-    likes: 32,
-    replies: [
-        {
-            id: 'reply-2-1',
-            authorName: 'Miranda Cole',
-            authorImageId: 'user-7',
-            timestamp: '1h',
-            text: 'You look so gorgeous I\'d eat you like a snack that you are!',
-            likes: 5,
-        }
-    ]
-  },
-];
 
 const FilterIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,13 +42,26 @@ const FilterIcon = () => (
     </svg>
 )
 
-const Comment = ({ comment }: { comment: any }) => {
-  const authorImage = findImage(comment.authorImageId);
+const Comment = ({ comment }: { comment: CommentType }) => {
+  const { data: author, loading } = useUserById(comment.authorId);
+
+  if (loading || !author) {
+    return (
+        <div className="flex gap-4">
+            <Skeleton className="w-12 h-12 rounded-full" />
+            <div className="flex-grow space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-8 w-full" />
+            </div>
+        </div>
+    );
+  }
+  const authorImage = findImage(author.image.id);
   return (
     <div className="flex gap-4">
       <Image
         src={authorImage.imageUrl}
-        alt={comment.authorName}
+        alt={author.name}
         width={comment.replies ? 48 : 32}
         height={comment.replies ? 48 : 32}
         className="rounded-full object-cover self-start"
@@ -108,18 +71,18 @@ const Comment = ({ comment }: { comment: any }) => {
         <div className="flex justify-between items-start">
           <div className="flex flex-col">
             <div className="flex items-baseline gap-2">
-              <span className="font-bold text-primary">{comment.authorName}</span>
-              <span className="text-muted-foreground text-sm">- {comment.timestamp}</span>
+              <span className="font-bold text-primary">{author.name}</span>
+              <span className="text-muted-foreground text-sm">- {new Date(comment.timestamp).toLocaleDateString()}</span>
             </div>
             <p className="mt-1 text-foreground/80 text-sm">{comment.text}</p>
             <button className="text-muted-foreground text-sm font-semibold mt-2 text-left">Reply</button>
           </div>
           <div className="flex flex-col items-center text-muted-foreground shrink-0">
             <Heart className="w-5 h-5"/>
-            <span className="text-sm">{comment.likes}</span>
+            <span className="text-sm">{comment.likes.length}</span>
           </div>
         </div>
-        {comment.replies && (
+        {comment.replies && comment.replies.length > 0 && (
           <div className="mt-4 space-y-4">
             {comment.replies.map((reply: any) => (
               <Comment key={reply.id} comment={reply} />
@@ -132,15 +95,23 @@ const Comment = ({ comment }: { comment: any }) => {
 };
 
 
-export default function PostPage({ params }: { params: { id: string } }) {
-  const authorImage = findImage(post.authorImageId);
-  const bgImage = findImage(post.backgroundImageId);
-  const { data: loggedInUser, loading } = useUser();
+export default function PostPage() {
+  const params = useParams();
+  const postId = params.id as string;
+  const { data: post, loading: postLoading } = usePostById(postId);
+  const { data: author, loading: authorLoading } = useUserById(post?.authorId);
+  const { data: loggedInUser, loading: userLoading } = useUser();
 
-  if (loading || !loggedInUser) {
-    return <div>Loading...</div>
+  if (postLoading || authorLoading || userLoading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>
+  }
+  
+  if (!post || !author || !loggedInUser) {
+    return <div className="flex h-screen items-center justify-center">Post not found.</div>
   }
 
+  const authorImage = findImage(author.image.id);
+  const bgImage = post.images.length > 0 ? findImage(post.images[0].id) : placeholderImages[0];
   const loggedInUserImage = findImage(loggedInUser.image.id);
 
 
@@ -165,9 +136,9 @@ export default function PostPage({ params }: { params: { id: string } }) {
                 </DialogHeader>
                 <div className="flex flex-col text-sm">
                     <button className="text-left p-4 border-b">View Profile</button>
-                    <button className="text-left p-4 border-b">Follow Miranda</button>
+                    <button className="text-left p-4 border-b">Follow {author.name}</button>
                     <button className="text-left p-4 border-b text-red-500">Not Interested in this Post</button>
-                    <button className="text-left p-4">Block Miranda</button>
+                    <button className="text-left p-4">Block {author.name}</button>
                 </div>
             </DialogContent>
         </Dialog>
@@ -175,7 +146,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
 
       <main className="pt-20 px-4 md:px-6 pb-8">
         <h1 className="text-2xl font-bold text-primary mb-4 leading-tight">
-          {post.question}
+          {post.title}
         </h1>
 
         <div className="flex items-center gap-3 mb-6">
@@ -188,9 +159,9 @@ export default function PostPage({ params }: { params: { id: string } }) {
             data-ai-hint={authorImage.imageHint}
           />
           <div>
-            <p className="font-semibold text-primary">{post.authorName}</p>
+            <p className="font-semibold text-primary">{author.name}</p>
             <p className="text-xs text-muted-foreground tracking-widest">
-              {post.authorLocation}
+              {author.location}
             </p>
           </div>
         </div>
@@ -230,9 +201,12 @@ export default function PostPage({ params }: { params: { id: string } }) {
                     </DialogClose>
                   </DialogHeader>
                   <div className="flex-grow overflow-y-auto -mx-6 px-6 space-y-6">
-                      {comments.map((comment) => (
+                      {post.comments && post.comments.map((comment) => (
                           <Comment key={comment.id} comment={comment} />
                       ))}
+                      {(!post.comments || post.comments.length === 0) && (
+                        <p className='text-center text-muted-foreground pt-10'>No comments yet.</p>
+                      )}
                   </div>
                   <div className="flex-shrink-0 -mx-6 px-4 pt-2 border-t">
                     <div className="flex items-center gap-2">
@@ -271,9 +245,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
         </div>
 
         <div className="prose prose-lg max-w-none text-foreground/80 space-y-4">
-          {post.body.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          <p>{post.content}</p>
         </div>
         
       </main>
