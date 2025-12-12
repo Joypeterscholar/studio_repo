@@ -72,7 +72,7 @@ const AustraliaFlagIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path d="M12 12L10.9393 11.0607L12 10.1213L13.0607 11.0607L12 12Z" fill="white"/>
         <path d="M17 10L16.4697 9.53033L17 9.06066L17.5303 9.53033L17 10Z" fill="white"/>
         <path d="M15 14L14.4697 13.5303L15 13.0607L15.5303 13.5303L15 14Z" fill="white"/>
-        `"M19 14L18.4697 13.5303L19 13.0607L19.5303 13.5303L19 14Z" fill="white"/>
+        <path d="M19 14L18.4697 13.5303L19 13.0607L19.5303 13.5303L19 14Z" fill="white"/>
         <path d="M17 16L16.4697 15.5303L17 15.0607L17.5303 15.5303L17 16Z" fill="white"/>
     </svg>
 );
